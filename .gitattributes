@@ -1,4 +1,5 @@
-* text=auto
+* text=auto eol=lf
+/provenance/geometry2d-template.cpp.txt -text
 *.hpp text eol=lf
 *.cpp text eol=lf
 *.cmake text eol=lf

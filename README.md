@@ -4,7 +4,34 @@
 
 ## 当前状态
 
-初始化版本 `0.1.0`。已有 C++20 header-only 工程、独立 Git 仓库、公共头文件、CMake 接入与安装支持、调用示例及建设计划。**尚未收录算法实现，也尚未实现自动检索与组合规划。**
+版本 `0.1.0` 已加入首批试验资产：普通并查集、可回滚并查集、紧凑线段树、Dijkstra、Neumaier 补偿求和，以及 CSR 图存储和离线动态连通性配方。
+
+现已扩展二维几何：10 个独立公共头文件覆盖基础表示、线性几何、多边形、凸包、最近点对、旋转卡壳、半平面裁剪和圆；26 条新契约区分整数精确路径与浮点近似路径，并登记实际组合配方。使用与精度边界见 [GEOMETRY2D.md](docs/GEOMETRY2D.md)，验证与基准见 [GEOMETRY_VALIDATION.md](docs/GEOMETRY_VALIDATION.md)。
+
+均可直接 include，并配有结构化契约、可编译示例、正确性说明和对照测试。最小目录工具能匹配已登记的实现/配方并报告排除理由；**还没有任意自然语言检索、新组合搜索或已校准的时延/峰值内存模型**。详见 [首批资产与使用条件](docs/FIRST_ASSETS.md)。
+
+从个人博客与算法笔记新加入 KMP、树状数组、Kruskal 最小生成森林、拓扑排序、64 位 GF(2) 线性基、归并逆序对，以及树状数组逆序对组合和双字精确累加器。它们使用独立头文件，契约、来源和取舍见 [REPOSITORY_ASSETS.md](docs/REPOSITORY_ASSETS.md)，真实判题与可复现单文件见 [judge/VALIDATION.md](judge/VALIDATION.md)。
+
+第二批扩展图与约束、序列/区间、FFT、LU、吸收马尔科夫链、背包、模运算与几何碰撞/覆盖圆：新增 20 个独立头文件和 30 条算法/表示/配方契约。使用条件见 [REPOSITORY_EXPANSION.md](docs/REPOSITORY_EXPANSION.md)，两仓库 116 个 Markdown 文件的逐项状态见 [载入台账](docs/REPOSITORY_IMPORT.md)。暂缓和部分覆盖明确列出，不把所有文章都视作已迁入。
+
+Codeforces 的组合补测 CF510E 已获 Accepted：复用素数筛与 Dinic，验证归约及环答案恢复，本地 507 组检查通过。输入条件、整体成本、本地对拍和正式判题记录见 [CODEFORCES_VALIDATION.md](judge/CODEFORCES_VALIDATION.md)。
+
+新增三个从题目验证的可调用配方：最低费用非重叠区间对、有限步差最长子序列、树上全部最远距离。接口与成本见 [PROBLEM_COMBINATIONS.md](docs/PROBLEM_COMBINATIONS.md)，本地对拍和平台记录见 [COMBINATION_VALIDATION.md](judge/COMBINATION_VALIDATION.md)。
+
+## 交互式关系图
+
+真实音频问题的摘要检索与组合验证见 [AUDIO_SPECTRUM_ASSESSMENT.md](docs/AUDIO_SPECTRUM_ASSESSMENT.md)：复用 FFT 与补偿求和，提供可编译的 PCM 流频谱消费端 `examples/audio_spectrum.cpp`。它验证数值核心与分块处理，尚未登记为生产音频资产，也未接入录音设备。
+
+打开 [visualization/index.html](visualization/index.html) 可查看类似 Obsidian 的本地关系图：节点拖拽、画布平移/缩放、搜索、关系筛选、一跳邻居聚焦，以及契约和实际源码阅读。页面自包含，可在浏览器中离线打开，无需安装前端依赖。
+
+修改契约、头文件或界面后重新生成：
+
+```sh
+python tools/build_graph.py
+python tests/graph_test.py
+```
+
+图谱自动读取 `contracts/*.json`，目前有 74 个资产、80 对关联。每对节点的多个关系合并为一条线；悬停连线或选中节点可读具体类型、方向及条件。算法、数据表示、组合配方使用不同形状，孤立节点不会被隐藏。图谱帮助浏览已有关系，组合可行性仍须检查完整契约。实现说明见 [关系图维护](docs/GRAPH.md)。
 
 ## 接入已有项目
 
@@ -13,8 +40,9 @@
 ```cpp
 #include <algorithm_assets/algorithm_assets.hpp>
 
-// 当前初始化版本仅提供版本信息；后续算法将有独立头文件。
-auto library_version = algorithm_assets::version;
+algorithm_assets::DisjointSet components(10);
+components.merge(0, 1);
+bool connected = components.same(0, 1);
 ```
 
 使用 CMake 源码接入：
@@ -33,6 +61,23 @@ target_link_libraries(your_target PRIVATE algorithm_assets::algorithm_assets)
 
 配置 `CMAKE_PREFIX_PATH` 指向安装目录即可找到包。接口目标会传递头文件路径与 C++20 要求；当前无需链接二进制库。
 
+## 二维几何接入
+
+几何可以单独接入，无需把整个几何模块引入原便利总头文件：
+
+```cpp
+#include <algorithm_assets/geometry/geometry2d.hpp>
+#include <cstdint>
+#include <vector>
+
+namespace g = algorithm_assets::geometry;
+std::vector<g::IntegerPoint> points{{0, 0}, {4, 0}, {0, 3}};
+auto hull = g::convex_hull<std::int64_t>(points);
+auto farthest = g::convex_diameter(hull); // 平方距离 25，整数精确
+```
+
+`IntegerPoint` 限 ±10⁹；浮点输入限有限 ±10¹⁰⁰，浮点谓词与交点构造仍为近似。完整调用示例 `examples/geometry2d.cpp` 可编译运行。需要更小包含范围时 include 各独立头文件。
+
 ## 构建示例与安装
 
 以下命令使用环境中可用的默认 CMake 生成器：
@@ -43,7 +88,41 @@ cmake --build build --config Release
 cmake --install build --config Release --prefix install
 ```
 
-Windows 下若使用 MinGW，可在配置时指定 `-G "MinGW Makefiles"`。示例目标为 `algorithm_assets_include_example`；可执行文件位置取决于生成器。
+Windows 下若使用 MinGW，可在配置时指定 `-G "MinGW Makefiles"`。示例目标为 `algorithm_assets_include_library`、`algorithm_assets_first_algorithms`、`algorithm_assets_geometry2d`、`algorithm_assets_repository_assets` 和 `algorithm_assets_repository_expansion`；可执行文件位置取决于生成器。
+
+## 首批算法与验证
+
+| 资产 | 独立头文件（相对 include/） | 状态能力 |
+| --- | --- | --- |
+| 普通并查集 | algorithm_assets/connectivity/disjoint_set.hpp | 增量合并；查询会压缩路径 |
+| 可回滚并查集 | algorithm_assets/connectivity/rollback_disjoint_set.hpp | 祖先 checkpoint、rollback、撤销最近成功合并 |
+| 线段树 | algorithm_assets/range/segment_tree.hpp | 单点赋值、有序区间聚合；不要求交换律 |
+| CSR 图存储 | algorithm_assets/graph/csr_graph.hpp | 不可变、非负整数权有向图 |
+| Dijkstra | algorithm_assets/graph/dijkstra.hpp | 精确整数距离、路径恢复、溢出检测 |
+| 补偿求和 | algorithm_assets/numeric/compensated_sum.hpp | 流式近似求和；非有限输入与溢出拒绝 |
+| 离线连通性 | algorithm_assets/recipes/offline_connectivity.hpp | 批量加边/删边/查询，支持重边计数 |
+
+开启测试需要 Python 3.10+（仅目录工具使用；C++ 库和示例没有 Python 依赖）：
+
+```sh
+cmake -S . -B build -DALGORITHM_ASSETS_BUILD_TESTS=ON -DALGORITHM_ASSETS_BUILD_EXAMPLES=ON
+cmake --build build --config Release
+ctest --test-dir build -C Release --output-on-failure
+python tools/catalog.py validate
+python tools/catalog.py query examples/queries/offline_connectivity.json
+python tools/catalog.py query examples/queries/online_deletion_gap.json
+python tools/catalog.py query examples/queries/geometry_diameter_recipe.json
+python tools/catalog.py query examples/queries/geometry_exact_float_gap.json
+python tools/verify_integration.py
+```
+
+后一个查询会报告当前库未覆盖在线删边，不能把离线配方当作在线算法。目录结果只验证已登记条件；资源状态明确保留 unknown。保守内存载荷下界只能用于拒绝明显超预算的方案，不能证明方案满足峰值内存和时间限制。
+
+`tests/algorithms_test.cpp` 与朴素划分、逐项区间计算、Floyd 和逐时刻 BFS 对照，并覆盖边界、回滚序列、非交换聚合、数值取消及溢出。CMake 同时独立编译公共头文件并将多个翻译单元链接到测试程序。
+
+`tests/geometry_test.cpp` 对照 O(n²) 最近/最远点对和逐边全扫描矩形，检查相交/切线性质及退化输入。几何查询能区分无序点集的配方与已有凸包的单算法；精确浮点需求明确返回未覆盖。可选 `ALGORITHM_ASSETS_BUILD_BENCHMARKS=ON` 构建 `algorithm_assets_geometry_benchmark`，当前仅测最近点对。
+
+`verify_integration.py` 使用已配置的 build 目录安装头文件，并让两个独立消费工程通过源码和安装包运行实际算法测试。Windows MinGW 环境附加 `--generator "MinGW Makefiles"`。安装包分发 C++ 接口；目录工具和契约当前从源码工程使用。
 
 ## 核心目标
 
@@ -63,12 +142,16 @@ Windows 下若使用 MinGW，可在配置时指定 `-G "MinGW Makefiles"`。示�
 include/algorithm_assets/   可直接调用的公共 C++ 头文件
 examples/                  可编译的最小使用示例
 cmake/                     安装包配置
-contracts/                 算法契约与能力目录，后续建设
-recipes/                   经验证的组合配方，后续建设
-tests/                     正确性与整体组合测试，后续建设
-benchmarks/                性能与空间评测，后续建设
-gaps/                      无匹配问题与能力缺口，后续建设
+contracts/                 74 份结构化资产契约（含实现变体与配方）
+recipes/                   组合说明；实现位于公共头文件中
+tests/                     正确性、整体组合与目录匹配测试
+benchmarks/                最近点对时间/分配/容量基准；峰值内存后续建设
+gaps/                      无匹配问题与能力缺口记录
+tools/                     最小目录校验与匹配工具
+visualization/             自包含关系图及其 HTML/CSS/JS 源文件
 docs/                      设计约定、规划与初始化记录
+provenance/                几何模板原文与固定提交的仓库文件清单
+judge/                     题目适配器、生成单文件、源码哈希与判题证据
 ```
 
 后续优先 include 各算法的独立头文件，便利总头文件不替代模块边界。大型外部依赖只由相应模块显式引入。

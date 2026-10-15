@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "id": "graph.kruskal",
+  "kind": "algorithm",
+  "name": "KruskalMinimumSpanningForest",
+  "header": "include/algorithm_assets/graph/kruskal.hpp",
+  "documentation": "docs/REPOSITORY_ASSETS.md#kruskal",
+  "problem": "minimum_spanning_forest",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "directed": false,
+    "weights": "signed_int64",
+    "graph_updates": "none",
+    "result_guarantee": "exact"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_reads": "conditional",
+    "concurrent_writes": "unsupported"
+  },
+  "input": {
+    "edges": "Borrowed undirected {uint32 first,second;int64 weight}; loops/parallel/negative allowed",
+    "vertices": "0-based"
+  },
+  "output": {
+    "edges": "Owned original edge indices",
+    "weight": "Final exact int64 or overflow_error",
+    "state": "component_count and is_spanning_tree; n=0 is not a tree"
+  },
+  "constraints": {
+    "max_n": 2147483647,
+    "allocation": "size_t and vector max_size / available memory limits additionally apply",
+    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/REPOSITORY_ASSETS.md",
+    "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
+    "numeric": "Signed weights; only final forest sum must fit int64; input unchanged"
+  },
+  "complexity": {
+    "run": "Worst O(n+m log(m+1))",
+    "space": "4n DSU + sizeof(size_t)*m sorted indices + min(m,n-1) output indices; O(log m) stack"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 4,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative payload lower bound, not peak memory feasibility; 64-bit platform costs in documentation"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "connectivity.dsu"
+    },
+    {
+      "type": "uses",
+      "target": "numeric.wide_int64_sum"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants in documentation; not formal verification",
+    "tests": "tests/repository_assets_test.cpp",
+    "example": "examples/repository_assets.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/VALIDATION.md"
+  },
+  "provenance": {
+    "implementation": "Rewritten modern C++20 for this project, not source-code copy",
+    "reference": "图论/最小生成树/Kruskal.md",
+    "license": "No source LICENSE discovered; project distribution license not selected",
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/图论/最小生成树/Kruskal.md"
+  }
+}

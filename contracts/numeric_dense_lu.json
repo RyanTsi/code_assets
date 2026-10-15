@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "id": "numeric.dense_lu",
+  "kind": "algorithm",
+  "name": "部分主元 LU",
+  "display_name": "部分主元 LU",
+  "header": "include/algorithm_assets/numeric/dense_lu.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "linear_system",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "matrix": "dense_square_float64",
+    "output": "solution",
+    "result_guarantee": "approximate",
+    "updates": "none"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "Finite row-major n*n matrix, copy or ownership transfer, relative pivot tolerance [0,1)"
+  },
+  "output": {
+    "conditions": "Reusable factorization, owned finite solution, sign/logabs determinant; small pivots rejected"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "Finite row-major n*n matrix, copy or ownership transfer, relative pivot tolerance [0,1); Reusable factorization, owned finite solution, sign/logabs determinant; small pivots rejected",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "O(n^3) factor, O(n^2) solve, O(n) log determinant",
+    "space": "8n^2 LU +4n row permutation; solve 8n output",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 8,
+        "factors": [
+          "n",
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "numeric.compensated_sum"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/blog",
+    "commit": "6ea0ef09d8479c8775654c1627710af6da1d5392",
+    "path": "content/posts/数值计算-矩阵论.md",
+    "blob_sha": "d06aaf392720038ed7e34f0c87441c1c2968a08c",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

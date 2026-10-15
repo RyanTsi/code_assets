@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "id": "range.fenwick_sum",
+  "kind": "algorithm",
+  "name": "FenwickSum",
+  "header": "include/algorithm_assets/range/fenwick_sum.hpp",
+  "documentation": "docs/REPOSITORY_ASSETS.md#fenwicksum",
+  "problem": "range_sum",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "input_type": "int64",
+    "updates": {
+      "subset_of": [
+        "add",
+        "query"
+      ]
+    },
+    "stored_blocks_fit_int64": true,
+    "result_guarantee": "exact"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_reads": "conditional",
+    "concurrent_writes": "unsupported"
+  },
+  "input": {
+    "values": "Copied span<const int64>; n zeros overload",
+    "range": "0-based half-open",
+    "delta": "int64"
+  },
+  "output": {
+    "sum": "Exact int64; empty zero; final overflow throws",
+    "storage_bytes": "Owned vector capacity bytes"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "allocation": "size_t and vector max_size / available memory limits additionally apply",
+    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/REPOSITORY_ASSETS.md",
+    "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
+    "numeric": "Stored block sums fit int64; updates validated before mutation; logical point may overflow; query narrows only final wide sum"
+  },
+  "complexity": {
+    "build": "O(n)",
+    "add_query": "Worst-case O(log(n+1))",
+    "space": "8n bytes plus headers/capacity; 16-byte local wide sum"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 8,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative payload lower bound, not peak memory feasibility; 64-bit platform costs in documentation"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "numeric.wide_int64_sum"
+    },
+    {
+      "type": "alternative",
+      "target": "range.segment_tree",
+      "condition": "Only integer sum and point increment; generic ordered folds require SegmentTree"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants in documentation; not formal verification",
+    "tests": "tests/repository_assets_test.cpp",
+    "example": "examples/repository_assets.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/VALIDATION.md"
+  },
+  "provenance": {
+    "implementation": "Rewritten modern C++20 for this project, not source-code copy",
+    "reference": "数据结构/树状数组.md",
+    "license": "No source LICENSE discovered; project distribution license not selected",
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/数据结构/树状数组.md"
+  }
+}

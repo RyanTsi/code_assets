@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "id": "logic.two_sat",
+  "kind": "recipe",
+  "name": "2-SAT 配方",
+  "display_name": "2-SAT 配方",
+  "header": "include/algorithm_assets/graph/two_sat.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "boolean_constraints",
+  "parameters": [
+    "n",
+    "q"
+  ],
+  "requires": {
+    "clause_form": "two_literals_or",
+    "result_guarantee": "exact",
+    "updates": "append_clauses"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "n Boolean variables; Literal {variable,value}; OR, force and implication clauses"
+  },
+  "output": {
+    "conditions": "SAT flag and complete owned uint8 assignment; UNSAT has empty assignment"
+  },
+  "constraints": {
+    "max_n": 2147483647,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "n Boolean variables; Literal {variable,value}; OR, force and implication clauses; SAT flag and complete owned uint8 assignment; UNSAT has empty assignment",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "Append amortized O(1); solve O(n+q)",
+    "space": "16q stored clauses; 16q temporary arcs; CSR/SCC O(n+q), output n bytes",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 16,
+        "factors": [
+          "q"
+        ]
+      }
+    ],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "graph.strong_components"
+    },
+    {
+      "type": "uses",
+      "target": "graph.unweighted_csr"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "path": "2-SAT&&差分约束.md",
+    "blob_sha": "3c48077e77ad63ef2a930f7087127cbde4b316c4",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

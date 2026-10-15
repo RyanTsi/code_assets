@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "id": "probability.absorbing_markov",
+  "kind": "recipe",
+  "name": "吸收马尔科夫链配方",
+  "display_name": "吸收马尔科夫链配方",
+  "header": "include/algorithm_assets/recipes/absorbing_markov.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "absorbing_markov",
+  "parameters": [
+    "n",
+    "transient_count"
+  ],
+  "requires": {
+    "matrix": "dense_float64",
+    "ordering": "transient_then_absorbing",
+    "result_guarantee": "approximate",
+    "transients_reach_absorption": true
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "n*n probabilities in [0,1], row sum tolerance, exact absorbing identity rows"
+  },
+  "output": {
+    "conditions": "Owned t*a absorption probabilities and t expected steps; no explicit inverse"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "n*n probabilities in [0,1], row sum tolerance, exact absorbing identity rows; Owned t*a absorption probabilities and t expected steps; no explicit inverse",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "O(n^2+t^3+a*t^2)",
+    "space": "8t^2 LU +4t permutation +8ta probabilities +8t expectations +O(n+t) scratch",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "numeric.dense_lu"
+    },
+    {
+      "type": "uses",
+      "target": "numeric.compensated_sum"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/blog",
+    "commit": "6ea0ef09d8479c8775654c1627710af6da1d5392",
+    "path": "content/posts/吸收马尔科夫链.md",
+    "blob_sha": "a6bb425768bdfaf92b3a2778f3017c4bdf4bb771",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

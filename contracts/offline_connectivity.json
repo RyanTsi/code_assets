@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "id": "connectivity.offline",
+  "kind": "recipe",
+  "name": "Offline dynamic connectivity",
+  "header": "include/algorithm_assets/recipes/offline_connectivity.hpp",
+  "documentation": "docs/FIRST_ASSETS.md#offline-connectivity",
+  "problem": "connectivity",
+  "parameters": [
+    "n",
+    "q"
+  ],
+  "requires": {
+    "directed": false,
+    "execution_mode": "offline",
+    "updates": {
+      "subset_of": [
+        "add",
+        "remove",
+        "query"
+      ]
+    },
+    "rollback": false
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "supported",
+    "concurrent_reads": "supported",
+    "concurrent_writes": "unsupported"
+  },
+  "input": {
+    "initial_graph": "Empty undirected multigraph",
+    "events": "Entire chronological event sequence available before computation; valid endpoints",
+    "copies": "Repeated adds increase multiplicity; remove consumes one copy; edge live until last copy removed"
+  },
+  "output": {
+    "answers": "vector<bool> in query occurrence order; query(v,v) true; no queries => empty",
+    "input": "Not modified"
+  },
+  "constraints": {
+    "max_n": 2147483647,
+    "errors": "Remove of inactive edge, unknown event kind invalid_argument; invalid ID out_of_range; storage overflow length_error; allocation may throw",
+    "deletion_scope": "Supports remove events only in this offline batch; no online delete API",
+    "undo_scope": "Internal rollback not exposed as user rollback/redo",
+    "threading": "Independent calls only; returned vector<bool> concurrent writes unsafe"
+  },
+  "complexity": {
+    "preprocess": "O(q*log(q+1) + K*log(q+1)) where K is live intervals",
+    "traversal": "O(n+q+K*log(q+1)*log(n+1))",
+    "space": "O(n+q+K*log(q+1)); input, allocator/map overhead and output also matter",
+    "guarantee": "deterministic ordered-map preprocessing"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 4,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative lower bound on owned payload, not a peak-allocation upper bound; excludes container headers, allocator overhead and caller input"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "connectivity.rollback_dsu"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants in documentation; not formally verified",
+    "tests": "tests/algorithms_test.cpp",
+    "example": "examples/first_algorithms.cpp",
+    "benchmark": "not_measured",
+    "notes": "BFS oracle at each query across valid randomized multigraph event streams; repeated edges and invalid removal"
+  },
+  "provenance": {
+    "implementation": "Written for this project; no source code copied",
+    "reference": "../oi-wiki-reference/docs/ and standard algorithm definitions",
+    "license": "Project distribution license not yet selected"
+  }
+}

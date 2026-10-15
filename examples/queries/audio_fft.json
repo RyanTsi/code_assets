@@ -1,0 +1,1 @@
+{"problem":"discrete_fourier_transform","n":4096,"length_power_of_two":true,"input_type":"complex_float64","result_guarantee":"approximate","normalization":"inverse_divides_n"}

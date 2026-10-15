@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "id": "geometry.translated_convex_overlap",
+  "kind": "recipe",
+  "name": "凸形平移碰撞配方",
+  "display_name": "凸形平移碰撞配方",
+  "header": "include/algorithm_assets/geometry/minkowski.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "geometry.translated_overlap",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "coordinates": "int64_abs_le_5e8",
+    "input_structure": "validated_convex_polygons",
+    "transform": "translation",
+    "boundary_contact": true,
+    "result_guarantee": "exact"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "A/B validated convex shapes; translation within +/-1e9"
+  },
+  "output": {
+    "conditions": "Exact intersection bool including touching; stores owned difference hull"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "A/B validated convex shapes; translation within +/-1e9; Exact intersection bool including touching; stores owned difference hull",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "Build O(n+m); each query O(log(n+m+1))",
+    "space": "At most16*(n+m) resident difference hull; O(1) query scratch",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "geometry.minkowski_difference.int"
+    },
+    {
+      "type": "uses",
+      "target": "geometry.convex_location.int"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/blog",
+    "commit": "6ea0ef09d8479c8775654c1627710af6da1d5392",
+    "path": "content/posts/闵可夫斯基和.md",
+    "blob_sha": "9ff69cf7e4a67652a2671bb00d6fa29dfd14d299",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

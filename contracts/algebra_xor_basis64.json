@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "id": "algebra.xor_basis64",
+  "kind": "algorithm",
+  "name": "XorBasis64",
+  "header": "include/algorithm_assets/algebra/xor_basis.hpp",
+  "documentation": "docs/REPOSITORY_ASSETS.md#xorbasis64",
+  "problem": "gf2_span",
+  "parameters": [],
+  "requires": {
+    "input_type": "uint64",
+    "updates": {
+      "subset_of": [
+        "insert",
+        "merge",
+        "query"
+      ]
+    },
+    "enumeration": "distinct_including_zero"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_reads": "conditional",
+    "concurrent_writes": "unsupported"
+  },
+  "input": {
+    "vectors": "uint64 GF(2), all 64 bits",
+    "kth_index": "uint64, zero-based"
+  },
+  "output": {
+    "rank": "0..64",
+    "maximize": "seed XOR span maximum",
+    "kth": "Distinct sorted span including zero, optional if index out of range",
+    "minimum": "optional nonzero value"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "allocation": "size_t and vector max_size / available memory limits additionally apply",
+    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/REPOSITORY_ASSETS.md",
+    "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
+    "enumeration": "No multiplicity, nonempty-subset interpretation, witness or deletion; full rank permits all uint64 indices"
+  },
+  "complexity": {
+    "insert_query": "O(64)",
+    "merge_kth": "O(64^2)",
+    "space": "512-byte rows + size_t rank; kth local 512 bytes; no heap"
+  },
+  "memory_lower_bound": {
+    "constant": 512,
+    "terms": [],
+    "scope": "Conservative payload lower bound, not peak memory feasibility; 64-bit platform costs in documentation"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants in documentation; not formal verification",
+    "tests": "tests/repository_assets_test.cpp",
+    "example": "examples/repository_assets.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/VALIDATION.md"
+  },
+  "provenance": {
+    "implementation": "Rewritten modern C++20 for this project, not source-code copy",
+    "reference": "数学/线性代数/线性基.md",
+    "license": "No source LICENSE discovered; project distribution license not selected",
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/数学/线性代数/线性基.md",
+    "additional_reference": "RyanTsi/blog@6ea0ef09d8479c8775654c1627710af6da1d5392:content/posts/线性基.md"
+  }
+}

@@ -1,0 +1,117 @@
+#pragma once
+#include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <limits>
+#include <stdexcept>
+#include <vector>
+
+namespace algorithm_assets {
+// Flat paired residual arcs; no recursion and no per-vertex adjacency allocation.
+class Dinic {
+public:
+  using Vertex=std::uint32_t;
+  struct FlowResult { std::uint64_t added; bool maximal; };
+  struct EdgeState { Vertex from,to; std::uint64_t capacity,flow; };
+  explicit Dinic(std::size_t n) {
+    if (n>static_cast<std::size_t>(std::numeric_limits<std::int32_t>::max()))
+      throw std::length_error("Too many flow vertices");
+    head_.assign(n,none); level_.resize(n); current_.resize(n); queue_.reserve(n); path_.reserve(n);
+  }
+  std::size_t add_edge(Vertex from,Vertex to,std::uint64_t capacity) {
+    validate(from); validate(to);
+    if (arcs_.size()>static_cast<std::size_t>(none)-2 || arcs_.max_size()-arcs_.size()<2)
+      throw std::length_error("Too many residual arcs");
+    const auto needed=arcs_.size()+2;
+    if (needed>arcs_.capacity()) {
+      const auto maximum=std::min(arcs_.max_size(),static_cast<std::size_t>(none)-1);
+      const auto grown=arcs_.capacity()>maximum/2?maximum:2*arcs_.capacity();
+      arcs_.reserve(std::max(needed,grown));
+    }
+    const auto index=static_cast<Vertex>(arcs_.size());
+    arcs_.push_back({to,head_[from],capacity}); head_[from]=index;
+    arcs_.push_back({from,head_[to],0}); head_[to]=index+1;
+    return index/2;
+  }
+  [[nodiscard]] EdgeState edge(std::size_t index) const {
+    if (index>=arcs_.size()/2) throw std::out_of_range("Invalid flow edge");
+    const auto& forward=arcs_[2*index]; const auto& reverse=arcs_[2*index+1];
+    return {reverse.to,forward.to,forward.residual+reverse.residual,reverse.residual};
+  }
+  FlowResult max_flow(Vertex source,Vertex sink,std::uint64_t limit=std::numeric_limits<std::uint64_t>::max()) {
+    validate(source); validate(sink);
+    if (source==sink) throw std::invalid_argument("Source and sink must differ");
+    if (terminals_set_ && (source!=source_ || sink!=sink_))
+      throw std::invalid_argument("Reset flow before changing terminals");
+    source_=source; sink_=sink; terminals_set_=true;
+    std::uint64_t total=0;
+    while (total<limit && build_levels(source,sink)) {
+      current_=head_;
+      while (total<limit) {
+        const auto sent=augment(source,sink,limit-total);
+        if (!sent) break;
+        total+=sent;
+      }
+    }
+    return {total,!build_levels(source,sink)};
+  }
+  void reset_flow() noexcept {
+    for (std::size_t i=0;i<arcs_.size();i+=2) {
+      arcs_[i].residual+=arcs_[i+1].residual; arcs_[i+1].residual=0;
+    }
+    terminals_set_=false;
+  }
+  [[nodiscard]] std::vector<bool> residual_reachable(Vertex source) const {
+    validate(source);
+    std::vector<bool> seen(head_.size()); std::vector<Vertex> queue{source}; seen[source]=true;
+    for (std::size_t i=0;i<queue.size();++i)
+      for (auto e=head_[queue[i]];e!=none;e=arcs_[e].next)
+        if (arcs_[e].residual && !seen[arcs_[e].to]) {
+          seen[arcs_[e].to]=true; queue.push_back(arcs_[e].to);
+        }
+    return seen;
+  }
+  [[nodiscard]] std::size_t vertex_count() const noexcept { return head_.size(); }
+  [[nodiscard]] std::size_t edge_count() const noexcept { return arcs_.size()/2; }
+private:
+  static constexpr Vertex none=std::numeric_limits<Vertex>::max();
+  struct Arc { Vertex to,next; std::uint64_t residual; };
+  void validate(Vertex v) const { if (v>=head_.size()) throw std::out_of_range("Invalid flow vertex"); }
+  bool build_levels(Vertex source,Vertex sink) {
+    std::fill(level_.begin(),level_.end(),-1);
+    queue_.clear(); queue_.push_back(source); level_[source]=0;
+    for (std::size_t i=0;i<queue_.size();++i) {
+      const auto u=queue_[i];
+      for (auto e=head_[u];e!=none;e=arcs_[e].next)
+        if (arcs_[e].residual && level_[arcs_[e].to]<0) {
+          level_[arcs_[e].to]=level_[u]+1; queue_.push_back(arcs_[e].to);
+        }
+    }
+    return level_[sink]>=0;
+  }
+  std::uint64_t augment(Vertex source,Vertex sink,std::uint64_t limit) {
+    path_.clear(); auto u=source;
+    for (;;) {
+      if (u==sink) {
+        auto sent=limit;
+        for (auto e:path_) sent=std::min(sent,arcs_[e].residual);
+        for (auto e:path_) { arcs_[e].residual-=sent; arcs_[e^1U].residual+=sent; }
+        return sent;
+      }
+      auto& cursor=current_[u];
+      while (cursor!=none && (!arcs_[cursor].residual || level_[arcs_[cursor].to]!=level_[u]+1))
+        cursor=arcs_[cursor].next;
+      if (cursor!=none) { path_.push_back(cursor); u=arcs_[cursor].to; continue; }
+      level_[u]=-1;
+      if (path_.empty()) return 0;
+      const auto back=path_.back(); path_.pop_back(); u=arcs_[back^1U].to;
+      current_[u]=arcs_[back].next;
+    }
+  }
+  std::vector<Vertex> head_,current_,queue_,path_;
+  std::vector<std::int32_t> level_;
+  std::vector<Arc> arcs_;
+  Vertex source_=0,sink_=0;
+  bool terminals_set_=false;
+};
+} // namespace algorithm_assets

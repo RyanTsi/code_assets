@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "geometry.point_set_rectangle",
+  "kind": "recipe",
+  "name": "Convex hull + minimum rectangle",
+  "display_name": "点集外接矩形配方",
+  "header": "include/algorithm_assets/geometry/point_set_bounds.hpp",
+  "documentation": "docs/GEOMETRY2D.md#api",
+  "problem": "geometry.minimum_rectangle",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "coordinates": {
+      "one_of": [
+        "float64_abs_le_1e100",
+        "int64_abs_le_1e9"
+      ]
+    },
+    "result_guarantee": "approximate",
+    "input_structure": "unordered_points",
+    "updates": "none"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "points": "Borrowed unordered span; hull builder handles duplicates/collinearity"
+  },
+  "output": {
+    "rectangle": "Same optional OrientedRectangle as minimum_area_rectangle; corners constructed approximately"
+  },
+  "constraints": {
+    "max_n": 1152921504606846975,
+    "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
+    "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
+    "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
+    "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
+    "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
+    "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage."
+  },
+  "complexity": {
+    "whole_recipe": "O(n log(n+1)+h)",
+    "peak_space": "Hull copy <=16n + output <=16(n+1) + O(log n) stack; calipers only hull+O(1) after build"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 16,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "geometry.convex_hull.int",
+      "condition": "coordinates=int64_abs_le_1e9"
+    },
+    {
+      "type": "uses",
+      "target": "geometry.convex_hull.float",
+      "condition": "coordinates=float64_abs_le_1e100"
+    },
+    {
+      "type": "uses",
+      "target": "geometry.minimum_rectangle"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants in GEOMETRY2D.md; floating correctness conditional on numeric predicates; not formally verified",
+    "tests": "tests/geometry_test.cpp",
+    "example": "examples/geometry2d.cpp",
+    "benchmark": "not_measured",
+    "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
+  },
+  "provenance": {
+    "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
+    "reference": "provenance/geometry2d-template.cpp.txt; docs/GEOMETRY2D.md lists read-only Wiki and primary-source references",
+    "license": "User-provided template; project distribution license not yet selected"
+  }
+}

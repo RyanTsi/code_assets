@@ -1,0 +1,334 @@
+{
+  "repository": "RyanTsi/Algorithm-notes",
+  "commit": "91c14556641c991c716b71906815abdd6a476188",
+  "tree_complete": true,
+  "inventory": [
+    {
+      "path": "2-SAT&&差分约束.md",
+      "sha": "3c48077e77ad63ef2a930f7087127cbde4b316c4",
+      "size": 1025
+    },
+    {
+      "path": "Modint.md",
+      "sha": "b81dde39da77e11a3bd9513a633d7f1bf3cf4c34",
+      "size": 819
+    },
+    {
+      "path": "test.md",
+      "sha": "be5b4d934c7c2fce27be4b304a52b1877f555c47",
+      "size": 229
+    },
+    {
+      "path": "其他/全排列.md",
+      "sha": "1ca50aa7051a59362d134be84383fadbda982b08",
+      "size": 113
+    },
+    {
+      "path": "其他/区间合并.md",
+      "sha": "c18b1354fec0f95855da2f5743897dd28d597b15",
+      "size": 401
+    },
+    {
+      "path": "其他/快读.md",
+      "sha": "9a1e533d090201aef92212dedc782440b8f03cac",
+      "size": 314
+    },
+    {
+      "path": "其他/最小区间覆盖数.md",
+      "sha": "44e7c152a370eeb3c52442fda3ff176927faf01f",
+      "size": 750
+    },
+    {
+      "path": "其他/离散化.md",
+      "sha": "a78e58e1a07bb587e099a300cd877fa849cb34b0",
+      "size": 1411
+    },
+    {
+      "path": "其他/表达式求值.md",
+      "sha": "66ceb4a5f3480ff6fdc6e71f04229db71f2c7501",
+      "size": 1646
+    },
+    {
+      "path": "其他/逆序对.md",
+      "sha": "31c66799f6788e64f8c562dcfe1f6d55e0cd7834",
+      "size": 582
+    },
+    {
+      "path": "其他/高精度.md",
+      "sha": "93fdec1fd2d687c091a3132e83c667ec6e51c10c",
+      "size": 2002
+    },
+    {
+      "path": "动态规划/DP优化/凸包优化.md",
+      "sha": "764bfbed68eb9d0f6f33881d41558ba7d4b2bb9e",
+      "size": 1885
+    },
+    {
+      "path": "动态规划/区间dp/石子合并.md",
+      "sha": "d3651cc422b30a5fcc48b3053a6d808637738f4c",
+      "size": 597
+    },
+    {
+      "path": "动态规划/子序列问题/最长上升子序列.md",
+      "sha": "73ae0e8a50574e86e855a89566cbbe5fed45595d",
+      "size": 392
+    },
+    {
+      "path": "动态规划/子序列问题/最长公共子序列.md",
+      "sha": "f367c8ff154a69a171ae67dc1513f5d6557893c3",
+      "size": 443
+    },
+    {
+      "path": "动态规划/背包问题/01背包.md",
+      "sha": "bf2d3661087a28d68985bbf0d58d6e6e6b674f06",
+      "size": 455
+    },
+    {
+      "path": "动态规划/背包问题/二维背包.md",
+      "sha": "4a38ad7e681669c5d3dbd3fb5d02c4aa16be0a9e",
+      "size": 971
+    },
+    {
+      "path": "动态规划/背包问题/分组背包.md",
+      "sha": "2302cd010c581badbde142314729ca16d15c9e0c",
+      "size": 980
+    },
+    {
+      "path": "动态规划/背包问题/多重背包.md",
+      "sha": "8d35f73d5fa32bcebe385daa26024c6c5b945196",
+      "size": 1643
+    },
+    {
+      "path": "动态规划/背包问题/完全背包.md",
+      "sha": "6f7e66f6a7527072642d026d507a50b26980e11f",
+      "size": 393
+    },
+    {
+      "path": "图论/其他/基环树找环.md",
+      "sha": "939fc5928ddde33eb7c1a427a7bf27d3e17df4b0",
+      "size": 622
+    },
+    {
+      "path": "图论/其他/拓扑排序.md",
+      "sha": "81f54c57b5739d7ec84272e98885f58f01303c33",
+      "size": 478
+    },
+    {
+      "path": "图论/其他/最近公共祖先.md",
+      "sha": "5d4c16d352b14287ade89789ce4c11e3d14f0331",
+      "size": 928
+    },
+    {
+      "path": "图论/最小生成树/Kruskal.md",
+      "sha": "92ff72ce3e550af2a5078ad3653221795f16d836",
+      "size": 3578
+    },
+    {
+      "path": "图论/最短路/Bellman-Ford.md",
+      "sha": "02086c31ad78f0efec3825da0dd5d55c5aaa6ad2",
+      "size": 679
+    },
+    {
+      "path": "图论/最短路/Dijkstra.md",
+      "sha": "5217325ac1a0bf98eb4e5011b0e1827b707532d4",
+      "size": 767
+    },
+    {
+      "path": "图论/最短路/Floyd.md",
+      "sha": "99d56936778c91d18ef41a5e94bc16b2d69870fc",
+      "size": 490
+    },
+    {
+      "path": "图论/最短路/次短路.md",
+      "sha": "d21bec7301a608bcf522fb07f42f5d4d959a6b56",
+      "size": 1501
+    },
+    {
+      "path": "图论/网络流/Dinic.md",
+      "sha": "4b404e064af74fc2ad4d454f34c31d683594c222",
+      "size": 2242
+    },
+    {
+      "path": "图论/网络流/匈牙利算法.md",
+      "sha": "923e5934ee55a675aded602c9f745b2124df904b",
+      "size": 746
+    },
+    {
+      "path": "图论/网络流/费用流.md",
+      "sha": "c6383cc9d4c164d9db76de829f4276f6e3a3e51f",
+      "size": 3742
+    },
+    {
+      "path": "图论/连通分量/tarjan.md",
+      "sha": "fad8a132b4547b729d4e497c8fb08f72730be8f6",
+      "size": 3431
+    },
+    {
+      "path": "圆方树.md",
+      "sha": "6d31325270c8290b45d55d8f82141d759d938036",
+      "size": 4858
+    },
+    {
+      "path": "字符串/KMP.md",
+      "sha": "3c604d291a3cd4aed40cfd857a5d031a6f6fc0be",
+      "size": 544
+    },
+    {
+      "path": "字符串/Manacher.md",
+      "sha": "4677bda36b90121b5b54594b96a11c5ffb305f56",
+      "size": 551
+    },
+    {
+      "path": "数学/其他/整数分块.md",
+      "sha": "1bec89e05e2b170231d67880905b1346e91c04e7",
+      "size": 414
+    },
+    {
+      "path": "数学/博弈.md",
+      "sha": "a77397f7aa744ed04b9fdc3158d598e4d4068647",
+      "size": 7246
+    },
+    {
+      "path": "数学/多项式/FFT.md",
+      "sha": "8940ee1dbc560809e3d30681a916ddb62363b557",
+      "size": 1303
+    },
+    {
+      "path": "数学/数论/Lucas卢卡斯定理.md",
+      "sha": "2b76d547e877173e986f84ff36b8edfcc06769d6",
+      "size": 1027
+    },
+    {
+      "path": "数学/数论/中国剩余定理.md",
+      "sha": "297eb31d84ac61cf6a73b1138492bd602da46819",
+      "size": 875
+    },
+    {
+      "path": "数学/数论/数论定理.md",
+      "sha": "fbff416f3af12269fba510c1f2ba587d352e9eed",
+      "size": 491
+    },
+    {
+      "path": "数学/数论/欧几里得算法.md",
+      "sha": "5057c4027d42e76a2a4511904f69491d78457ef2",
+      "size": 1302
+    },
+    {
+      "path": "数学/数论/欧拉函数.md",
+      "sha": "1912c37240b2b8c712742acd1936e37a6b4756b6",
+      "size": 1095
+    },
+    {
+      "path": "数学/数论/质数筛.md",
+      "sha": "79841144659dc38879cd0a8fda740f6834d5e3f8",
+      "size": 444
+    },
+    {
+      "path": "数学/线性代数/矩阵快速幂.md",
+      "sha": "6552b6316b281a1ae4fb32b16c6ba5a0a3df92b2",
+      "size": 736
+    },
+    {
+      "path": "数学/线性代数/线性基.md",
+      "sha": "ed208708a5676329ca9bf1aeb0b21391f586d825",
+      "size": 1494
+    },
+    {
+      "path": "数学/组合数学/组合数.md",
+      "sha": "c86d4617bf0835458788ef33e3eef5c54bf97663",
+      "size": 583
+    },
+    {
+      "path": "数据结构/ST表.md",
+      "sha": "7783a7889dfc40bf71a3398db005a34def1ec083",
+      "size": 586
+    },
+    {
+      "path": "数据结构/Splay.md",
+      "sha": "e04835af20317b08c46e55750758c7780916f03a",
+      "size": 3251
+    },
+    {
+      "path": "数据结构/分块-由乃打扑克.md",
+      "sha": "24fc914b27ecea4b51838fe95ef59be9fae893c0",
+      "size": 4111
+    },
+    {
+      "path": "数据结构/封装过的线段树.md",
+      "sha": "d469e771e4a0e6377e9786c5a4d4d4677dce9171",
+      "size": 9307
+    },
+    {
+      "path": "数据结构/并查集.md",
+      "sha": "d91edc172b99bddf36a1b33e7687697922ce3460",
+      "size": 688
+    },
+    {
+      "path": "数据结构/树状数组.md",
+      "sha": "abd22073363149bc4a96b85699af39a7cad53bdb",
+      "size": 3628
+    },
+    {
+      "path": "数据结构/树链剖分.md",
+      "sha": "364551f4ce31211a1059a8bb488f3807eb8598f9",
+      "size": 2766
+    },
+    {
+      "path": "数据结构/线段树.md",
+      "sha": "51c6e867e2eb0198e93103441432048d063b06de",
+      "size": 3842
+    },
+    {
+      "path": "数据结构/莫队算法.md",
+      "sha": "355e7e3f15d9764d7730815ef0f9f054bde4146e",
+      "size": 2478
+    },
+    {
+      "path": "算法.md",
+      "sha": "3041719f053c928122ed56281e2fcf6af485d2a2",
+      "size": 98964
+    },
+    {
+      "path": "线段树例题.md",
+      "sha": "9752c269b4742d94e4088270a10a26c67b747be1",
+      "size": 85
+    },
+    {
+      "path": "网络流.md",
+      "sha": "3413a4acfb126b0aecc27b997ab4cc7b8100372d",
+      "size": 2178
+    },
+    {
+      "path": "补题.md",
+      "sha": "ab992451bfbc2252972a5d12fd5f5b5898d9cf57",
+      "size": 2215
+    },
+    {
+      "path": "补题优先队列.md",
+      "sha": "2de527a745aaee7346414984736ab6876b19b1ed",
+      "size": 6065
+    },
+    {
+      "path": "计算几何/Geometry.md",
+      "sha": "8e1ce0292454782e7fe2960742f0e20ef1314a5d",
+      "size": 20628
+    },
+    {
+      "path": "计算几何/三角剖分.md",
+      "sha": "8f6c8b9a0015562d6e515bd9c9f236bb4fc580a1",
+      "size": 971
+    },
+    {
+      "path": "计算几何/最小圆覆盖.md",
+      "sha": "3336268d88b1c127880b40f5192d47ec51d75fad",
+      "size": 1029
+    },
+    {
+      "path": "计算几何/闵可夫斯基和.md",
+      "sha": "655d80c7d2356beb7aefcca3da4f42431786efe4",
+      "size": 4974
+    }
+  ],
+  "inventory_scope": "markdown_files",
+  "full_tree_retrieved": true
+}

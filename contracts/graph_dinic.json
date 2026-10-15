@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "graph.dinic",
+  "kind": "algorithm",
+  "name": "Dinic 最大流",
+  "display_name": "Dinic 最大流",
+  "header": "include/algorithm_assets/graph/dinic.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "maximum_flow",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "capacities": "uint64",
+    "costs": "none",
+    "graph_updates": "append_edges",
+    "flow_output": "added_and_maximal"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "conditional"
+  },
+  "input": {
+    "conditions": "Directed capacities, distinct valid terminals, optional uint64 flow limit"
+  },
+  "output": {
+    "conditions": "Added flow, maximal flag; edge states and residual reachability; reset all flow"
+  },
+  "constraints": {
+    "max_n": 2147483647,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "Directed capacities, distinct valid terminals, optional uint64 flow limit; Added flow, maximal flag; edge states and residual reachability; reset all flow",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "General worst O(n^2*m); append amortized O(1); reachability O(n+m)",
+    "space": "32m paired arcs, 20n member workspace; capacities/copies/allocator extra",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 32,
+        "factors": [
+          "m"
+        ]
+      },
+      {
+        "coefficient": 20,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "path": "图论/网络流/Dinic.md",
+    "blob_sha": "4b404e064af74fc2ad4d454f34c31d683594c222",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

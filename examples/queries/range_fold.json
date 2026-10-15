@@ -1,0 +1,5 @@
+{
+  "problem": "range_fold", "n": 10000, "value_bytes": 8,
+  "operation_associative": true, "identity_available": true,
+  "updates": ["set", "query"]
+}

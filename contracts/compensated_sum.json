@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "id": "numeric.compensated_sum",
+  "kind": "algorithm",
+  "name": "Neumaier compensated sum",
+  "header": "include/algorithm_assets/numeric/compensated_sum.hpp",
+  "documentation": "docs/FIRST_ASSETS.md#compensatedsum",
+  "problem": "sum",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "finite_inputs": true,
+    "reassociation": false,
+    "intermediates_finite": true,
+    "result_guarantee": "floating_approximate"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_reads": "conditional",
+    "concurrent_writes": "unsupported"
+  },
+  "input": {
+    "values": "Finite doubles; streaming add or span convenience function",
+    "execution": "Ordinary IEEE floating evaluation; no fast-math/reassociation; intended default rounding"
+  },
+  "output": {
+    "value": "Compensated double approximation, not exact arithmetic or universally correctly rounded",
+    "empty": "Zero; reset returns to zero"
+  },
+  "constraints": {
+    "max_n": 18446744073709551615,
+    "errors": "Nonfinite inputs invalid_argument; working sum/correction/result overflow_error; failed add preserves state",
+    "precision": "No universal fixed error tolerance; cancellation and subnormal handling depend on environment",
+    "snapshot": "Value copy is O(1), but no checkpoint/undo/redo API",
+    "threading": "Concurrent value reads only without add/reset"
+  },
+  "complexity": {
+    "add_value_reset": "O(1)",
+    "span_sum": "Theta(n)",
+    "space": "Two doubles; O(1) auxiliary space, excluding input",
+    "guarantee": "approximate numeric result"
+  },
+  "memory_lower_bound": {
+    "constant": 16,
+    "terms": [],
+    "scope": "Conservative lower bound on owned payload, not a peak-allocation upper bound; excludes container headers, allocator overhead and caller input"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants in documentation; not formally verified",
+    "tests": "tests/algorithms_test.cpp",
+    "example": "examples/first_algorithms.cpp",
+    "benchmark": "not_measured",
+    "notes": "Cancellation examples and bounded integer sums; nonfinite inputs and overflow preserve accumulator"
+  },
+  "provenance": {
+    "implementation": "Written for this project; no source code copied",
+    "reference": "../oi-wiki-reference/docs/ and standard algorithm definitions",
+    "license": "Project distribution license not yet selected"
+  }
+}

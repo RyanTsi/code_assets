@@ -1,0 +1,9 @@
+{
+  "adapter": "judge/adapters/luogu_p3374.cpp",
+  "sources_sha256": {
+    "judge/adapters/luogu_p3374.cpp": "4b03c42e3440daff953017ac0dd650daa1b73624727fe4d16dad47bff2a1f267",
+    "include/algorithm_assets/range/fenwick_sum.hpp": "b4bbf1bbb0a582224dc8f21213b5833a5deef66a907928df2a2611d4e2cd7da2",
+    "include/algorithm_assets/numeric/wide_int64_sum.hpp": "814bfcfc83bb081e869e2e340ea38548c2a228fb8472d25790f764455f096078"
+  },
+  "submission_sha256": "9c71ca14ff27129764607c0306f8c420326b386ec526e430f77cac5eda7c821f"
+}

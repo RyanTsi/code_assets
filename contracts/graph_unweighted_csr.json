@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "id": "graph.unweighted_csr",
+  "kind": "representation",
+  "name": "无权 CSR",
+  "display_name": "无权 CSR",
+  "header": "include/algorithm_assets/graph/unweighted_csr.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "unweighted_graph_storage",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "directed": true,
+    "graph_updates": "none"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "n vertices; borrowed uint32 directed edges; loops and parallel arcs"
+  },
+  "output": {
+    "conditions": "Owned immutable CSR, borrowed neighbor spans"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "n vertices; borrowed uint32 directed edges; loops and parallel arcs; Owned immutable CSR, borrowed neighbor spans",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "O(n+m) build, O(1) view",
+    "space": "8(n+1)+4m resident; 8(n+1) construction cursor",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 4,
+        "factors": [
+          "m"
+        ]
+      }
+    ],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "path": "图论/连通分量/tarjan.md",
+    "blob_sha": "fad8a132b4547b729d4e497c8fb08f72730be8f6",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

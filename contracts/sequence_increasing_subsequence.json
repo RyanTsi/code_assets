@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "id": "sequence.increasing_subsequence",
+  "kind": "algorithm",
+  "name": "最长递增子序列",
+  "display_name": "最长递增子序列",
+  "header": "include/algorithm_assets/sequence/subsequences.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "increasing_subsequence",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "input_type": "int64",
+    "comparison": {
+      "one_of": [
+        "strict",
+        "nondecreasing"
+      ]
+    },
+    "updates": "none"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "Borrowed int64 span; explicit nondecreasing flag"
+  },
+  "output": {
+    "conditions": "size_t length or owned original indices; not lexicographically minimal witness"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "Borrowed int64 span; explicit nondecreasing flag; size_t length or owned original indices; not lexicographically minimal witness",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "O(n log(L+1))",
+    "space": "Length O(L) values; witness O(n+L) indices including output",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "path": "动态规划/子序列问题/最长上升子序列.md",
+    "blob_sha": "73ae0e8a50574e86e855a89566cbbe5fed45595d",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

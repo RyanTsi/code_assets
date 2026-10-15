@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-15",
+  "catalog_version": "0.1.0-pilot-5",
+  "query": "examples/queries/audio_spectrum_gap.json",
+  "status": "not_covered",
+  "scope": "All registered implementations and recipes for this problem ID; no novel composition search",
+  "missing_capability": "Registered end-to-end streaming PCM spectral-analysis recipe with framing, windows, scaling, band mapping and lifecycle/real-time contracts",
+  "core_assets_available": [
+    "numeric.radix2_fft",
+    "numeric.compensated_sum"
+  ],
+  "resolved_as_application_composition": true,
+  "application": "examples/audio_spectrum_demo.hpp",
+  "whole_product_complete": false,
+  "reason": "Application composition was verified; catalog has no registered complete recipe, device I/O or hard-real-time guarantee",
+  "means_problem_unsolvable": false,
+  "next_step": "Set actual stream/device/latency and resolution constraints before promoting a production streaming recipe"
+}

@@ -1,0 +1,1 @@
+{"problem":"disjoint_interval_pair","n":200000,"total_duration":200000,"intervals":"nonempty_half_open_int64","costs":"nonnegative_int64","pair_count":2,"duration_rule":"exact_sum"}

@@ -1,0 +1,9 @@
+{
+  "adapter": "judge/adapters/luogu_p1776.cpp",
+  "sources_sha256": {
+    "judge/adapters/luogu_p1776.cpp": "7f42bf5b08c521c67275a6804a0cb94ad160bbce9036ebea2212bc58e212e4d2",
+    "include/algorithm_assets/optimization/knapsack.hpp": "eae76dd1e7a47cdcd1bae9e275fa2f8d4e031cdc826fc424906946df61e0df27",
+    "include/algorithm_assets/numeric/wide_int64_sum.hpp": "814bfcfc83bb081e869e2e340ea38548c2a228fb8472d25790f764455f096078"
+  },
+  "submission_sha256": "0936eb0aebcc89fa692428d53c7e82e07a08d80d7fa19b9df6c6f3ad6b53f536"
+}

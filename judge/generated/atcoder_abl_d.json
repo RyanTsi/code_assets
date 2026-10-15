@@ -1,0 +1,10 @@
+{
+  "adapter": "judge/adapters/atcoder_abl_d.cpp",
+  "sources_sha256": {
+    "judge/adapters/atcoder_abl_d.cpp": "7eb0626e5746472ab17e1b3dd8127307fe6210f7322bd4c814b7d556f009c91f",
+    "include/algorithm_assets/recipes/bounded_step_subsequence.hpp": "71c7e6c2a62db7008a1aee4cd9e3678fd91e810682e0adc69bbf07fba994a710",
+    "include/algorithm_assets/range/segment_tree.hpp": "28bf8c9ad41938efe09de3bc9ab1cc6eeb3b222adb8ff012144c720fb79ce89c",
+    "include/algorithm_assets/sequence/coordinate_compression.hpp": "cd392e6e4e48b4c8aea9c45a0c5d156fe99096cf3226d21dfe6f3573947e5cc7"
+  },
+  "submission_sha256": "d9a7c734b000c89aacbeea29c7cb7b7b19b68fa6e5e81e964ba994813f18c6b0"
+}

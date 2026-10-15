@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "range.segment_tree",
+  "kind": "algorithm",
+  "name": "SegmentTree",
+  "header": "include/algorithm_assets/range/segment_tree.hpp",
+  "documentation": "docs/FIRST_ASSETS.md#segmenttree",
+  "problem": "range_fold",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "operation_associative": true,
+    "identity_available": true,
+    "updates": {
+      "subset_of": [
+        "set",
+        "query"
+      ]
+    }
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_reads": "conditional",
+    "concurrent_writes": "unsupported"
+  },
+  "input": {
+    "values": "span<const T>; copied into owned storage",
+    "algebra": "Pure deterministic associative Combine(const T&,const T&)->T and two-sided identity",
+    "ranges": "0-based half-open [first,last)"
+  },
+  "output": {
+    "fold": "Ordered aggregation; empty range returns identity",
+    "all_fold": "Full ordered aggregation even for non-power-of-two lengths",
+    "get": "Borrowed const reference to leaf; value may change after set"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "allocation": "2n must fit vector<T>::max_size(); n and storage must fit target size_t",
+    "errors": "Bad range/index throws before mutation; allocation may throw",
+    "numeric": "Caller must ensure no integer overflow and actual associativity; ordinary floating addition is not an exact monoid",
+    "exceptions": "If T assignment or Combine throws during set, rebuild/discard before further use",
+    "threading": "Concurrent reads only without writers; Combine must be thread-safe",
+    "lifetime": "get references tied to object storage; destruction/assignment/move invalidates assumptions"
+  },
+  "complexity": {
+    "build": "O(n * (copy_cost + combine_cost))",
+    "get": "O(1)",
+    "set_fold_all_fold": "O(log(n+1) * (copy_cost + combine_cost))",
+    "space": "2n stored T objects + identity and Combine; dynamic T allocations extra",
+    "guarantee": "worst-case traversal"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 2,
+        "factors": [
+          "n",
+          "value_bytes"
+        ]
+      }
+    ],
+    "scope": "Conservative lower bound on owned payload, not a peak-allocation upper bound; excludes container headers, allocator overhead and caller input"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants in documentation; not formally verified",
+    "tests": "tests/algorithms_test.cpp",
+    "example": "examples/first_algorithms.cpp",
+    "benchmark": "not_measured",
+    "notes": "Random sums versus array scans; ordered string concatenation for n=5 and all subranges"
+  },
+  "provenance": {
+    "implementation": "Written for this project; no source code copied",
+    "reference": "../oi-wiki-reference/docs/ and standard algorithm definitions",
+    "license": "Project distribution license not yet selected"
+  }
+}

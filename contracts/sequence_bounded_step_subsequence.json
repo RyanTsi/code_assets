@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "id": "sequence.bounded_step_subsequence",
+  "kind": "recipe",
+  "name": "有限步差最长子序列",
+  "display_name": "有限步差最长子序列",
+  "header": "include/algorithm_assets/recipes/bounded_step_subsequence.hpp",
+  "documentation": "docs/PROBLEM_COMBINATIONS.md",
+  "problem": "bounded_step_subsequence",
+  "parameters": [
+    "n",
+    "max_difference"
+  ],
+  "requires": {
+    "values": "int64",
+    "adjacent_difference": "original_value_absolute",
+    "execution_mode": "batch",
+    "output": "length"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_reads": "supported",
+    "concurrent_writes": "unsupported"
+  },
+  "input": {
+    "conditions": "Borrowed int64 sequence; 0 <= max_difference <= INT64_MAX; original order unchanged"
+  },
+  "output": {
+    "conditions": "Exact size_t maximum length, empty=0; no witness"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "complete_contract": "docs/PROBLEM_COMBINATIONS.md",
+    "errors": "Invalid domain rejected; documented arithmetic overflow rejected; allocations propagate; see complete contract"
+  },
+  "complexity": {
+    "operations": "O(n log(n+1)) time; O(n+u) workspace; O(log n) sort stack",
+    "guarantee": "Worst-case asymptotic bounds, no calibrated latency or peak-memory claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 8,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative allocated payload lower bound, not peak or feasibility proof"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "sequence.coordinate_compression"
+    },
+    {
+      "type": "uses",
+      "target": "range.segment_tree"
+    }
+  ],
+  "evidence": {
+    "correctness": "Documented sweep, DP and tree metric invariants; not formal verification",
+    "tests": "tests/problem_combinations_test.cpp",
+    "example": "examples/problem_combinations.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/COMBINATION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/blog",
+    "commit": "6ea0ef09d8479c8775654c1627710af6da1d5392",
+    "path": "content/posts/dp题单.md",
+    "blob_sha": "33f521bad812951b788f56eec8f4466f2f9f370d",
+    "implementation": "Independent engineering implementation; source supplies problem entry and motivation",
+    "license": "No repository license discovered; distribution license not selected"
+  }
+}

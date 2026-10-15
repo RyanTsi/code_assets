@@ -1,0 +1,5 @@
+{
+  "problem": "connectivity", "n": 10000,
+  "directed": false, "rollback": true,
+  "execution_mode": "online", "updates": ["add", "query"]
+}

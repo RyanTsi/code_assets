@@ -1,0 +1,9 @@
+{
+  "problem": "substring_search",
+  "n": 1000000,
+  "m": 100,
+  "text_unit": "byte",
+  "matching": "exact",
+  "pattern_updates": "none",
+  "execution_mode": "whole_text"
+}

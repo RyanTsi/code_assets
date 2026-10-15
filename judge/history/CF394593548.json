@@ -1,0 +1,9 @@
+{
+  "adapter": "judge/adapters/codeforces_1822f.cpp",
+  "sources_sha256": {
+    "judge/adapters/codeforces_1822f.cpp": "06db189c451706418d132c68a8c0c46c43d9211a976923112dacf536aa8cb3a5",
+    "include/algorithm_assets/recipes/tree_eccentricities.hpp": "c74333f39bc8e71fdb024eb67529867ef28d2975a17523806f37f008dfea4631",
+    "include/algorithm_assets/graph/unweighted_csr.hpp": "96ef2f83092605263d87c102354f74cda10495f07302e1bc093db3ee13ccddaa"
+  },
+  "submission_sha256": "b3a626fedf841921dede793e84cc5339f6c2941d87395bf980cd1b1699ba3040"
+}

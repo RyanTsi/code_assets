@@ -1,0 +1,8 @@
+{
+  "adapter": "judge/adapters/luogu_p3376.cpp",
+  "sources_sha256": {
+    "judge/adapters/luogu_p3376.cpp": "6ff4866ea51b531a6b28f84dff3113fe10ae60a6a108f577af027f10f9763244",
+    "include/algorithm_assets/graph/dinic.hpp": "7c8f90d940c3a130f3b0f5a3290de2c2285c0c55cac9417a842ec25539400142"
+  },
+  "submission_sha256": "d077b6eef2af4158c27faa265bc8b894f7af71b8c47ae0fcbbe0fae1c85c9e5d"
+}

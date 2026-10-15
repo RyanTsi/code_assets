@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "id": "algebra.chinese_remainder",
+  "kind": "recipe",
+  "name": "广义中国剩余定理配方",
+  "display_name": "广义中国剩余定理配方",
+  "header": "include/algorithm_assets/algebra/modular.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "chinese_remainder",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "input_type": "uint64",
+    "coprime_required": false,
+    "result_guarantee": "exact"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "Congruences, moduli>=1, residues normalized; noncoprime accepted"
+  },
+  "output": {
+    "conditions": "optional least nonnegative residue and lcm; inconsistency nullopt, lcm overflow throws"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "Congruences, moduli>=1, residues normalized; noncoprime accepted; optional least nonnegative residue and lcm; inconsistency nullopt, lcm overflow throws",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "Per equation O(log modulus) Euclid/multiply iterations, platform multiply cost applies",
+    "space": "O(1) temporary state, input borrowed",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "algebra.modulus64"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "path": "数学/数论/中国剩余定理.md",
+    "blob_sha": "297eb31d84ac61cf6a73b1138492bd602da46819",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

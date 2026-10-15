@@ -1,0 +1,462 @@
+{
+  "RyanTsi/Algorithm-notes:2-SAT&&差分约束.md": {
+    "sha": "3c48077e77ad63ef2a930f7087127cbde4b316c4",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:Modint.md": {
+    "sha": "b81dde39da77e11a3bd9513a633d7f1bf3cf4c34",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:test.md": {
+    "sha": "be5b4d934c7c2fce27be4b304a52b1877f555c47",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:其他/全排列.md": {
+    "sha": "1ca50aa7051a59362d134be84383fadbda982b08",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:其他/区间合并.md": {
+    "sha": "c18b1354fec0f95855da2f5743897dd28d597b15",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:其他/快读.md": {
+    "sha": "9a1e533d090201aef92212dedc782440b8f03cac",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:其他/最小区间覆盖数.md": {
+    "sha": "44e7c152a370eeb3c52442fda3ff176927faf01f",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:其他/离散化.md": {
+    "sha": "a78e58e1a07bb587e099a300cd877fa849cb34b0",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:其他/表达式求值.md": {
+    "sha": "66ceb4a5f3480ff6fdc6e71f04229db71f2c7501",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:其他/逆序对.md": {
+    "method": "previous_batch_full_or_documented",
+    "retrieved": true,
+    "sha": "31c66799f6788e64f8c562dcfe1f6d55e0cd7834"
+  },
+  "RyanTsi/Algorithm-notes:其他/高精度.md": {
+    "sha": "93fdec1fd2d687c091a3132e83c667ec6e51c10c",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:动态规划/DP优化/凸包优化.md": {
+    "sha": "764bfbed68eb9d0f6f33881d41558ba7d4b2bb9e",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:动态规划/区间dp/石子合并.md": {
+    "sha": "d3651cc422b30a5fcc48b3053a6d808637738f4c",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:动态规划/子序列问题/最长上升子序列.md": {
+    "sha": "73ae0e8a50574e86e855a89566cbbe5fed45595d",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:动态规划/子序列问题/最长公共子序列.md": {
+    "sha": "f367c8ff154a69a171ae67dc1513f5d6557893c3",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:动态规划/背包问题/01背包.md": {
+    "sha": "bf2d3661087a28d68985bbf0d58d6e6e6b674f06",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:动态规划/背包问题/二维背包.md": {
+    "sha": "4a38ad7e681669c5d3dbd3fb5d02c4aa16be0a9e",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:动态规划/背包问题/分组背包.md": {
+    "sha": "2302cd010c581badbde142314729ca16d15c9e0c",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:动态规划/背包问题/多重背包.md": {
+    "sha": "8d35f73d5fa32bcebe385daa26024c6c5b945196",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:动态规划/背包问题/完全背包.md": {
+    "sha": "6f7e66f6a7527072642d026d507a50b26980e11f",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:图论/其他/基环树找环.md": {
+    "sha": "939fc5928ddde33eb7c1a427a7bf27d3e17df4b0",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:图论/其他/拓扑排序.md": {
+    "method": "previous_batch_full_or_documented",
+    "retrieved": true,
+    "sha": "81f54c57b5739d7ec84272e98885f58f01303c33"
+  },
+  "RyanTsi/Algorithm-notes:图论/其他/最近公共祖先.md": {
+    "sha": "5d4c16d352b14287ade89789ce4c11e3d14f0331",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:图论/最小生成树/Kruskal.md": {
+    "method": "previous_batch_full_or_documented",
+    "retrieved": true,
+    "sha": "92ff72ce3e550af2a5078ad3653221795f16d836"
+  },
+  "RyanTsi/Algorithm-notes:图论/最短路/Bellman-Ford.md": {
+    "sha": "02086c31ad78f0efec3825da0dd5d55c5aaa6ad2",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:图论/最短路/Dijkstra.md": {
+    "sha": "5217325ac1a0bf98eb4e5011b0e1827b707532d4",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:图论/最短路/Floyd.md": {
+    "sha": "99d56936778c91d18ef41a5e94bc16b2d69870fc",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:图论/最短路/次短路.md": {
+    "sha": "d21bec7301a608bcf522fb07f42f5d4d959a6b56",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:图论/网络流/Dinic.md": {
+    "sha": "4b404e064af74fc2ad4d454f34c31d683594c222",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:图论/网络流/匈牙利算法.md": {
+    "sha": "923e5934ee55a675aded602c9f745b2124df904b",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:图论/网络流/费用流.md": {
+    "sha": "c6383cc9d4c164d9db76de829f4276f6e3a3e51f",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:图论/连通分量/tarjan.md": {
+    "sha": "fad8a132b4547b729d4e497c8fb08f72730be8f6",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:圆方树.md": {
+    "sha": "6d31325270c8290b45d55d8f82141d759d938036",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:字符串/KMP.md": {
+    "method": "previous_batch_full_or_documented",
+    "retrieved": true,
+    "sha": "3c604d291a3cd4aed40cfd857a5d031a6f6fc0be"
+  },
+  "RyanTsi/Algorithm-notes:字符串/Manacher.md": {
+    "sha": "4677bda36b90121b5b54594b96a11c5ffb305f56",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/其他/整数分块.md": {
+    "sha": "1bec89e05e2b170231d67880905b1346e91c04e7",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/博弈.md": {
+    "sha": "a77397f7aa744ed04b9fdc3158d598e4d4068647",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/多项式/FFT.md": {
+    "sha": "8940ee1dbc560809e3d30681a916ddb62363b557",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/数论/Lucas卢卡斯定理.md": {
+    "sha": "2b76d547e877173e986f84ff36b8edfcc06769d6",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/数论/中国剩余定理.md": {
+    "sha": "297eb31d84ac61cf6a73b1138492bd602da46819",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/数论/数论定理.md": {
+    "sha": "fbff416f3af12269fba510c1f2ba587d352e9eed",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/数论/欧几里得算法.md": {
+    "sha": "5057c4027d42e76a2a4511904f69491d78457ef2",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/数论/欧拉函数.md": {
+    "sha": "1912c37240b2b8c712742acd1936e37a6b4756b6",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/数论/质数筛.md": {
+    "sha": "79841144659dc38879cd0a8fda740f6834d5e3f8",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/线性代数/矩阵快速幂.md": {
+    "sha": "6552b6316b281a1ae4fb32b16c6ba5a0a3df92b2",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数学/线性代数/线性基.md": {
+    "method": "previous_batch_full_or_documented",
+    "retrieved": true,
+    "sha": "ed208708a5676329ca9bf1aeb0b21391f586d825"
+  },
+  "RyanTsi/Algorithm-notes:数学/组合数学/组合数.md": {
+    "sha": "c86d4617bf0835458788ef33e3eef5c54bf97663",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数据结构/ST表.md": {
+    "sha": "7783a7889dfc40bf71a3398db005a34def1ec083",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数据结构/Splay.md": {
+    "sha": "e04835af20317b08c46e55750758c7780916f03a",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数据结构/分块-由乃打扑克.md": {
+    "sha": "24fc914b27ecea4b51838fe95ef59be9fae893c0",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数据结构/封装过的线段树.md": {
+    "sha": "d469e771e4a0e6377e9786c5a4d4d4677dce9171",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数据结构/并查集.md": {
+    "sha": "d91edc172b99bddf36a1b33e7687697922ce3460",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数据结构/树状数组.md": {
+    "method": "previous_batch_full_or_documented",
+    "retrieved": true,
+    "sha": "abd22073363149bc4a96b85699af39a7cad53bdb"
+  },
+  "RyanTsi/Algorithm-notes:数据结构/树链剖分.md": {
+    "sha": "364551f4ce31211a1059a8bb488f3807eb8598f9",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数据结构/线段树.md": {
+    "sha": "51c6e867e2eb0198e93103441432048d063b06de",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:数据结构/莫队算法.md": {
+    "sha": "355e7e3f15d9764d7730815ef0f9f054bde4146e",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:算法.md": {
+    "sha": "3041719f053c928122ed56281e2fcf6af485d2a2",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:线段树例题.md": {
+    "sha": "9752c269b4742d94e4088270a10a26c67b747be1",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:网络流.md": {
+    "sha": "3413a4acfb126b0aecc27b997ab4cc7b8100372d",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:补题.md": {
+    "sha": "ab992451bfbc2252972a5d12fd5f5b5898d9cf57",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:补题优先队列.md": {
+    "sha": "2de527a745aaee7346414984736ab6876b19b1ed",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:计算几何/Geometry.md": {
+    "sha": "8e1ce0292454782e7fe2960742f0e20ef1314a5d",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:计算几何/三角剖分.md": {
+    "sha": "8f6c8b9a0015562d6e515bd9c9f236bb4fc580a1",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:计算几何/最小圆覆盖.md": {
+    "sha": "3336268d88b1c127880b40f5192d47ec51d75fad",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/Algorithm-notes:计算几何/闵可夫斯基和.md": {
+    "sha": "655d80c7d2356beb7aefcca3da4f42431786efe4",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/Splay.md": {
+    "sha": "629ca0a2ff1a9de08c0cbb6c42ddfec3dca8cd35",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/dp题单.md": {
+    "sha": "33f521bad812951b788f56eec8f4466f2f9f370d",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/分块简述.md": {
+    "sha": "fdec9b4686e74ac1118ccd5c5a214a04b2bcc5de",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/博弈论.md": {
+    "sha": "363d6467da7f120d489e001ea11ac52ff8d7d9c1",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/可持久化数据结构.md": {
+    "sha": "98a8f0c2acd4b9959fa117707cf4ea1ca5785bc4",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/图论做题记录.md": {
+    "sha": "adfcbb9da0bced9f62d6f311f5e6fcaf34083197",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/圆方树.md": {
+    "sha": "5ccc60cb6d0994a1e08fde116c383196208a946b",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/基环树简述.md": {
+    "sha": "b955beaeb6b0e6193042e906499160ddd83618a7",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/强化学习.md": {
+    "sha": "bfe3eae788f3ef9c210b3f826204b8db1d777fbc",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/深度学习.md": {
+    "sha": "1c9c3ffb05791cdebb702b3d7016db88becb93a0",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/线段树.md": {
+    "sha": "c2853a028fb515795a789a84dd7cfe2fbbcdc515",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/线段树题单.md": {
+    "sha": "54cb5e4f03038ae533e63a1ebd3d9fa9dff8ddd4",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/网络流做题记录.md": {
+    "sha": "71b0e4d01d288989b195cc0189507b86ab5b09d7",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/莫队.md": {
+    "sha": "bcc8452b2a8a3a9b001d065ca376c99d0b48723f",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/表达式求模板值.md": {
+    "sha": "2ebbe324f6d84c2db8c556f992c0d7a3c0b4e953",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/计算几何做题记录.md": {
+    "sha": "8433c6453667c83d5a3b087bb727fe8c2aae0d83",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/高质量题解（持续更新中）.md": {
+    "sha": "9191f5b79147f82be1d3985aec2c6351ef8ff6a0",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/2022CCPC河南省赛题解.md": {
+    "sha": "6ab849969042a5be5f61233b7f17ef56f0108e53",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/2023多校杂题.md": {
+    "sha": "7fe7bc90abd592497b110d46603da21565022f72",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/几何概念.md": {
+    "sha": "4b075c0f35bb6743a422cdca18f4fc4669a24905",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/最小圆覆盖.md": {
+    "sha": "63b68bfada37e9abf33518739d494b21eda17e31",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/傅里叶变换和谱域.md": {
+    "sha": "ab5a797fe71a758af3fbd8146b1985bf3c28ec9c",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/数值计算-矩阵论.md": {
+    "sha": "d06aaf392720038ed7e34f0c87441c1c2968a08c",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/吸收马尔科夫链.md": {
+    "sha": "a6bb425768bdfaf92b3a2778f3017c4bdf4bb771",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/闵可夫斯基和.md": {
+    "sha": "9ff69cf7e4a67652a2671bb00d6fa29dfd14d299",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/三角剖分.md": {
+    "sha": "f76269a4c9e5cf1d990c01b1a949a048f621240a",
+    "method": "sections_or_full",
+    "retrieved": true
+  },
+  "RyanTsi/blog:content/posts/线性基.md": {
+    "method": "previous_batch_full_or_documented",
+    "retrieved": true,
+    "sha": "41cbdd2c15d0a0853f77e39c910c981017a03129"
+  }
+}

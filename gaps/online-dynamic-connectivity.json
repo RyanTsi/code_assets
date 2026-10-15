@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-13",
+  "catalog_version": "0.1.0-pilot-1",
+  "query": "examples/queries/online_deletion_gap.json",
+  "status": "not_covered",
+  "scope": "All registered connectivity implementations and recipes; no novel composition search",
+  "reasons": [
+    "Ordinary DSU and rollback DSU do not support arbitrary online edge removal",
+    "The registered dynamic-connectivity recipe requires the entire event sequence offline"
+  ],
+  "missing_capability": "Online connectivity queries with both arbitrary add and remove events",
+  "next_step": "Do not add a new algorithm automatically; assess an actual workload and budget before extending",
+  "means_problem_unsolvable": false
+}

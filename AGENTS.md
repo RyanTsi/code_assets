@@ -2,7 +2,7 @@
 
 ## 用户目标与范围
 
-这是可直接 include 的现代 C++ 库，不是新的 Wiki 或 Markdown 模板合集。必须保留 README 中全部七项目标；当前阶段仅初始化工程，新增算法和检索功能按 `docs/ROADMAP.md` 逐步推进。
+这是可直接 include 的现代 C++ 库，不是新的 Wiki 或 Markdown 模板合集。必须保留 README 中全部七项目标；已进入首批资产试验，新增算法和检索功能按 `docs/ROADMAP.md` 逐步推进。
 
 - 本目录拥有独立 `.git`。Git 与构建命令均在本目录执行。
 - `../oi-wiki-reference/` 保留原仓库，默认仅阅读，不修改、不添加为子模块、不纳入本库提交。
@@ -43,3 +43,14 @@
 - 文档示例应可编译；修改接口同步更新契约、调用示例和相关配方。
 - 执行与改动相称的验证，并在报告中明确未完成的检查。
 - 阶段完成时更新建设计划和记录；不要把计划中的能力描述为已经实现。
+- 修改契约、公共头文件或关系图界面后运行 `python tools/build_graph.py`，同步自包含页面，再运行 `python tests/graph_test.py`。图谱不得捏造关联；互为替代可去重，方向关系必须保留。
+- 几何规则见 `docs/GEOMETRY2D.md`：整数坐标界、精确谓词与近似构造分开；不得以零 EPS 或 long double 宣称精确浮点几何。几何模块不默认加入全库便利头文件。
+- 可选关系 `condition` 当前为人类可读说明，不是已验证的通用组合规则；模板互斥内核依赖必须注明条件。
+
+## 个人仓库载入流程
+
+- 两个来源固定提交和 Markdown 清单在 `provenance/repository-assets/`；逐文件处理状态为 `decisions.json`，正文/章节/仅目录审核必须区分。partial、deferred 不等于已实现。
+- 新批次同步真实头文件、契约、可编译示例、对照测试、来源映射及 `docs/REPOSITORY_EXPANSION.md`；运行 `python tools/repository_import.py --report` 核对完整台账。不要把原文错误或题目专用 I/O 原样迁入。
+- 提交代码从 `judge/adapters/` 经 `python tools/bundle_submission.py` 生成；保留源码 SHA-256。官方 AC 记录应绑定该次生成源码，修改后不得继续标为同一版本已 AC。
+- 不自动解决平台验证码，交由用户操作；提交授权已有时不重复询问。没有读取最终判题结果时，不写 AC。
+- `ALGORITHM_ASSETS_FORCE_PORTABLE_MODULAR` 为可选模乘后端配置，所有翻译单元一致设置；不要取消编译器特性宏。

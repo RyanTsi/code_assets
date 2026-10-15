@@ -1,0 +1,8 @@
+{
+  "problem": "geometry.minimum_rectangle",
+  "n": 10000,
+  "coordinates": "float64_abs_le_1e100",
+  "result_guarantee": "approximate",
+  "input_structure": "unordered_points",
+  "updates": "none"
+}

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "id": "geometry.closest_pair.int",
+  "kind": "algorithm",
+  "name": "Buffered divide-and-conquer closest pair (int)",
+  "display_name": "最近点对 · 整数",
+  "header": "include/algorithm_assets/geometry/closest_pair.hpp",
+  "documentation": "docs/GEOMETRY2D.md#api",
+  "problem": "geometry.closest_pair",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "coordinates": "int64_abs_le_1e9",
+    "result_guarantee": "exact_squared_distance",
+    "input_structure": "unordered_points",
+    "updates": "none"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "conditional"
+  },
+  "input": {
+    "points": "span<const Point2<T>>; borrowed, preserved order; input must NOT alias this workspace's private buffers",
+    "workspace": "Optional separate ClosestPairWorkspace<T>; capacity reusable across calls"
+  },
+  "output": {
+    "pair": "optional<PointPair<T>> with coordinate values and squared_distance, not original indices; ties arbitrary",
+    "degenerate": "n<2 -> nullopt, duplicates -> distinct input positions with equal coordinate values and distance squared 0",
+    "distance": "sqrt-derived double approximate, even for exact integer squared distance"
+  },
+  "constraints": {
+    "max_n": 1152921504606846975,
+    "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
+    "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
+    "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
+    "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
+    "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
+    "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage.",
+    "workspace_state": "solve mutates workspace. Separate instances for concurrent calls; failure leaves reusable but unspecified buffer contents/capacities. Returned pair is independent.",
+    "benchmark": "Only floating implementation measured in geometry_results.csv; integer performance not measured"
+  },
+  "complexity": {
+    "solve": "O(n log(n+1)) under consistent geometric comparisons",
+    "space": "Normally 32n point payload in two buffers for a fresh workspace; duplicate exit may need only 16n; O(log n) stack; reused capacities can exceed current n; release() frees both buffers",
+    "hot_path": "No heap allocations once both capacities suffice on tested STL; no sqrt in strip; alternating buffer merge avoids per-level copy-back"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "geometry.primitives"
+    },
+    {
+      "type": "alternative",
+      "target": "geometry.closest_pair.float",
+      "condition": "Coordinate regime and result guarantee differ; check both contracts; no automatic conversion"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants in GEOMETRY2D.md; floating correctness conditional on numeric predicates; not formally verified",
+    "tests": "tests/geometry_test.cpp",
+    "example": "examples/geometry2d.cpp",
+    "benchmark": "not_measured",
+    "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
+  },
+  "provenance": {
+    "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
+    "reference": "provenance/geometry2d-template.cpp.txt; docs/GEOMETRY2D.md lists read-only Wiki and primary-source references",
+    "license": "User-provided template; project distribution license not yet selected"
+  }
+}

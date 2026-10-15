@@ -1,0 +1,1 @@
+{"problem":"geometry.translated_overlap","n":100000,"m":100000,"coordinates":"int64_abs_le_5e8","input_structure":"validated_convex_polygons","transform":"translation","boundary_contact":true,"result_guarantee":"exact"}

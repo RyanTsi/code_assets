@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "id": "strings.manacher",
+  "kind": "algorithm",
+  "name": "Manacher 回文半径",
+  "display_name": "Manacher 回文半径",
+  "header": "include/algorithm_assets/strings/manacher.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "palindrome_search",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "text_unit": "byte",
+    "output": "radii_and_longest",
+    "updates": "none"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "Arbitrary bytes including NUL; n<=SIZE_MAX/2"
+  },
+  "output": {
+    "conditions": "Owned odd/even radii, earliest longest half-open range; empty [0,0)"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "Arbitrary bytes including NUL; n<=SIZE_MAX/2; Owned odd/even radii, earliest longest half-open range; empty [0,0)",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "O(n)",
+    "space": "16n radii on 64-bit platform plus constant metadata",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 16,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "path": "字符串/Manacher.md",
+    "blob_sha": "4677bda36b90121b5b54594b96a11c5ffb305f56",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

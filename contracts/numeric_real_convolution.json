@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "id": "numeric.real_convolution",
+  "kind": "recipe",
+  "name": "FFT 实卷积配方",
+  "display_name": "FFT 实卷积配方",
+  "header": "include/algorithm_assets/numeric/fft.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "convolution",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "input_type": "float64",
+    "result_guarantee": "approximate",
+    "mode": "linear"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "Two finite real spans, empty yields empty; length/padding checked"
+  },
+  "output": {
+    "conditions": "Owned n+m-1 real approximate coefficients, no integer-exact promise"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "Two finite real spans, empty yields empty; length/padding checked; Owned n+m-1 real approximate coefficients, no integer-exact promise",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "O(N log N), N=bit_ceil(n+m-1)",
+    "space": "32N complex workspace +8N roots +8(n+m-1) output",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "numeric.radix2_fft"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "path": "数学/多项式/FFT.md",
+    "blob_sha": "8940ee1dbc560809e3d30681a916ddb62363b557",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

@@ -1,0 +1,80 @@
+#pragma once
+#include <algorithm_assets/numeric/compensated_sum.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <limits>
+#include <numeric>
+#include <span>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+namespace algorithm_assets {
+class DenseLu {
+public:
+  struct LogDeterminant { int sign; double log_absolute; };
+  DenseLu(std::size_t n,std::span<const double> matrix,double relative_tolerance=64*std::numeric_limits<double>::epsilon())
+    : DenseLu(n,std::vector<double>(matrix.begin(),matrix.end()),relative_tolerance) {}
+  DenseLu(std::size_t n,std::vector<double> matrix,double relative_tolerance=64*std::numeric_limits<double>::epsilon())
+    : n_(n),lu_(std::move(matrix)) {
+    if (n>=std::numeric_limits<std::uint32_t>::max() || (n && n>lu_.max_size()/n) || lu_.size()!=n*n)
+      throw std::invalid_argument("LU requires an n by n row-major matrix");
+    if (!std::isfinite(relative_tolerance) || relative_tolerance<0 || relative_tolerance>=1)
+      throw std::invalid_argument("Invalid LU relative tolerance");
+    double scale=0;
+    for (std::size_t i=0;i<n;++i) {
+      double row=0;
+      for (std::size_t j=0;j<n;++j) {
+        if (!std::isfinite(lu_[i*n+j])) throw std::invalid_argument("LU matrix must be finite");
+        row=checked(row+std::abs(lu_[i*n+j]));
+      }
+      scale=std::max(scale,row);
+    }
+    const auto threshold=relative_tolerance*scale;
+    permutation_.resize(n); std::iota(permutation_.begin(),permutation_.end(),0U);
+    for (std::size_t k=0;k<n;++k) {
+      auto pivot=k;
+      for (auto i=k+1;i<n;++i) if (std::abs(lu_[i*n+k])>std::abs(lu_[pivot*n+k])) pivot=i;
+      if (lu_[pivot*n+k]==0 || std::abs(lu_[pivot*n+k])<=threshold)
+        throw std::domain_error("LU pivot rejected: singular or numerically near-singular matrix");
+      if (pivot!=k) {
+        for (std::size_t j=0;j<n;++j) std::swap(lu_[k*n+j],lu_[pivot*n+j]);
+        std::swap(permutation_[k],permutation_[pivot]); sign_=-sign_;
+      }
+      for (auto i=k+1;i<n;++i) {
+        lu_[i*n+k]=checked(lu_[i*n+k]/lu_[k*n+k]);
+        for (auto j=k+1;j<n;++j) lu_[i*n+j]=checked(std::fma(-lu_[i*n+k],lu_[k*n+j],lu_[i*n+j]));
+      }
+    }
+  }
+  [[nodiscard]] std::vector<double> solve(std::span<const double> right) const {
+    if (right.size()!=n_) throw std::invalid_argument("LU right-hand side size mismatch");
+    for (auto x:right) if (!std::isfinite(x)) throw std::invalid_argument("LU right-hand side must be finite");
+    std::vector<double> x(n_);
+    for (std::size_t i=0;i<n_;++i) {
+      double value=right[permutation_[i]];
+      for (std::size_t j=0;j<i;++j) value=checked(std::fma(-lu_[i*n_+j],x[j],value));
+      x[i]=value;
+    }
+    for (std::size_t i=n_;i-- >0;) {
+      auto value=x[i];
+      for (auto j=i+1;j<n_;++j) value=checked(std::fma(-lu_[i*n_+j],x[j],value));
+      x[i]=checked(value/lu_[i*n_+i]);
+    }
+    return x;
+  }
+  [[nodiscard]] LogDeterminant log_determinant() const {
+    int sign=sign_; CompensatedSum logarithm;
+    for (std::size_t i=0;i<n_;++i) {
+      const auto diagonal=lu_[i*n_+i]; if (diagonal<0) sign=-sign;
+      logarithm.add(std::log(std::abs(diagonal)));
+    }
+    return {sign,logarithm.value()};
+  }
+  [[nodiscard]] std::size_t size() const noexcept { return n_; }
+private:
+  static double checked(double x) { if (!std::isfinite(x)) throw std::overflow_error("Nonfinite LU arithmetic"); return x; }
+  std::size_t n_; std::vector<double> lu_; std::vector<std::uint32_t> permutation_; int sign_=1;
+};
+} // namespace algorithm_assets

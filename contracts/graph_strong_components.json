@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "graph.strong_components",
+  "kind": "algorithm",
+  "name": "强连通分量",
+  "display_name": "强连通分量",
+  "header": "include/algorithm_assets/graph/strong_components.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "strong_components",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "directed": true,
+    "graph_updates": "none",
+    "representation": "unweighted_csr"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "Immutable unweighted CSR"
+  },
+  "output": {
+    "conditions": "Owned uint32 component IDs and count; reverse topological IDs"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "Immutable unweighted CSR; Owned uint32 component IDs and count; reverse topological IDs",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "O(n+m)",
+    "space": "O(n) explicit DFS frames, low/discovery/active arrays and output",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 4,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "graph.unweighted_csr"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "path": "图论/连通分量/tarjan.md",
+    "blob_sha": "fad8a132b4547b729d4e497c8fb08f72730be8f6",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

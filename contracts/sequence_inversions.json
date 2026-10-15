@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "id": "sequence.inversions",
+  "kind": "algorithm",
+  "name": "InversionCounter",
+  "header": "include/algorithm_assets/sequence/inversions.hpp",
+  "documentation": "docs/REPOSITORY_ASSETS.md#inversioncounter",
+  "problem": "inversion_count",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "input_type": "int64",
+    "comparison": "strict",
+    "execution_mode": "batch",
+    "strategy": {
+      "one_of": [
+        "any",
+        "merge"
+      ]
+    }
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_reads": "unsupported",
+    "concurrent_writes": "unsupported"
+  },
+  "input": {
+    "values": "Borrowed span<const int64>; count_inplace accepts mutable span"
+  },
+  "output": {
+    "count": "Exact uint64 strict inversions",
+    "state": "count preserves input; count_inplace sorts it stably"
+  },
+  "constraints": {
+    "max_n": 6074001000,
+    "allocation": "size_t and vector max_size / available memory limits additionally apply",
+    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/REPOSITORY_ASSETS.md",
+    "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
+    "numeric": "n(n-1)/2 <= UINT64_MAX checked before sorting; duplicate values are not inversions"
+  },
+  "complexity": {
+    "run": "Worst O(n log(n+1))",
+    "space": "16n for count; 8n fresh inplace; retained capacities may exceed current n; O(log n) stack"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 8,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative payload lower bound, not peak memory feasibility; 64-bit platform costs in documentation"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants in documentation; not formal verification",
+    "tests": "tests/repository_assets_test.cpp",
+    "example": "examples/repository_assets.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/VALIDATION.md"
+  },
+  "provenance": {
+    "implementation": "Rewritten modern C++20 for this project, not source-code copy",
+    "reference": "其他/逆序对.md",
+    "license": "No source LICENSE discovered; project distribution license not selected",
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/其他/逆序对.md"
+  }
+}

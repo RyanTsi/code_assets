@@ -1,0 +1,9 @@
+{
+  "adapter": "judge/adapters/codeforces_822c.cpp",
+  "sources_sha256": {
+    "judge/adapters/codeforces_822c.cpp": "38cf035bbec985c7e7d5bf3b2d0a0f012d8926fddea2707a245d603eabc909a0",
+    "include/algorithm_assets/recipes/disjoint_interval_pair.hpp": "b4a4c7fffaeaec64b4360079635d06e9ae4ef0767014bd535763bac58934c29d",
+    "include/algorithm_assets/sequence/coordinate_compression.hpp": "cd392e6e4e48b4c8aea9c45a0c5d156fe99096cf3226d21dfe6f3573947e5cc7"
+  },
+  "submission_sha256": "cf7bbf9c87e52e62b4a629d0e25a45e43566adb1c8ee0ab02db053cb1aee0655"
+}

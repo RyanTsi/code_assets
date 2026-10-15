@@ -1,0 +1,8 @@
+{
+  "adapter": "judge/adapters/luogu_p3812.cpp",
+  "sources_sha256": {
+    "judge/adapters/luogu_p3812.cpp": "81d5a98c8dc9bdb421bf6d7ba9066e3f57bed6fb2d813bc71c79d6bc2ae2686e",
+    "include/algorithm_assets/algebra/xor_basis.hpp": "1ed06abec66e6264d3c529df6001a95fb146148ac5afc72ce1ff36af0acc028a"
+  },
+  "submission_sha256": "4e48c01708773274d2ab113549b4abf254df3f610b9a4dfe1d87b360b95f99c4"
+}

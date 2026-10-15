@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "id": "geometry.linear",
+  "kind": "algorithm",
+  "name": "Projection, distances and intersections",
+  "display_name": "直线与线段几何",
+  "header": "include/algorithm_assets/geometry/linear.hpp",
+  "documentation": "docs/GEOMETRY2D.md#api",
+  "problem": "geometry.linear_operations",
+  "parameters": [],
+  "requires": {
+    "coordinates": "float64_abs_le_1e100",
+    "result_guarantee": "approximate",
+    "operation": {
+      "one_of": [
+        "projection",
+        "reflection",
+        "perpendicular_bisector",
+        "line_intersection",
+        "segment_intersection",
+        "point_line_distance",
+        "point_segment_distance",
+        "segment_distance",
+        "parallel",
+        "perpendicular",
+        "contains",
+        "intersects"
+      ]
+    }
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "line": "Line from two distinct points, nonzero direction, or finite Ax+By=C coefficients with nonzero normal",
+    "segment": "Independent endpoint value type; zero-length segments permitted",
+    "tolerance": "Explicit absolute/relative policy for classification, default documented in GEOMETRY2D.md"
+  },
+  "output": {
+    "projection_reflection": "Constructed Point; segment closest point clamps parameter",
+    "distances": "double, zero for intersections under selected tolerance",
+    "line_intersection": "none/finite one point/infinite coincident",
+    "segment_intersection": "none/point/overlap with lex-ordered interval endpoints"
+  },
+  "constraints": {
+    "max_n": 1152921504606846975,
+    "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
+    "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
+    "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
+    "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
+    "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
+    "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage."
+  },
+  "complexity": {
+    "operations": "O(1)",
+    "space": "O(1); fixed-capacity results; no heap allocation"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "geometry.primitives"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants in GEOMETRY2D.md; floating correctness conditional on numeric predicates; not formally verified",
+    "tests": "tests/geometry_test.cpp",
+    "example": "examples/geometry2d.cpp",
+    "benchmark": "not_measured",
+    "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
+  },
+  "provenance": {
+    "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
+    "reference": "provenance/geometry2d-template.cpp.txt; docs/GEOMETRY2D.md lists read-only Wiki and primary-source references",
+    "license": "User-provided template; project distribution license not yet selected"
+  }
+}

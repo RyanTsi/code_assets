@@ -1,0 +1,8 @@
+{
+  "problem": "geometry.convex_hull",
+  "n": 1000,
+  "coordinates": "float64_abs_le_1e100",
+  "result_guarantee": "exact",
+  "input_structure": "unordered_points",
+  "updates": "none"
+}

@@ -8,3 +8,6 @@
 /.idea/
 *.user
 *.swp
+__pycache__/
+*.pyc
+/visualization/preview.jpg

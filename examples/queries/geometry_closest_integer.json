@@ -1,0 +1,8 @@
+{
+  "problem": "geometry.closest_pair",
+  "n": 100000,
+  "coordinates": "int64_abs_le_1e9",
+  "result_guarantee": "exact_squared_distance",
+  "input_structure": "unordered_points",
+  "updates": "none"
+}

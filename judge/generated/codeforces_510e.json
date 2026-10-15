@@ -1,0 +1,9 @@
+{
+  "adapter": "judge/adapters/codeforces_510e.cpp",
+  "sources_sha256": {
+    "judge/adapters/codeforces_510e.cpp": "3392b3abcc18bc5066af9fb06260bed91d8432749182fc6513d8a602e3612363",
+    "include/algorithm_assets/algebra/prime_sieve.hpp": "8edd5f2de3fac582612c805b47d2ed44872877922fcaca5578c08002b1b53098",
+    "include/algorithm_assets/graph/dinic.hpp": "7c8f90d940c3a130f3b0f5a3290de2c2285c0c55cac9417a842ec25539400142"
+  },
+  "submission_sha256": "d0396b3681da4ec843d22d279b07d0066e272a4d2297209835ae4d0e113b4780"
+}

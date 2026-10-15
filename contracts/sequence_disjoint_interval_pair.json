@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "id": "sequence.disjoint_interval_pair",
+  "kind": "recipe",
+  "name": "非重叠区间对最低费用",
+  "display_name": "非重叠区间对最低费用",
+  "header": "include/algorithm_assets/recipes/disjoint_interval_pair.hpp",
+  "documentation": "docs/PROBLEM_COMBINATIONS.md",
+  "problem": "disjoint_interval_pair",
+  "parameters": [
+    "n",
+    "total_duration"
+  ],
+  "requires": {
+    "intervals": "nonempty_half_open_int64",
+    "costs": "nonnegative_int64",
+    "pair_count": 2,
+    "duration_rule": "exact_sum"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_reads": "supported",
+    "concurrent_writes": "unsupported"
+  },
+  "input": {
+    "conditions": "Original endpoints; int64 duration <= INT64_MAX; nonnegative cost; positive total duration"
+  },
+  "output": {
+    "conditions": "Optional exact minimum int64 cost and two original indices; optimum overflow throws"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "complete_contract": "docs/PROBLEM_COMBINATIONS.md",
+    "errors": "Invalid domain rejected; documented arithmetic overflow rejected; allocations propagate; see complete contract"
+  },
+  "complexity": {
+    "operations": "O(n log(n+1)) time; O(n+u) workspace; O(log n) sort stack",
+    "guarantee": "Worst-case asymptotic bounds, no calibrated latency or peak-memory claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 16,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative allocated payload lower bound, not peak or feasibility proof"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "sequence.coordinate_compression"
+    }
+  ],
+  "evidence": {
+    "correctness": "Documented sweep, DP and tree metric invariants; not formal verification",
+    "tests": "tests/problem_combinations_test.cpp",
+    "example": "examples/problem_combinations.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/COMBINATION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/blog",
+    "commit": "6ea0ef09d8479c8775654c1627710af6da1d5392",
+    "path": "content/posts/高质量题解（持续更新中）.md",
+    "blob_sha": "9191f5b79147f82be1d3985aec2c6351ef8ff6a0",
+    "implementation": "Independent engineering implementation; source supplies problem entry and motivation",
+    "license": "No repository license discovered; distribution license not selected"
+  }
+}

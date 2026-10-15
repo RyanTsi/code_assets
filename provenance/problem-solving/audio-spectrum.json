@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-15",
+  "catalog_version": "0.1.0-pilot-5",
+  "asset_count": 74,
+  "user_output": "Per-frame frequency-band amplitude/power numbers, not audio substreams",
+  "unspecified_requirements": [
+    "sample_rate",
+    "channels",
+    "latency",
+    "frequency_resolution"
+  ],
+  "illustrative_configuration": {
+    "fs": 48000,
+    "channels": 1,
+    "N": 4096,
+    "hop": 1024
+  },
+  "inspection": "Contract thumbnails and published API documentation only; no existing public algorithm implementation/test source opened",
+  "evaluations": [
+    {
+      "step": "whole_stream",
+      "query": {
+        "problem": "streaming_audio_band_spectrum",
+        "n": 4096
+      },
+      "catalog_status": "not_covered",
+      "selected_ids": [],
+      "scope": "All registered implementations and recipes for this problem ID; no novel composition search"
+    },
+    {
+      "step": "framing",
+      "query": {
+        "problem": "stream_framing",
+        "n": 4096
+      },
+      "catalog_status": "not_covered",
+      "selected_ids": [],
+      "scope": "All registered implementations and recipes for this problem ID; no novel composition search"
+    },
+    {
+      "step": "window",
+      "query": {
+        "problem": "spectral_window",
+        "n": 4096
+      },
+      "catalog_status": "not_covered",
+      "selected_ids": [],
+      "scope": "All registered implementations and recipes for this problem ID; no novel composition search"
+    },
+    {
+      "step": "fft",
+      "query": {
+        "problem": "discrete_fourier_transform",
+        "n": 4096,
+        "length_power_of_two": true,
+        "input_type": "complex_float64",
+        "result_guarantee": "approximate",
+        "normalization": "inverse_divides_n"
+      },
+      "catalog_status": "found_algorithm",
+      "selected_ids": [
+        "numeric.radix2_fft"
+      ],
+      "scope": "All registered implementations and recipes for this problem ID; no novel composition search"
+    },
+    {
+      "step": "sum",
+      "query": {
+        "problem": "sum",
+        "n": 2049,
+        "finite_inputs": true,
+        "reassociation": false,
+        "intermediates_finite": true,
+        "result_guarantee": "floating_approximate"
+      },
+      "catalog_status": "found_algorithm",
+      "selected_ids": [
+        "numeric.compensated_sum"
+      ],
+      "scope": "All registered implementations and recipes for this problem ID; no novel composition search"
+    },
+    {
+      "step": "psd",
+      "query": {
+        "problem": "one_sided_power_spectral_density",
+        "n": 4096
+      },
+      "catalog_status": "not_covered",
+      "selected_ids": [],
+      "scope": "All registered implementations and recipes for this problem ID; no novel composition search"
+    },
+    {
+      "step": "band_power",
+      "query": {
+        "problem": "frequency_band_power",
+        "n": 2049
+      },
+      "catalog_status": "not_covered",
+      "selected_ids": [],
+      "scope": "All registered implementations and recipes for this problem ID; no novel composition search"
+    }
+  ],
+  "decision": "Existing FFT and compensated sum solve the numerical core; verified application glue provides framing/window/PSD/band mapping; no complete registered stream recipe or hard-real-time certificate",
+  "application_sources": {
+    "examples/audio_spectrum.cpp": "0ccb72281bf58c1344851d119ab571c0cee9b306cbc4932d5cc943ab12630ad3",
+    "examples/audio_spectrum_demo.hpp": "fbfbb29bcc56f322def9341d985e310c28a7afdcdab6c2f530c48ad64d717b41",
+    "tests/audio_spectrum_test.cpp": "6f903c8dd8fd4b5f6a81f409ef4be33276ea610d7fee669302b17087d0950dc9",
+    "tests/audio_spectrum_reference_test.py": "0c903c84813f98d4c92b03343744a963080ea4a527d128d351f8d96f09432bfa"
+  },
+  "used_contract_sha256": {
+    "numeric.compensated_sum": "7a0b1280a8bd1bfcd89dfb994548488c80a0c6b1f8b1e6def25e4aa9a39f6435",
+    "numeric.radix2_fft": "a93ac2cbffb8806fbd12db3ed7508f77e2ab51016896d729666a6db1a1ba1233"
+  },
+  "validation": "docs/AUDIO_SPECTRUM_ASSESSMENT.md",
+  "new_registered_assets": 0,
+  "real_audio_device_tested": false
+}

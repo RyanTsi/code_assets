@@ -1,0 +1,1 @@
+{"problem":"knapsack","n":100,"capacity":40000,"multiplicity":"bounded","objective":"maximum_value_at_most_capacity","input_type":"int64","output":"value"}

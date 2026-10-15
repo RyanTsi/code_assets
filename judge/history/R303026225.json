@@ -1,0 +1,10 @@
+{
+  "adapter": "judge/adapters/luogu_p3366.cpp",
+  "sources_sha256": {
+    "judge/adapters/luogu_p3366.cpp": "64eea0a9871ab6d706d883561ba85e7f056e7208a76b4c2afa82ac0016dafdb3",
+    "include/algorithm_assets/graph/kruskal.hpp": "55052b68062d96786efff152c82dd9315c6eb8f3e08b694f35f316005e8b8a12",
+    "include/algorithm_assets/connectivity/disjoint_set.hpp": "f0ded5733742f3e6dae234e41cace45039c6713761b667f07f6c8cd827e74b9f",
+    "include/algorithm_assets/numeric/wide_int64_sum.hpp": "814bfcfc83bb081e869e2e340ea38548c2a228fb8472d25790f764455f096078"
+  },
+  "submission_sha256": "885d2b9fb5cc750e1a1aeca03707bf84a995571de84f7d92b75011f7637ddf13"
+}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algorithm Assets · 关系图谱</title>
+  <style>/* GRAPH_STYLE */</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="library" aria-label="资产目录">
+      <div class="brand"><span class="brand-mark">A</span><span>Algorithm Assets<small>算法资产库</small></span></div>
+      <div class="workspace-label">工作区 <span>LOCAL</span></div>
+      <h1>关系图谱</h1>
+      <label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索算法、问题或 ID" aria-label="搜索算法"></label>
+      <div class="section-title">资产 <span id="asset-count"></span></div>
+      <nav id="asset-list" aria-label="选择算法"></nav>
+      <div class="section-title">显示类型</div>
+      <div id="kind-filters" class="filters"></div>
+      <div class="section-title">关联关系</div>
+      <div id="relation-filters" class="filters"></div>
+      <p class="library-note">关联来自代码契约。未登记关联的节点独立显示。</p>
+      <footer><span class="status-dot"></span> 本地目录 · v0.1</footer>
+    </aside>
+    <main class="graph-panel">
+      <header class="graph-header"><div><span class="breadcrumb">算法资产 /</span> 全局关系图</div><span id="graph-count" aria-live="polite"></span></header>
+      <div id="viewport" tabindex="0" role="region" aria-label="算法关系图，可拖动平移，滚轮缩放；也可从左侧目录选择节点">
+        <svg id="graph" aria-hidden="true"><defs><pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="currentColor"/></pattern></defs><rect width="100%" height="100%" fill="url(#dots)" class="dot-grid"/><g id="world"><g id="edges"></g><g id="nodes"></g></g></svg>
+        <div class="graph-caption"><span class="eyebrow">ALGORITHM MAP</span><h2>从一个算法，走向一个解法。</h2><p>点击节点探索关联 · 拖动节点整理图谱</p></div>
+        <div id="empty" hidden>没有符合筛选条件的资产。<button id="clear-filters">清除筛选</button></div>
+        <div id="tooltip" hidden></div>
+        <div class="graph-toolbar"><button id="zoom-out" aria-label="缩小">−</button><output id="zoom-label">100%</output><button id="zoom-in" aria-label="放大">+</button><span class="separator"></span><button id="fit">适应画布</button><button id="motion" aria-pressed="false">暂停布局</button></div>
+        <div class="graph-bottom"><span>滚轮缩放 · 空白处拖动平移</span><label><input id="neighbors" type="checkbox" disabled> 仅看一跳邻居</label></div>
+      </div>
+    </main>
+    <aside class="inspector" aria-label="算法详情">
+      <div class="inspector-header">节点详情 <button id="deselect" aria-label="取消选择">×</button></div>
+      <div id="overview"><div class="overview-orbit" aria-hidden="true"><i></i><i></i><i></i><i></i></div><span class="eyebrow">EXPLORE CONNECTIONS</span><h2>算法不是孤岛</h2><p>选择一个节点，查看它的使用条件、关联算法和实际实现。</p><div class="overview-facts"><div><strong id="total-assets">7</strong><span>可调用资产</span></div><div><strong id="total-edges">3</strong><span>节点间关联</span></div></div><h3>如何读这张图</h3><p>每个点是一个已实现资产。连线只表示契约中登记的关联，不能单独证明组合满足问题条件。</p><p>圆点：算法<br>方点：数据表示<br>菱形：组合配方</p></div>
+      <div id="detail" hidden></div>
+    </aside>
+  </div>
+  <dialog id="source-dialog"><header><div><strong>实现源码</strong><small id="source-path"></small></div><button id="close-source">关闭</button></header><pre><code id="source-code"></code></pre></dialog>
+  <div id="notice" role="status" hidden></div>
+  <script id="catalog-data" type="application/json">GRAPH_DATA</script>
+  <script>/* GRAPH_SCRIPT */</script>
+</body>
+</html>

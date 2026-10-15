@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "numeric.radix2_fft",
+  "kind": "algorithm",
+  "name": "Radix-2 FFT",
+  "display_name": "Radix-2 FFT",
+  "header": "include/algorithm_assets/numeric/fft.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "discrete_fourier_transform",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "length_power_of_two": true,
+    "input_type": "complex_float64",
+    "result_guarantee": "approximate",
+    "normalization": "inverse_divides_n"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "conditional"
+  },
+  "input": {
+    "conditions": "Nonzero power-of-two N, finite complex<double> mutable span of exact plan size"
+  },
+  "output": {
+    "conditions": "In-place Fourier coefficients, inverse normalized; computation overflow modifies array then throws"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "Nonzero power-of-two N, finite complex<double> mutable span of exact plan size; In-place Fourier coefficients, inverse normalized; computation overflow modifies array then throws",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "Plan O(n); transform O(n log(n+1))",
+    "space": "n/2 complex roots, O(1) transform scratch; caller array extra",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "path": "数学/多项式/FFT.md",
+    "blob_sha": "8940ee1dbc560809e3d30681a916ddb62363b557",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

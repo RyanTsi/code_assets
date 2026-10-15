@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "graph.dijkstra",
+  "kind": "algorithm",
+  "name": "Dijkstra with indexed heap",
+  "header": "include/algorithm_assets/graph/dijkstra.hpp",
+  "documentation": "docs/FIRST_ASSETS.md#dijkstra",
+  "problem": "shortest_paths",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "weights": "nonnegative_int64",
+    "graph_updates": "none",
+    "sources": "single",
+    "result_guarantee": "exact"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_reads": "supported",
+    "concurrent_writes": "unsupported"
+  },
+  "input": {
+    "graph": "Immutable CsrGraph",
+    "source": "A valid vertex; empty graph has no valid source"
+  },
+  "output": {
+    "distances": "optional<uint64>: exact [0,UINT64_MAX-1], nullopt means unreachable",
+    "path": "Vertex sequence; empty iff unreachable; source path contains source",
+    "predecessor": "nullopt for source or unreachable; shortest path need not be unique"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "errors": "Invalid source/target throws; a reachable shortest distance >= UINT64_MAX throws overflow_error",
+    "overflow": "Large nonoptimal detours are skipped, not confused with unreachable vertices; conditional reachability pass distinguishes true overflow",
+    "threading": "Independent calls can share graph; result supports concurrent const reads",
+    "ownership": "Returned distances/parents owned; graph need not outlive result"
+  },
+  "complexity": {
+    "search": "O(n+m+(n+r)*log(n+1)), r <= m successful relaxations",
+    "space": "12n result bytes + 8n indexed heap payload; graph/input excluded; overflow-only reachability replaces heap with <=5n logical payload",
+    "path": "O(path_length) time and output space",
+    "guarantee": "worst-case traversal; no lazy heap duplicates"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 20,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative lower bound on owned payload, not a peak-allocation upper bound; excludes container headers, allocator overhead and caller input"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "graph.csr"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants in documentation; not formally verified",
+    "tests": "tests/algorithms_test.cpp",
+    "example": "examples/first_algorithms.cpp",
+    "benchmark": "not_measured",
+    "notes": "Floyd oracle on random directed multigraphs; paths checked; true overflow distinguished from overflowing detours"
+  },
+  "provenance": {
+    "implementation": "Written for this project; no source code copied",
+    "reference": "../oi-wiki-reference/docs/ and standard algorithm definitions",
+    "license": "Project distribution license not yet selected"
+  }
+}

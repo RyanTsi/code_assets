@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "id": "sequence.merge_intervals",
+  "kind": "algorithm",
+  "name": "区间并集",
+  "display_name": "区间并集",
+  "header": "include/algorithm_assets/sequence/intervals.hpp",
+  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "problem": "interval_union",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "coordinates": "int64",
+    "interval_semantics": "half_open",
+    "updates": "none",
+    "merge_touching": {
+      "one_of": [
+        true,
+        false
+      ]
+    }
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "Valid int64 intervals, value or borrowed span; empty intervals discarded"
+  },
+  "output": {
+    "conditions": "Owned sorted disjoint union; segmentation information lost"
+  },
+  "constraints": {
+    "max_n": 9223372036854775807,
+    "limits": "size_t, container max_size and allocation limits additionally apply",
+    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "numeric_and_state": "Valid int64 intervals, value or borrowed span; empty intervals discarded; Owned sorted disjoint union; segmentation information lost",
+    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+  },
+  "complexity": {
+    "operations": "O(n log(n+1))",
+    "space": "16n sorted input payload, in-place compaction, sparse output capacity compaction",
+    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+    "tests": "tests/repository_expansion_test.cpp",
+    "example": "examples/repository_expansion.cpp",
+    "benchmark": "not_measured",
+    "judge": "judge/EXPANSION_VALIDATION.md"
+  },
+  "provenance": {
+    "repository": "RyanTsi/Algorithm-notes",
+    "commit": "91c14556641c991c716b71906815abdd6a476188",
+    "path": "其他/区间合并.md",
+    "blob_sha": "c18b1354fec0f95855da2f5743897dd28d597b15",
+    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+    "license": "No repository license discovered; project distribution license not selected"
+  }
+}

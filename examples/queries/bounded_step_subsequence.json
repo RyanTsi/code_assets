@@ -1,0 +1,1 @@
+{"problem":"bounded_step_subsequence","n":300000,"max_difference":300000,"values":"int64","adjacent_difference":"original_value_absolute","execution_mode":"batch","output":"length"}

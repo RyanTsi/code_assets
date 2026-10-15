@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "id": "geometry.polar_sort",
+  "kind": "algorithm",
+  "name": "Precomputed angular keys with strict ordering",
+  "display_name": "极角排序",
+  "header": "include/algorithm_assets/geometry/polygon.hpp",
+  "documentation": "docs/GEOMETRY2D.md#api",
+  "problem": "geometry.polar_sort",
+  "parameters": [
+    "n"
+  ],
+  "requires": {
+    "coordinates": "float64_abs_le_1e100",
+    "result_guarantee": "approximate",
+    "input_structure": "unordered_points",
+    "input_mutation": "allowed"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "points": "Writable span<Point>; origin Point; all values finite and bounded"
+  },
+  "output": {
+    "order": "In-place CCW order starting positive x; zero vector first; angular-key ties by squared distance then exact lex order; no epsilon comparator"
+  },
+  "constraints": {
+    "max_n": 1152921504606846975,
+    "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
+    "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
+    "ownership": "Input order is mutated only after successful key construction/sort. No undo/history; caller may explicitly keep a copy.",
+    "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
+    "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
+    "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage."
+  },
+  "complexity": {
+    "sort": "O(n log(n+1)), n atan2 evaluations",
+    "space": "n*sizeof(Key) (32n on tested MinGW, may be 24n on MSVC) plus O(log n) sort stack"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 24,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "geometry.primitives"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants in GEOMETRY2D.md; floating correctness conditional on numeric predicates; not formally verified",
+    "tests": "tests/geometry_test.cpp",
+    "example": "examples/geometry2d.cpp",
+    "benchmark": "not_measured",
+    "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
+  },
+  "provenance": {
+    "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
+    "reference": "provenance/geometry2d-template.cpp.txt; docs/GEOMETRY2D.md lists read-only Wiki and primary-source references",
+    "license": "User-provided template; project distribution license not yet selected"
+  }
+}
