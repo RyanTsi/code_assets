@@ -4,7 +4,7 @@
   "kind": "algorithm",
   "name": "RollbackDisjointSet",
   "header": "include/algorithm_assets/connectivity/rollback_disjoint_set.hpp",
-  "documentation": "docs/FIRST_ASSETS.md#rollbackdisjointset",
+  "documentation": "docs/algorithms/connectivity.rollback_dsu.md",
   "problem": "connectivity",
   "parameters": [
     "n"

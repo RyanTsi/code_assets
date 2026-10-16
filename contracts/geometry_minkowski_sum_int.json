@@ -5,7 +5,7 @@
   "name": "整数闵可夫斯基和",
   "display_name": "整数闵可夫斯基和",
   "header": "include/algorithm_assets/geometry/minkowski.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/algorithms/geometry.minkowski_sum.int.md",
   "problem": "geometry.minkowski_sum",
   "parameters": [
     "n",
@@ -36,7 +36,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/algorithms/geometry.minkowski_sum.int.md",
     "numeric_and_state": "Validated strict integer convex boundaries; points/segments/empty allowed; Owned canonical exact IntegerConvexPolygon; output coordinate bound1e9",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

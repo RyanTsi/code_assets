@@ -4,7 +4,7 @@
   "kind": "algorithm",
   "name": "DisjointSet",
   "header": "include/algorithm_assets/connectivity/disjoint_set.hpp",
-  "documentation": "docs/FIRST_ASSETS.md#disjointset",
+  "documentation": "docs/algorithms/connectivity.dsu.md",
   "problem": "connectivity",
   "parameters": [
     "n"

@@ -4,7 +4,7 @@
   "kind": "recipe",
   "name": "InversionsFenwick",
   "header": "include/algorithm_assets/recipes/inversions_fenwick.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/recipes/sequence.inversions_fenwick.md",
   "problem": "inversion_count",
   "parameters": [
     "n"
@@ -39,7 +39,7 @@
   "constraints": {
     "max_n": 6074001000,
     "allocation": "size_t and vector max_size / available memory limits additionally apply",
-    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/REPOSITORY_ASSETS.md",
+    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/recipes/sequence.inversions_fenwick.md",
     "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
     "numeric": "n(n-1)/2 <= UINT64_MAX checked before sorting; duplicate values are not inversions"
   },

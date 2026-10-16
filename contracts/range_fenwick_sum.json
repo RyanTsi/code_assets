@@ -4,7 +4,7 @@
   "kind": "algorithm",
   "name": "FenwickSum",
   "header": "include/algorithm_assets/range/fenwick_sum.hpp",
-  "documentation": "docs/REPOSITORY_ASSETS.md#fenwicksum",
+  "documentation": "docs/algorithms/range.fenwick_sum.md",
   "problem": "range_sum",
   "parameters": [
     "n"
@@ -42,7 +42,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "allocation": "size_t and vector max_size / available memory limits additionally apply",
-    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/REPOSITORY_ASSETS.md",
+    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/algorithms/range.fenwick_sum.md",
     "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
     "numeric": "Stored block sums fit int64; updates validated before mutation; logical point may overflow; query narrows only final wide sum"
   },

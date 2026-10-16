@@ -4,23 +4,17 @@
 
 ## 当前状态
 
-版本 `0.1.0` 已加入首批试验资产：普通并查集、可回滚并查集、紧凑线段树、Dijkstra、Neumaier 补偿求和，以及 CSR 图存储和离线动态连通性配方。
+版本 `0.1.0` 当前有 74 项登记资产、50 个公共头文件，覆盖图与连通性、序列与区间、字符串、整数代数、数值计算、背包与二维几何。
 
-现已扩展二维几何：10 个独立公共头文件覆盖基础表示、线性几何、多边形、凸包、最近点对、旋转卡壳、半平面裁剪和圆；26 条新契约区分整数精确路径与浮点近似路径，并登记实际组合配方。使用与精度边界见 [GEOMETRY2D.md](docs/GEOMETRY2D.md)，验证与基准见 [GEOMETRY_VALIDATION.md](docs/GEOMETRY_VALIDATION.md)。
+从 [算法文档目录](docs/README.md) 选择算法、数据表示或组合配方；每项均有独立正文、结构化契约、可编译示例和测试。整数与浮点等变体分别说明。
 
-均可直接 include，并配有结构化契约、可编译示例、正确性说明和对照测试。最小目录工具能匹配已登记的实现/配方并报告排除理由；**还没有任意自然语言检索、新组合搜索或已校准的时延/峰值内存模型**。详见 [首批资产与使用条件](docs/FIRST_ASSETS.md)。
+目录工具能匹配已登记的实现/配方并报告排除理由；**还没有任意自然语言检索、新组合搜索或已校准的时延/峰值内存模型**。用法见 [目录检索](docs/project/CATALOG.md)。
 
-从个人博客与算法笔记新加入 KMP、树状数组、Kruskal 最小生成森林、拓扑排序、64 位 GF(2) 线性基、归并逆序对，以及树状数组逆序对组合和双字精确累加器。它们使用独立头文件，契约、来源和取舍见 [REPOSITORY_ASSETS.md](docs/REPOSITORY_ASSETS.md)，真实判题与可复现单文件见 [judge/VALIDATION.md](judge/VALIDATION.md)。
-
-第二批扩展图与约束、序列/区间、FFT、LU、吸收马尔科夫链、背包、模运算与几何碰撞/覆盖圆：新增 20 个独立头文件和 30 条算法/表示/配方契约。使用条件见 [REPOSITORY_EXPANSION.md](docs/REPOSITORY_EXPANSION.md)，两仓库 116 个 Markdown 文件的逐项状态见 [载入台账](docs/REPOSITORY_IMPORT.md)。暂缓和部分覆盖明确列出，不把所有文章都视作已迁入。
-
-Codeforces 的组合补测 CF510E 已获 Accepted：复用素数筛与 Dinic，验证归约及环答案恢复，本地 507 组检查通过。输入条件、整体成本、本地对拍和正式判题记录见 [CODEFORCES_VALIDATION.md](judge/CODEFORCES_VALIDATION.md)。
-
-新增三个从题目验证的可调用配方：最低费用非重叠区间对、有限步差最长子序列、树上全部最远距离。接口与成本见 [PROBLEM_COMBINATIONS.md](docs/PROBLEM_COMBINATIONS.md)，本地对拍和平台记录见 [COMBINATION_VALIDATION.md](judge/COMBINATION_VALIDATION.md)。
+[工程资料](docs/project/README.md) 集中维护设计约定、计划、验证与应用案例。个人博客和笔记的116个来源文件、审核范围与取舍见 [来源台账](docs/project/REPOSITORY_IMPORT.md)；正式判题与可复现单文件见 [判题证据](judge/VALIDATION.md)。
 
 ## 交互式关系图
 
-真实音频问题的摘要检索与组合验证见 [AUDIO_SPECTRUM_ASSESSMENT.md](docs/AUDIO_SPECTRUM_ASSESSMENT.md)：复用 FFT 与补偿求和，提供可编译的 PCM 流频谱消费端 `examples/audio_spectrum.cpp`。它验证数值核心与分块处理，尚未登记为生产音频资产，也未接入录音设备。
+真实音频问题的摘要检索与组合验证见 [AUDIO_SPECTRUM_ASSESSMENT.md](docs/project/AUDIO_SPECTRUM_ASSESSMENT.md)：复用 FFT 与补偿求和，提供可编译的 PCM 流频谱消费端 `examples/audio_spectrum.cpp`。它验证数值核心与分块处理，尚未登记为生产音频资产，也未接入录音设备。
 
 打开 [visualization/index.html](visualization/index.html) 可查看类似 Obsidian 的本地关系图：节点拖拽、画布平移/缩放、搜索、关系筛选、一跳邻居聚焦，以及契约和实际源码阅读。页面自包含，可在浏览器中离线打开，无需安装前端依赖。
 
@@ -31,7 +25,7 @@ python tools/build_graph.py
 python tests/graph_test.py
 ```
 
-图谱自动读取 `contracts/*.json`，目前有 74 个资产、80 对关联。每对节点的多个关系合并为一条线；悬停连线或选中节点可读具体类型、方向及条件。算法、数据表示、组合配方使用不同形状，孤立节点不会被隐藏。图谱帮助浏览已有关系，组合可行性仍须检查完整契约。实现说明见 [关系图维护](docs/GRAPH.md)。
+图谱自动读取 `contracts/*.json`，目前有 74 个资产、80 对关联。每对节点的多个关系合并为一条线；悬停连线或选中节点可读具体类型、方向及条件。算法、数据表示、组合配方使用不同形状，孤立节点不会被隐藏。图谱帮助浏览已有关系，组合可行性仍须检查完整契约。实现说明见 [关系图维护](docs/project/GRAPH.md)。
 
 ## 接入已有项目
 
@@ -149,11 +143,12 @@ benchmarks/                最近点对时间/分配/容量基准；峰值内存
 gaps/                      无匹配问题与能力缺口记录
 tools/                     最小目录校验与匹配工具
 visualization/             自包含关系图及其 HTML/CSS/JS 源文件
-docs/                      设计约定、规划与初始化记录
+docs/                      算法文档目录与独立资产正文
+docs/project/              集中的工程约定、来源台账、验证与应用记录
 provenance/                几何模板原文与固定提交的仓库文件清单
 judge/                     题目适配器、生成单文件、源码哈希与判题证据
 ```
 
 后续优先 include 各算法的独立头文件，便利总头文件不替代模块边界。大型外部依赖只由相应模块显式引入。
 
-参见 [设计约定](docs/DESIGN.md)、[建设计划](docs/ROADMAP.md) 和 [初始化记录](docs/INITIALIZATION.md)。原 OI Wiki 在工作区的 `../oi-wiki-reference/`，默认作为参考材料。
+参见 [设计约定](docs/project/DESIGN.md)、[建设计划](docs/project/ROADMAP.md) 和 [初始化记录](docs/project/HISTORY.md#初始化记录)。原 OI Wiki 在工作区的 `../oi-wiki-reference/`，默认作为参考材料。

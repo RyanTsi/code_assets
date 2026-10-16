@@ -5,7 +5,7 @@
   "name": "Dinic 最大流",
   "display_name": "Dinic 最大流",
   "header": "include/algorithm_assets/graph/dinic.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/algorithms/graph.dinic.md",
   "problem": "maximum_flow",
   "parameters": [
     "n",
@@ -37,7 +37,7 @@
   "constraints": {
     "max_n": 2147483647,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/algorithms/graph.dinic.md",
     "numeric_and_state": "Directed capacities, distinct valid terminals, optional uint64 flow limit; Added flow, maximal flag; edge states and residual reachability; reset all flow",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

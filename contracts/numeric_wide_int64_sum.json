@@ -4,7 +4,7 @@
   "kind": "representation",
   "name": "WideInt64Sum",
   "header": "include/algorithm_assets/numeric/wide_int64_sum.hpp",
-  "documentation": "docs/REPOSITORY_ASSETS.md#wideint64sum",
+  "documentation": "docs/representations/numeric.wide_int64_sum.md",
   "problem": "wide_integer_accumulation",
   "parameters": [],
   "requires": {
@@ -32,7 +32,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "allocation": "size_t and vector max_size / available memory limits additionally apply",
-    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/REPOSITORY_ASSETS.md",
+    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/representations/numeric.wide_int64_sum.md",
     "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
     "numeric": "Accumulator signed128; final narrowing int64 checked; failed operations leave state unchanged"
   },

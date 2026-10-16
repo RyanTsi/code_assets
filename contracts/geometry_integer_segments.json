@@ -5,7 +5,7 @@
   "name": "Exact bounded integer segment predicates",
   "display_name": "整数线段相交",
   "header": "include/algorithm_assets/geometry/linear.hpp",
-  "documentation": "docs/GEOMETRY2D.md#api",
+  "documentation": "docs/algorithms/geometry.integer_segments.md",
   "problem": "geometry.segment_predicates",
   "parameters": [],
   "requires": {
@@ -59,7 +59,7 @@
     }
   ],
   "evidence": {
-    "correctness": "Reasoned invariants in GEOMETRY2D.md; floating correctness conditional on numeric predicates; not formally verified",
+    "correctness": "Reasoned invariants in docs/algorithms/geometry.integer_segments.md; floating correctness conditional on numeric predicates; not formally verified",
     "tests": "tests/geometry_test.cpp",
     "example": "examples/geometry2d.cpp",
     "benchmark": "not_measured",
@@ -67,7 +67,7 @@
   },
   "provenance": {
     "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
-    "reference": "provenance/geometry2d-template.cpp.txt; docs/GEOMETRY2D.md lists read-only Wiki and primary-source references",
+    "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
     "license": "User-provided template; project distribution license not yet selected"
   }
 }

@@ -4,7 +4,7 @@
   "kind": "algorithm",
   "name": "TopologicalOrder",
   "header": "include/algorithm_assets/graph/topological_sort.hpp",
-  "documentation": "docs/REPOSITORY_ASSETS.md#topologicalorder",
+  "documentation": "docs/algorithms/graph.topological_sort.md",
   "problem": "topological_order",
   "parameters": [
     "n",
@@ -41,7 +41,7 @@
   "constraints": {
     "max_n": 4294967294,
     "allocation": "size_t and vector max_size / available memory limits additionally apply",
-    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/REPOSITORY_ASSETS.md",
+    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/algorithms/graph.topological_sort.md",
     "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
     "cycle": "Processed prefix only, no cycle witness; unweighted path omits weight storage"
   },

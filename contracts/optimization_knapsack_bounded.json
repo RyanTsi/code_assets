@@ -5,7 +5,7 @@
   "name": "单调队列多重背包",
   "display_name": "单调队列多重背包",
   "header": "include/algorithm_assets/optimization/knapsack.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/algorithms/optimization.knapsack_bounded.md",
   "problem": "knapsack",
   "parameters": [
     "n",
@@ -37,7 +37,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/algorithms/optimization.knapsack_bounded.md",
     "numeric_and_state": "Items with size_t count; zero count ignored, zero cost supported; Exact int64 optimum or actual feasible overflow; no witness",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

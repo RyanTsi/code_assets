@@ -5,7 +5,7 @@
   "name": "幂等稀疏表",
   "display_name": "幂等稀疏表",
   "header": "include/algorithm_assets/range/sparse_table.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/algorithms/range.sparse_table.md",
   "problem": "range_fold",
   "parameters": [
     "n",
@@ -40,7 +40,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/algorithms/range.sparse_table.md",
     "numeric_and_state": "Copied T elements, pure Combine; no identity needed; Ordered fold for nonempty half-open range; invalid/empty query throws",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

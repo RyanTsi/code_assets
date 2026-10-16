@@ -4,7 +4,7 @@
   "kind": "algorithm",
   "name": "SegmentTree",
   "header": "include/algorithm_assets/range/segment_tree.hpp",
-  "documentation": "docs/FIRST_ASSETS.md#segmenttree",
+  "documentation": "docs/algorithms/range.segment_tree.md",
   "problem": "range_fold",
   "parameters": [
     "n"

@@ -5,7 +5,7 @@
   "name": "森林倍增 LCA",
   "display_name": "森林倍增 LCA",
   "header": "include/algorithm_assets/graph/lowest_common_ancestor.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/algorithms/graph.lca.md",
   "problem": "lowest_common_ancestor",
   "parameters": [
     "n"
@@ -35,7 +35,7 @@
   "constraints": {
     "max_n": 4294967294,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/algorithms/graph.lca.md",
     "numeric_and_state": "uint32 parent array, roots point to themselves; cycles rejected; optional ancestor/LCA/uint64 distance; different roots nullopt",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

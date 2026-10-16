@@ -111,7 +111,7 @@
     "numeric.compensated_sum": "7a0b1280a8bd1bfcd89dfb994548488c80a0c6b1f8b1e6def25e4aa9a39f6435",
     "numeric.radix2_fft": "a93ac2cbffb8806fbd12db3ed7508f77e2ab51016896d729666a6db1a1ba1233"
   },
-  "validation": "docs/AUDIO_SPECTRUM_ASSESSMENT.md",
+  "validation": "docs/project/AUDIO_SPECTRUM_ASSESSMENT.md",
   "new_registered_assets": 0,
   "real_audio_device_tested": false
 }

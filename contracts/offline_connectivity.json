@@ -4,7 +4,7 @@
   "kind": "recipe",
   "name": "Offline dynamic connectivity",
   "header": "include/algorithm_assets/recipes/offline_connectivity.hpp",
-  "documentation": "docs/FIRST_ASSETS.md#offline-connectivity",
+  "documentation": "docs/recipes/connectivity.offline.md",
   "problem": "connectivity",
   "parameters": [
     "n",

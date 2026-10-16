@@ -5,7 +5,7 @@
   "name": "带负环状态的 Bellman-Ford",
   "display_name": "带负环状态的 Bellman-Ford",
   "header": "include/algorithm_assets/graph/bellman_ford.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/algorithms/graph.bellman_ford.md",
   "problem": "shortest_paths",
   "parameters": [
     "n",
@@ -42,7 +42,7 @@
   "constraints": {
     "max_n": 4294967294,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/algorithms/graph.bellman_ford.md",
     "numeric_and_state": "Directed signed edges; |w| <= INT64_MAX/max(n,1); optional source; Owned finite/unreachable/negative_infinity labels; value meaningful only if finite",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

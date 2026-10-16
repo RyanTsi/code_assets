@@ -5,7 +5,7 @@
   "name": "区间并集",
   "display_name": "区间并集",
   "header": "include/algorithm_assets/sequence/intervals.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/algorithms/sequence.merge_intervals.md",
   "problem": "interval_union",
   "parameters": [
     "n"
@@ -41,7 +41,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/algorithms/sequence.merge_intervals.md",
     "numeric_and_state": "Valid int64 intervals, value or borrowed span; empty intervals discarded; Owned sorted disjoint union; segmentation information lost",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

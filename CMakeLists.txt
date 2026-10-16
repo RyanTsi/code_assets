@@ -127,6 +127,8 @@ if(ALGORITHM_ASSETS_BUILD_TESTS)
     ${CMAKE_CURRENT_SOURCE_DIR}/tools/catalog.py validate)
   add_test(NAME catalog_matching COMMAND ${Python3_EXECUTABLE}
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/catalog_test.py)
+  add_test(NAME documentation COMMAND ${Python3_EXECUTABLE}
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/documentation_test.py)
   add_test(NAME graph_catalog COMMAND ${Python3_EXECUTABLE}
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/graph_test.py)
 endif()

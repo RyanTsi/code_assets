@@ -4,7 +4,7 @@
   "kind": "algorithm",
   "name": "Dijkstra with indexed heap",
   "header": "include/algorithm_assets/graph/dijkstra.hpp",
-  "documentation": "docs/FIRST_ASSETS.md#dijkstra",
+  "documentation": "docs/algorithms/graph.dijkstra.md",
   "problem": "shortest_paths",
   "parameters": [
     "n",

@@ -5,7 +5,7 @@
   "name": "Projection, distances and intersections",
   "display_name": "直线与线段几何",
   "header": "include/algorithm_assets/geometry/linear.hpp",
-  "documentation": "docs/GEOMETRY2D.md#api",
+  "documentation": "docs/algorithms/geometry.linear.md",
   "problem": "geometry.linear_operations",
   "parameters": [],
   "requires": {
@@ -74,7 +74,7 @@
     }
   ],
   "evidence": {
-    "correctness": "Reasoned invariants in GEOMETRY2D.md; floating correctness conditional on numeric predicates; not formally verified",
+    "correctness": "Reasoned invariants in docs/algorithms/geometry.linear.md; floating correctness conditional on numeric predicates; not formally verified",
     "tests": "tests/geometry_test.cpp",
     "example": "examples/geometry2d.cpp",
     "benchmark": "not_measured",
@@ -82,7 +82,7 @@
   },
   "provenance": {
     "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
-    "reference": "provenance/geometry2d-template.cpp.txt; docs/GEOMETRY2D.md lists read-only Wiki and primary-source references",
+    "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
     "license": "User-provided template; project distribution license not yet selected"
   }
 }

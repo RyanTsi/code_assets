@@ -4,7 +4,7 @@
   "kind": "algorithm",
   "name": "Neumaier compensated sum",
   "header": "include/algorithm_assets/numeric/compensated_sum.hpp",
-  "documentation": "docs/FIRST_ASSETS.md#compensatedsum",
+  "documentation": "docs/algorithms/numeric.compensated_sum.md",
   "problem": "sum",
   "parameters": [
     "n"

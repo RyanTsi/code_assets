@@ -1,6 +1,8 @@
 # 正确性验证
 
-音频消费端新增 `audio_consumer_composition`，验证分块不变性、窗加权能量、DC/Nyquist、幅度标定、非均匀/空 bin 频段、非法块与 reset。可选 `audio_scipy_reference` 通过实际 CLI 对照 SciPy periodogram，60组共240帧；缺少 NumPy/SciPy 时不启用该组。运行 `ctest --test-dir build -R 'audio_consumer_composition|audio_scipy_reference' --output-on-failure`。这两组验证不等于真实设备或硬实时验证，详情见 `docs/AUDIO_SPECTRUM_ASSESSMENT.md`。
+`documentation_test.py` 验证每项登记资产独占一份正文，文档目录覆盖全部资产，Markdown 本地链接与锚点有效；负例覆盖共用正文、引用汇总页、章节锚点与断链。CTest 名称为 `documentation`，可直接运行 `python tools/check_docs.py` 检查。
+
+音频消费端新增 `audio_consumer_composition`，验证分块不变性、窗加权能量、DC/Nyquist、幅度标定、非均匀/空 bin 频段、非法块与 reset。可选 `audio_scipy_reference` 通过实际 CLI 对照 SciPy periodogram，60组共240帧；缺少 NumPy/SciPy 时不启用该组。运行 `ctest --test-dir build -R 'audio_consumer_composition|audio_scipy_reference' --output-on-failure`。这两组验证不等于真实设备或硬实时验证，详情见 `docs/project/AUDIO_SPECTRUM_ASSESSMENT.md`。
 
 `algorithms_test.cpp` 覆盖朴素对照、关键性质、边界输入、回滚和撤销序列、数值精度与整体配方。`catalog_test.py` 覆盖单算法/配方选择、条件不足、不支持的需求、错误领域、资源下界拒绝和元数据错误。
 

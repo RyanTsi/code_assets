@@ -5,7 +5,7 @@
   "name": "2-SAT 配方",
   "display_name": "2-SAT 配方",
   "header": "include/algorithm_assets/graph/two_sat.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/recipes/logic.two_sat.md",
   "problem": "boolean_constraints",
   "parameters": [
     "n",
@@ -36,7 +36,7 @@
   "constraints": {
     "max_n": 2147483647,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/recipes/logic.two_sat.md",
     "numeric_and_state": "n Boolean variables; Literal {variable,value}; OR, force and implication clauses; SAT flag and complete owned uint8 assignment; UNSAT has empty assignment",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

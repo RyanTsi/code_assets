@@ -5,7 +5,7 @@
   "name": "有序坐标压缩",
   "display_name": "有序坐标压缩",
   "header": "include/algorithm_assets/sequence/coordinate_compression.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/representations/sequence.coordinate_compression.md",
   "problem": "coordinate_compression",
   "parameters": [
     "n"
@@ -35,7 +35,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/representations/sequence.coordinate_compression.md",
     "numeric_and_state": "span copied or vector moved; duplicates/empty accepted; Borrowed sorted unique keys; optional exact rank, lower rank, checked inverse mapping",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

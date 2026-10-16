@@ -5,7 +5,7 @@
   "name": "奇数位压缩素数筛",
   "display_name": "奇数位压缩素数筛",
   "header": "include/algorithm_assets/algebra/prime_sieve.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/algorithms/algebra.prime_sieve.md",
   "problem": "primality_table",
   "parameters": [
     "n"
@@ -35,7 +35,7 @@
   "constraints": {
     "max_n": 4294967295,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/algorithms/algebra.prime_sieve.md",
     "numeric_and_state": "uint32 inclusive limit N, queries within limit; Exact primality or owned sorted primes or callback; 0/1 false",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

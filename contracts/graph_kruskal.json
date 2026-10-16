@@ -4,7 +4,7 @@
   "kind": "algorithm",
   "name": "KruskalMinimumSpanningForest",
   "header": "include/algorithm_assets/graph/kruskal.hpp",
-  "documentation": "docs/REPOSITORY_ASSETS.md#kruskal",
+  "documentation": "docs/algorithms/graph.kruskal.md",
   "problem": "minimum_spanning_forest",
   "parameters": [
     "n",
@@ -38,7 +38,7 @@
   "constraints": {
     "max_n": 2147483647,
     "allocation": "size_t and vector max_size / available memory limits additionally apply",
-    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/REPOSITORY_ASSETS.md",
+    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/algorithms/graph.kruskal.md",
     "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
     "numeric": "Signed weights; only final forest sum must fit int64; input unchanged"
   },

@@ -5,7 +5,7 @@
   "name": "非重叠区间对最低费用",
   "display_name": "非重叠区间对最低费用",
   "header": "include/algorithm_assets/recipes/disjoint_interval_pair.hpp",
-  "documentation": "docs/PROBLEM_COMBINATIONS.md",
+  "documentation": "docs/recipes/sequence.disjoint_interval_pair.md",
   "problem": "disjoint_interval_pair",
   "parameters": [
     "n",
@@ -36,7 +36,7 @@
   },
   "constraints": {
     "max_n": 9223372036854775807,
-    "complete_contract": "docs/PROBLEM_COMBINATIONS.md",
+    "complete_contract": "docs/recipes/sequence.disjoint_interval_pair.md",
     "errors": "Invalid domain rejected; documented arithmetic overflow rejected; allocations propagate; see complete contract"
   },
   "complexity": {

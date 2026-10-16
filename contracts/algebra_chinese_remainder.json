@@ -5,7 +5,7 @@
   "name": "广义中国剩余定理配方",
   "display_name": "广义中国剩余定理配方",
   "header": "include/algorithm_assets/algebra/modular.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/recipes/algebra.chinese_remainder.md",
   "problem": "chinese_remainder",
   "parameters": [
     "n"
@@ -35,7 +35,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/recipes/algebra.chinese_remainder.md",
     "numeric_and_state": "Congruences, moduli>=1, residues normalized; noncoprime accepted; optional least nonnegative residue and lcm; inconsistency nullopt, lcm overflow throws",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

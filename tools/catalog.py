@@ -41,6 +41,7 @@ def validate(assets: list[dict]) -> None:
     ids = [asset.get("id") for asset in assets]
     if len(set(ids)) != len(ids):
         raise ValueError("Duplicate asset IDs")
+    documentation_owners: dict[str, str] = {}
     for asset in assets:
         missing = REQUIRED - asset.keys()
         if missing:
@@ -64,7 +65,18 @@ def validate(assets: list[dict]) -> None:
         if not isinstance(asset["constraints"].get("max_n"), int):
             raise ValueError(f"{asset['id']}: max_n must be an integer")
         local_file(asset["header"])
-        local_file(asset["documentation"])
+        documentation = asset["documentation"]
+        if not isinstance(documentation, str) or "#" in documentation:
+            raise ValueError(f"{asset['id']}: documentation must be an independent page, not a section")
+        page = local_file(documentation)
+        directory = {"algorithm": "algorithms", "representation": "representations",
+                     "recipe": "recipes"}[asset["kind"]]
+        if page.suffix != ".md" or page.parent != ROOT / "docs" / directory:
+            raise ValueError(f"{asset['id']}: documentation must be under docs/{directory}/")
+        page_key = str(page).casefold()
+        if page_key in documentation_owners:
+            raise ValueError(f"{asset['id']}: documentation already owned by {documentation_owners[page_key]}")
+        documentation_owners[page_key] = asset["id"]
         local_file(asset["evidence"]["tests"])
         local_file(asset["evidence"]["example"])
         for relation in asset["relations"]:

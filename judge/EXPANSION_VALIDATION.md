@@ -15,7 +15,7 @@
 
 核心对照见 `tests/repository_expansion_test.cpp`：枚举割、匹配、布尔赋值，Floyd 负环可达与强连通闭包、父链 LCA、二次 DP、子集区间覆盖、DFT/朴素卷积、已知解矩阵、背包枚举、CRT/试除和 Minkowski 点对凸包、候选圆穷举。30000 点长链证明当前测试路径没有递归调用栈依赖。`tests/expansion_judge_test.py` 为8个生成程序另做边界与160组随机 stdin/stdout 对照。
 
-没有为未入库的费用流、lazy、持久化、SVD、完整 ML 训练编造通过记录。完整来源处理状态见 `docs/REPOSITORY_IMPORT.md`。
+没有为未入库的费用流、lazy、持久化、SVD、完整 ML 训练编造通过记录。完整来源处理状态见 `docs/project/REPOSITORY_IMPORT.md`。
 
 本机 GCC 15.2.0 MinGW Release 以 `-Werror` 构建：12组 CTest 全过，47个公共头文件独立编译和多翻译单元链接通过；源码/安装包两个消费工程各4组实际算法测试通过。新批次在 Debug 的 `_GLIBCXX_DEBUG` / `_GLIBCXX_ASSERTIONS` 下通过，并强制启用 `ALGORITHM_ASSETS_FORCE_PORTABLE_MODULAR` 测试无128位扩展的模乘路径。未在其它编译器、ABI 或 BLAS/GPU 后端测量性能；没有可用 MinGW ASan/UBSan 链接库，不声称 sanitizer 通过。
 

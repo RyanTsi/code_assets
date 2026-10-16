@@ -5,7 +5,7 @@
   "name": "Manacher 回文半径",
   "display_name": "Manacher 回文半径",
   "header": "include/algorithm_assets/strings/manacher.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/algorithms/strings.manacher.md",
   "problem": "palindrome_search",
   "parameters": [
     "n"
@@ -35,7 +35,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/algorithms/strings.manacher.md",
     "numeric_and_state": "Arbitrary bytes including NUL; n<=SIZE_MAX/2; Owned odd/even radii, earliest longest half-open range; empty [0,0)",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

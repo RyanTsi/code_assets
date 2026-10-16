@@ -4,7 +4,7 @@
   "kind": "representation",
   "name": "CsrGraph",
   "header": "include/algorithm_assets/graph/csr_graph.hpp",
-  "documentation": "docs/FIRST_ASSETS.md#csrgraph",
+  "documentation": "docs/representations/graph.csr.md",
   "problem": "graph_storage",
   "parameters": [
     "n",

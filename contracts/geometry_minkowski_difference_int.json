@@ -5,7 +5,7 @@
   "name": "整数闵可夫斯基差",
   "display_name": "整数闵可夫斯基差",
   "header": "include/algorithm_assets/geometry/minkowski.hpp",
-  "documentation": "docs/REPOSITORY_EXPANSION.md",
+  "documentation": "docs/algorithms/geometry.minkowski_difference.int.md",
   "problem": "geometry.minkowski_difference",
   "parameters": [
     "n",
@@ -36,7 +36,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/REPOSITORY_EXPANSION.md",
+    "complete_contract": "docs/algorithms/geometry.minkowski_difference.int.md",
     "numeric_and_state": "Same canonical integer inputs; difference A+(-B), not invertible; Owned exact canonical hull of A-B",
     "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
   },

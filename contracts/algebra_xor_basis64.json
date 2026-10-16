@@ -4,7 +4,7 @@
   "kind": "algorithm",
   "name": "XorBasis64",
   "header": "include/algorithm_assets/algebra/xor_basis.hpp",
-  "documentation": "docs/REPOSITORY_ASSETS.md#xorbasis64",
+  "documentation": "docs/algorithms/algebra.xor_basis64.md",
   "problem": "gf2_span",
   "parameters": [],
   "requires": {
@@ -41,7 +41,7 @@
   "constraints": {
     "max_n": 9223372036854775807,
     "allocation": "size_t and vector max_size / available memory limits additionally apply",
-    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/REPOSITORY_ASSETS.md",
+    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/algorithms/algebra.xor_basis64.md",
     "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
     "enumeration": "No multiplicity, nonempty-subset interpretation, witness or deletion; full rank permits all uint64 indices"
   },

@@ -31,13 +31,13 @@ def validate(ledger=None):
 
 def report(ledger):
     count=len(ledger['decisions'])
-    rows=['# 个人仓库载入台账','',f'台账覆盖固定提交的 {count} 个 Markdown 文件。`full` 为完整候选正文审核，`sections` 为章节/代码结构审核，`inventory_only` 仅按目录判断范围；不声称所有正文都已逐字阅读。partial 和 deferred 都不是完整覆盖。','','核心新增实现、数值/状态约束、空间成本和正确性说明见 [REPOSITORY_EXPANSION.md](REPOSITORY_EXPANSION.md)。每个映射 ID 都验证存在真实头文件、契约、测试与示例。源仓库无 LICENSE，本库整体许可证尚待选择。','','```sh','python tools/repository_import.py','python tools/repository_import.py --report','```','']
+    rows=['# 个人仓库载入台账','',f'台账覆盖固定提交的 {count} 个 Markdown 文件。`full` 为完整候选正文审核，`sections` 为章节/代码结构审核，`inventory_only` 仅按目录判断范围；不声称所有正文都已逐字阅读。partial 和 deferred 都不是完整覆盖。','','每项资产的接口、数值/状态约束、空间成本和正确性说明见 [独立文档目录](../README.md)。每个映射 ID 都验证存在真实头文件、契约、测试与示例。源仓库无 LICENSE，本库整体许可证尚待选择。','','```sh','python tools/repository_import.py','python tools/repository_import.py --report','```','']
     counts=Counter(row['disposition'] for row in ledger['decisions'])
     rows+=['处理状态：'+ '；'.join(f'{k}={v}' for k,v in sorted(counts.items()))+'。','','| 来源路径 | 审核范围 | 状态 | 已有代码资产 / 处理理由 |','| --- | --- | --- | --- |']
     for row in ledger['decisions']:
         reason=', '.join(row['assets'])+'；'+row['reason']+'；'+'；'.join(row['deferred_scopes'])
         rows.append(f"| {row['repository']}: `{row['path']}` | {row['review_scope']} | {row['disposition']} | {reason.replace('|','/')} |")
-    (ROOT/'docs/REPOSITORY_IMPORT.md').write_text('\n'.join(rows)+'\n',encoding='utf-8')
+    (ROOT/'docs/project/REPOSITORY_IMPORT.md').write_text('\n'.join(rows)+'\n',encoding='utf-8')
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
