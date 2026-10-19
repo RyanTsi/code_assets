@@ -1,10 +1,10 @@
 # 资产文档目录
 
-每个已登记算法、数据表示和组合配方各有独立正文，契约的 `documentation` 直接指向该文件；整数与浮点等契约不同的变体分别成文。文档含接口说明、输入输出、限制、状态、成本、依据与关联，不要求先阅读某批次的长篇汇总。
+每个已登记算法、数据表示和组合配方各有独立正文；契约和关系图直接引用该文件。数值与状态保证不同的变体分别成文。
 
-公共约定见 [设计约定](project/DESIGN.md)、[几何数值约定](project/GEOMETRY2D.md) 和 [目录检索](project/CATALOG.md#目录检索)。阶段计划、验证报告、来源台账和应用案例单独保留，不充当某个算法的正文。
+公共约定、建设计划、来源与验证记录统一从 [工程资料](project/README.md) 进入。三维网格与Eigen的使用见 [本批集成说明](project/MESH3D_INTEGRATION.md)。
 
-## 算法（54）
+## 算法（62）
 
 | 稳定 ID | 独立文档 | 问题 |
 | --- | --- | --- |
@@ -38,6 +38,7 @@
 | `geometry.polygon_measures` | [多边形面积与周长](algorithms/geometry.polygon_measures.md) | `geometry.polygon_measures` |
 | `geometry.predicates.float` | [浮点几何谓词](algorithms/geometry.predicates.float.md) | `geometry.predicates` |
 | `geometry.predicates.int` | [整数几何谓词](algorithms/geometry.predicates.int.md) | `geometry.predicates` |
+| `geometry3d.closest_point_triangle` | [三维点到三角形最近点](algorithms/geometry3d.closest_point_triangle.md) | `point_triangle_closest` |
 | `graph.bellman_ford` | [带负环状态的 Bellman-Ford](algorithms/graph.bellman_ford.md) | `shortest_paths` |
 | `graph.dijkstra` | [Dijkstra with indexed heap](algorithms/graph.dijkstra.md) | `shortest_paths` |
 | `graph.dinic` | [Dinic 最大流](algorithms/graph.dinic.md) | `maximum_flow` |
@@ -46,6 +47,13 @@
 | `graph.lca` | [森林倍增 LCA](algorithms/graph.lca.md) | `lowest_common_ancestor` |
 | `graph.strong_components` | [强连通分量](algorithms/graph.strong_components.md) | `strong_components` |
 | `graph.topological_sort` | [TopologicalOrder](algorithms/graph.topological_sort.md) | `topological_order` |
+| `mesh.cotangent` | [Eigen 余切刚度与重心质量矩阵](algorithms/mesh.cotangent.md) | `triangle_mesh_operators` |
+| `mesh.obj_io` | [保留面角与逻辑 ID 的 OBJ 交换](algorithms/mesh.obj_io.md) | `mesh_obj_exchange` |
+| `mesh.surface_geometry` | [三角网格面积与法向](algorithms/mesh.surface_geometry.md) | `triangle_mesh_geometry` |
+| `mesh.triangle_bvh` | [快照三角网格 BVH 查询与缓存](algorithms/mesh.triangle_bvh.md) | `mesh_spatial_queries` |
+| `mesh.triangle_edit` | [事务式三角网格 split、flip、collapse](algorithms/mesh.triangle_edit.md) | `triangle_mesh_edit` |
+| `mesh.validation` | [表面网格能力校验与边界环](algorithms/mesh.validation.md) | `surface_mesh_validation` |
+| `mesh.vtu_export` | [四面体与顶点标量场 VTU 导出](algorithms/mesh.vtu_export.md) | `tetrahedral_vtu_export` |
 | `numeric.compensated_sum` | [Neumaier compensated sum](algorithms/numeric.compensated_sum.md) | `sum` |
 | `numeric.dense_lu` | [部分主元 LU](algorithms/numeric.dense_lu.md) | `linear_system` |
 | `numeric.radix2_fft` | [Radix-2 FFT](algorithms/numeric.radix2_fft.md) | `discrete_fourier_transform` |
@@ -63,17 +71,22 @@
 | `strings.kmp` | [KmpPattern](algorithms/strings.kmp.md) | `substring_search` |
 | `strings.manacher` | [Manacher 回文半径](algorithms/strings.manacher.md) | `palindrome_search` |
 
-## 数据表示（5）
+## 数据表示（10）
 
 | 稳定 ID | 独立文档 | 问题 |
 | --- | --- | --- |
 | `geometry.primitives` | [二维几何基础](representations/geometry.primitives.md) | `geometry.representation` |
+| `geometry3d.primitives` | [三维点、向量与包围盒](representations/geometry3d.primitives.md) | `geometry3d_primitives` |
 | `graph.csr` | [CsrGraph](representations/graph.csr.md) | `graph_storage` |
 | `graph.unweighted_csr` | [无权 CSR](representations/graph.unweighted_csr.md) | `unweighted_graph_storage` |
+| `mesh.document` | [网格快照、版本句柄与有界撤销](representations/mesh.document.md) | `mesh_snapshot_history` |
+| `mesh.surface` | [连续表面网格与面角属性](representations/mesh.surface.md) | `surface_mesh_storage` |
+| `mesh.tetrahedral` | [线性四面体网格与区域](representations/mesh.tetrahedral.md) | `tetrahedral_mesh_storage` |
+| `mesh.topology` | [网格 CSR 邻接与索引半边视图](representations/mesh.topology.md) | `surface_mesh_adjacency` |
 | `numeric.wide_int64_sum` | [WideInt64Sum](representations/numeric.wide_int64_sum.md) | `wide_integer_accumulation` |
 | `sequence.coordinate_compression` | [有序坐标压缩](representations/sequence.coordinate_compression.md) | `coordinate_compression` |
 
-## 组合配方（15）
+## 组合配方（19）
 
 | 稳定 ID | 独立文档 | 问题 |
 | --- | --- | --- |
@@ -86,13 +99,13 @@
 | `graph.condensation` | [SCC 缩点配方](recipes/graph.condensation.md) | `condensation` |
 | `graph.tree_eccentricities` | [树上全部最远距离](recipes/graph.tree_eccentricities.md) | `tree_eccentricities` |
 | `logic.two_sat` | [2-SAT 配方](recipes/logic.two_sat.md) | `boolean_constraints` |
+| `mesh.cad_patch` | [参数曲面采样与 CAD 来源绑定](recipes/mesh.cad_patch.md) | `cad_patch_tessellation` |
+| `mesh.dirichlet` | [固定约束的可复用 Eigen Dirichlet 求解](recipes/mesh.dirichlet.md) | `mesh_dirichlet_solve` |
+| `mesh.render_snapshot` | [保留接缝与挑选映射的渲染快照](recipes/mesh.render_snapshot.md) | `mesh_render_buffers` |
+| `mesh.tetrahedral_boundary` | [四面体外表皮与单元来源映射](recipes/mesh.tetrahedral_boundary.md) | `tetrahedral_boundary` |
 | `numeric.real_convolution` | [FFT 实卷积配方](recipes/numeric.real_convolution.md) | `convolution` |
 | `optimization.difference_constraints` | [差分约束配方](recipes/optimization.difference_constraints.md) | `difference_constraints` |
 | `probability.absorbing_markov` | [吸收马尔科夫链配方](recipes/probability.absorbing_markov.md) | `absorbing_markov` |
 | `sequence.bounded_step_subsequence` | [有限步差最长子序列](recipes/sequence.bounded_step_subsequence.md) | `bounded_step_subsequence` |
 | `sequence.disjoint_interval_pair` | [非重叠区间对最低费用](recipes/sequence.disjoint_interval_pair.md) | `disjoint_interval_pair` |
 | `sequence.inversions_fenwick` | [InversionsFenwick](recipes/sequence.inversions_fenwick.md) | `inversion_count` |
-
-## 工程与验证
-
-设计约定、建设计划、来源台账、验证报告和应用案例统一从 [工程资料](project/README.md) 进入。

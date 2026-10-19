@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-19",
+  "catalog_version": "0.1.0-pilot-6",
+  "new_assets": 17,
+  "total_assets": 91,
+  "header_files_including_detail": 64,
+  "graph_linked_pairs": 102,
+  "backend": "Eigen 3.4.0 unmodified, see provenance/dependencies/eigen-3.4.0.json",
+  "platform": {
+    "os": "Windows",
+    "cpu": "Intel Core Ultra 7 265K",
+    "compiler": "GCC 15.2.0 MinGW x86_64",
+    "language": "C++20",
+    "release_flags": "-O3 -DNDEBUG",
+    "definitions": [
+      "EIGEN_MPL2_ONLY",
+      "EIGEN_DONT_PARALLELIZE"
+    ],
+    "numpy": "2.1.3",
+    "scipy": "1.15.3"
+  },
+  "validation": {
+    "release_ctest": {
+      "passed": 21,
+      "total": 21
+    },
+    "source_consumer": {
+      "passed": 6,
+      "total": 6
+    },
+    "installed_consumer": {
+      "passed": 6,
+      "total": 6
+    },
+    "debug_glibcxx_assertions": "passed",
+    "independent_reference": "FEM-gradient assembly and SciPy solve on 81 vertices/128 irregular planar triangles; VTU cells, regions and fields",
+    "maximum_stiffness_absolute_error": 1.78e-15,
+    "example_relative_residual": 1.77e-17,
+    "sanitizers_msvc_clang_gpu": "not_run"
+  },
+  "scope": "Five-stage minimal assets; not a complete CAD B-rep/STEP, general FE solver or nonmanifold editing engine",
+  "project_text_hash_normalization": "UTF-8, BOM removed, LF; Eigen upstream manifest uses original raw bytes",
+  "sha256": {
+    "benchmarks/mesh3d_benchmark.cpp": "0bcec100b38949f0f502529a1175085b8a66867d152d96c74397ccf85db7b4d3",
+    "benchmarks/mesh3d_results.csv": "dffec56359317b93fa8b9eb49dba1eb443617205eca72c6488252b4c02b890b5",
+    "contracts/mesh3d_geometry3d_closest_point_triangle.json": "641a50222b62d3ac8aef0ad08bba679e003e74314d05a23100332f62e24dc316",
+    "contracts/mesh3d_geometry3d_primitives.json": "6ff0aa620f87cb95045a9a78d3cf983bca8412bce98b602d565aa08ffcbd61d3",
+    "contracts/mesh3d_mesh_cad_patch.json": "a6dfd024012943eb31b087d222fb5f6a40a584f5abe731bd94687f9d75946ade",
+    "contracts/mesh3d_mesh_cotangent.json": "1b0620979f72987afe37f562725ba565a89da1e699e8a9a74399f5cf6b4c72a2",
+    "contracts/mesh3d_mesh_dirichlet.json": "06acba4b99c76ee884fd4f3371c9dfbbf72be050de0d74dc5db5881e2c901f16",
+    "contracts/mesh3d_mesh_document.json": "bc2231c35e005b4eae55fe954d898356b76133149036c934f2e6d7d4315eefa9",
+    "contracts/mesh3d_mesh_obj_io.json": "110c5aaaab4d8a11d0a3a593a39e6be614ec0a708af5bf8e24bc2b763d008cd3",
+    "contracts/mesh3d_mesh_render_snapshot.json": "bedf516880c46fbd83f6e8674bc9f107da3abc3a5897da0c3ccfa41acf7c5131",
+    "contracts/mesh3d_mesh_surface.json": "e183aad4990fdc8807bb9ce1cc5fbde737291f756121871fe7d53848eb003291",
+    "contracts/mesh3d_mesh_surface_geometry.json": "b52169653611c8554d37be0e556aff1bd21c4bab26efd0bcb0fa9d600ec6115e",
+    "contracts/mesh3d_mesh_tetrahedral.json": "78d1f965acb3bca3df98f216faa39be2bf5013be401a862c2bad77af2b1a3a42",
+    "contracts/mesh3d_mesh_tetrahedral_boundary.json": "59fbe8626eee575655689829543380a303e3cd67e9a234700d41dd8a22a71b10",
+    "contracts/mesh3d_mesh_topology.json": "e1e1b93ad50c91d5827b5e9a71da3cd34ac9b3e97a726f0d4586a1691dfb2e1e",
+    "contracts/mesh3d_mesh_triangle_bvh.json": "82d0270fa281d2d534d6b1995c2ea4fa0258a4f5d90c7b383b7dd224a9060673",
+    "contracts/mesh3d_mesh_triangle_edit.json": "a2f1a3dca4b07207de638ab59fc65ddc232c818747419f877caf6f543d19b07c",
+    "contracts/mesh3d_mesh_validation.json": "af0848185790fdd36125b782bca1211ece462595889c2e752028cde060d3352d",
+    "contracts/mesh3d_mesh_vtu_export.json": "de5b5111d15b3ae30ecd3cbaec70dd7f234b61d5b752d026c86510c2e0033033",
+    "examples/mesh3d.cpp": "b0622e11bcd64432b22809a96542ca152367d54893879192dca96e628a23cf05",
+    "include/algorithm_assets/backends/eigen/mesh_operators.hpp": "a4ef6f5f93a4b071e06149be64a2b7ffcf98ab531270fef24a8259fa433a254c",
+    "include/algorithm_assets/geometry3d/primitives.hpp": "28db5d1bd7a0df3166fe47ea0d65993f8772c5a496bd9ab39fd01ad3cf7ecb61",
+    "include/algorithm_assets/mesh/bvh.hpp": "fd0e944f70f658f0eebde45aacaeceb824f4a671e502876fa8bcff1ee6bfb88f",
+    "include/algorithm_assets/mesh/cad_patch.hpp": "8fa1d6f7a4ee2114fe0a7ba9cf42556b66fa8b7b59e006ee00f37441476db240",
+    "include/algorithm_assets/mesh/detail/stream_format.hpp": "e7cefc12708ed8a50720bb9474b9db0406601919baac9178bade1f000be7c172",
+    "include/algorithm_assets/mesh/document.hpp": "5992ecd12f6b7af57c65a54d204500fa12b7ceb3cb93e66794d617023d6ea253",
+    "include/algorithm_assets/mesh/edit.hpp": "1cc110a71aa9ad6200da6a2d176ab79beb8518128dcde200490328427e277495",
+    "include/algorithm_assets/mesh/geometry.hpp": "390cf19689142a34fbb9635010ad4ac2cd2487070ded26bd3ff909336d8874eb",
+    "include/algorithm_assets/mesh/obj_io.hpp": "9f541710035d099ae9cf136b1fa769d5270b78669ae57ad822131e0a14ed65b8",
+    "include/algorithm_assets/mesh/render.hpp": "3753eb3a81bb9cb3b92461b8cd686c8634e84d5c0071ff58a29c6309ffbd8149",
+    "include/algorithm_assets/mesh/surface_mesh.hpp": "c2776eefc040228aefe5e3e5726207ea53986e137eb42fa6009c9418ea63ff71",
+    "include/algorithm_assets/mesh/tetrahedral.hpp": "3b00ba2c799094bae5b60808afe66373f434e0fc908181010cf124c0e991b687",
+    "include/algorithm_assets/mesh/topology.hpp": "1cabd33486c5c8b9dae334d801494c18df0dc8a98e8bddbbe4f89cd95cc44fb6",
+    "include/algorithm_assets/mesh/vtu_io.hpp": "13629edbf9aa34332cb9126d2d88a58825d1dc563c0f4edc21ac5ee79abae836",
+    "tests/eigen_vendor_test.py": "bef3095a312fe6354e22d2a20de6238c2eddc6a0de68f8221ad28dbb4cfc302b",
+    "tests/mesh3d_odr.cpp": "494af92be61f7fe7393c4b6d0518306f9c1a9a61108d53395ad0129e990573d3",
+    "tests/mesh3d_reference_test.py": "787c5d151f4466a94040b7068bd05a72c450e45abd9e679cacf05cf5a5d63b4a",
+    "tests/mesh3d_test.cpp": "7f8d114c68a29f369723d50e117255927681bd18c11a9909c2a445e6a55a673b"
+  }
+}

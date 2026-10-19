@@ -1,5 +1,7 @@
 # 正确性验证
 
+`mesh3d_test.cpp` 与 `mesh3d_odr.cpp` 验证三维存储/校验、Eigen刚度与约束求解、事务编辑与历史、BVH、接缝渲染/OBJ、参数面绑定和四面体交换。`mesh3d_reference_test.py` 通过实际示例程序输出，以独立形函数梯度装配、SciPy求解和XML解析对照；缺NumPy/SciPy时不启用这一额外组。`eigen_vendor_test.py` 校验344个上游文件未改动。独立消费工程同时运行实际三维测试，见 `docs/project/MESH3D_INTEGRATION.md`。
+
 `documentation_test.py` 验证每项登记资产独占一份正文，文档目录覆盖全部资产，Markdown 本地链接与锚点有效；负例覆盖共用正文、引用汇总页、章节锚点与断链。CTest 名称为 `documentation`，可直接运行 `python tools/check_docs.py` 检查。
 
 音频消费端新增 `audio_consumer_composition`，验证分块不变性、窗加权能量、DC/Nyquist、幅度标定、非均匀/空 bin 频段、非法块与 reset。可选 `audio_scipy_reference` 通过实际 CLI 对照 SciPy periodogram，60组共240帧；缺少 NumPy/SciPy 时不启用该组。运行 `ctest --test-dir build -R 'audio_consumer_composition|audio_scipy_reference' --output-on-failure`。这两组验证不等于真实设备或硬实时验证，详情见 `docs/project/AUDIO_SPECTRUM_ASSESSMENT.md`。

@@ -36,7 +36,7 @@ else()
 endif()
 add_executable(external_tests "{(ROOT / 'tests/algorithms_test.cpp').as_posix()}"
   {' '.join(standalone)})
-target_link_libraries(external_tests PRIVATE algorithm_assets::algorithm_assets)
+target_link_libraries(external_tests PRIVATE algorithm_assets::eigen)
 set_target_properties(external_tests PROPERTIES CXX_EXTENSIONS OFF)
 enable_testing()
 add_test(NAME external_algorithms COMMAND external_tests)
@@ -60,6 +60,11 @@ add_executable(external_combinations "{(ROOT / 'tests/problem_combinations_test.
 target_link_libraries(external_combinations PRIVATE algorithm_assets::algorithm_assets)
 set_target_properties(external_combinations PROPERTIES CXX_EXTENSIONS OFF)
 add_test(NAME external_combinations COMMAND external_combinations)
+add_executable(external_mesh3d "{(ROOT / 'tests/mesh3d_test.cpp').as_posix()}"
+  "{(ROOT / 'tests/mesh3d_odr.cpp').as_posix()}")
+target_link_libraries(external_mesh3d PRIVATE algorithm_assets::eigen)
+set_target_properties(external_mesh3d PROPERTIES CXX_EXTENSIONS OFF)
+add_test(NAME external_mesh3d COMMAND external_mesh3d)
 '''
     (source / "CMakeLists.txt").write_text(cmake, encoding="utf-8")
     for mode in ("installed", "source"):

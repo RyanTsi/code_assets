@@ -1,6 +1,7 @@
 /build*/
 /install*/
 /out/
+/mesh3d-output/
 /CMakeUserPresets.json
 /compile_commands.json
 /.cache/

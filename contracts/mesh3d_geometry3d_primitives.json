@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "id": "geometry3d.primitives",
+  "kind": "representation",
+  "name": "三维点、向量与包围盒",
+  "display_name": "三维点、向量与包围盒",
+  "header": "include/algorithm_assets/geometry3d/primitives.hpp",
+  "documentation": "docs/representations/geometry3d.primitives.md",
+  "problem": "geometry3d_primitives",
+  "parameters": [],
+  "requires": {
+    "coordinates": "float64_abs_le_1e50",
+    "result_guarantee": "approximate"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "有限 double 坐标，绝对值≤1e50；normalized 要求有限非零向量。低层 oriented_volume6 是浮点三重积，不是精确谓词。"
+  },
+  "output": {
+    "conditions": "值类型点/向量、近似量与包围盒；Point3/Vector3 各24字节。"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+    "scope": "有限 double 坐标，绝对值≤1e50；normalized 要求有限非零向量。低层 oriented_volume6 是浮点三重积，不是精确谓词。 值类型点/向量、近似量与包围盒；Point3/Vector3 各24字节。"
+  },
+  "complexity": {
+    "operations": "每次基础操作 O(1)，无堆分配。",
+    "space": "O(1)；Aabb3 为两个 Point3。",
+    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+  },
+  "relations": [],
+  "evidence": {
+    "correctness": "Reasoned invariants, not formal verification",
+    "tests": "tests/mesh3d_test.cpp",
+    "example": "examples/mesh3d.cpp",
+    "benchmark": "not_measured"
+  },
+  "provenance": {
+    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+    "license": "Project implementation license not selected",
+    "dependencies": "No external runtime dependency"
+  }
+}

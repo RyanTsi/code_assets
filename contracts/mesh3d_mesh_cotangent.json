@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "id": "mesh.cotangent",
+  "kind": "algorithm",
+  "name": "Eigen 余切刚度与重心质量矩阵",
+  "display_name": "Eigen 余切刚度与重心质量矩阵",
+  "header": "include/algorithm_assets/backends/eigen/mesh_operators.hpp",
+  "documentation": "docs/algorithms/mesh.cotangent.md",
+  "problem": "triangle_mesh_operators",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "faces": "triangles",
+    "mass": "barycentric_lumped",
+    "stiffness_sign": "positive_semidefinite",
+    "backend": "eigen_3_4_0",
+    "triplet_count_fits_int32": true
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "conditional"
+  },
+  "input": {
+    "conditions": "非零面积三角形；n≤INT_MAX、m≤floor(INT_MAX/12)，仍受内存限制。允许钝角，个别余切边权可以为负。"
+  },
+  "output": {
+    "conditions": "K 的非对角为负余切权、对角为行和的相反数，即有限元正半定符号；它与某些库的负半定 Laplacian 相反。mass 是每三角形面积/3贡献的对角质量，不是 Voronoi 质量。"
+  },
+  "constraints": {
+    "max_n": 2147483647,
+    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+    "scope": "非零面积三角形；n≤INT_MAX、m≤floor(INT_MAX/12)，仍受内存限制。允许钝角，个别余切边权可以为负。 K 的非对角为负余切权、对角为行和的相反数，即有限元正半定符号；它与某些库的负半定 Laplacian 相反。mass 是每三角形面积/3贡献的对角质量，不是 Voronoi 质量。"
+  },
+  "complexity": {
+    "operations": "生成12m个triplet并由Eigen聚合，构造路径 O(n+m)；浮点误差和后端布局另计。",
+    "space": "O(n+m)，包含质量、triplet与Eigen聚合工作区；输入借用，返回矩阵拥有存储。",
+    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [
+      {
+        "coefficient": 8,
+        "factors": [
+          "n"
+        ]
+      }
+    ],
+    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "mesh.surface"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants, not formal verification",
+    "tests": "tests/mesh3d_test.cpp",
+    "example": "examples/mesh3d.cpp",
+    "benchmark": "benchmarks/mesh3d_results.csv"
+  },
+  "provenance": {
+    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+    "license": "Project implementation license not selected; vendored Eigen retains upstream notices and licenses",
+    "dependencies": "provenance/dependencies/eigen-3.4.0.json"
+  }
+}

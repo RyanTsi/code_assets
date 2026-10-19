@@ -1,0 +1,4 @@
+grid_segments,vertices,faces,surface_capacity_bytes,validation_ms,bvh_build_ms,query_1000_ms,operators_ms,split_commit_ms
+32,1089,2048,279048,0.4892,0.6878,1.5023,0.2884,1.55
+96,9409,18432,2262536,3.47,8.8073,4.6665,2.6786,18.6213
+192,37249,73728,9047048,15.0698,32.057,9.6172,12.0298,78.3103

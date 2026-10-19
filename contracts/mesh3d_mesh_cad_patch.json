@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "mesh.cad_patch",
+  "kind": "recipe",
+  "name": "参数曲面采样与 CAD 来源绑定",
+  "display_name": "参数曲面采样与 CAD 来源绑定",
+  "header": "include/algorithm_assets/mesh/cad_patch.hpp",
+  "documentation": "docs/recipes/mesh.cad_patch.md",
+  "problem": "cad_patch_tessellation",
+  "parameters": [
+    "u_segments",
+    "v_segments"
+  ],
+  "requires": {
+    "patch": "untrimmed_rectangular_evaluator",
+    "sampling": "uniform_parameter_grid",
+    "source_binding": true
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "严格递增有限参数区间，端点绝对值≤1e50；nu,nv≥1且顶点/角点计数适配32位；face_id非零。evaluate由调用者提供，不持有其生命周期。"
+  },
+  "output": {
+    "conditions": "(nu+1)(nv+1)点、2nu*nv三角形，UV为原参数。曲面采样可产生退化或自交，需另调用validation；不保证弦高误差，也不处理修剪、缝合、STEP/B-rep。"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+    "scope": "严格递增有限参数区间，端点绝对值≤1e50；nu,nv≥1且顶点/角点计数适配32位；face_id非零。evaluate由调用者提供，不持有其生命周期。 (nu+1)(nv+1)点、2nu*nv三角形，UV为原参数。曲面采样可产生退化或自交，需另调用validation；不保证弦高误差，也不处理修剪、缝合、STEP/B-rep。"
+  },
+  "complexity": {
+    "operations": "O(nu*nv*evaluate_cost)，加网格构造检查。",
+    "space": "O(nu*nv)拥有输出与来源/参数数组；绑定保留不可变网格指针，编辑产生新snapshot后不再匹配。",
+    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "mesh.surface"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants, not formal verification",
+    "tests": "tests/mesh3d_test.cpp",
+    "example": "examples/mesh3d.cpp",
+    "benchmark": "not_measured"
+  },
+  "provenance": {
+    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+    "license": "Project implementation license not selected",
+    "dependencies": "No external runtime dependency"
+  }
+}

@@ -13,6 +13,16 @@ target_include_directories(algorithm_assets INTERFACE
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+# Vendored, pinned Eigen is opt-in at the consumer target; core includes stay dependency-free.
+add_library(algorithm_assets_eigen INTERFACE)
+add_library(algorithm_assets::eigen ALIAS algorithm_assets_eigen)
+set_target_properties(algorithm_assets_eigen PROPERTIES EXPORT_NAME eigen)
+target_link_libraries(algorithm_assets_eigen INTERFACE algorithm_assets::algorithm_assets)
+target_include_directories(algorithm_assets_eigen SYSTEM INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/third_party/eigen3>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/algorithm_assets/third_party/eigen3>)
+target_compile_definitions(algorithm_assets_eigen INTERFACE EIGEN_MPL2_ONLY EIGEN_DONT_PARALLELIZE)
+
 option(ALGORITHM_ASSETS_BUILD_EXAMPLES "Build usage examples" OFF)
 if(ALGORITHM_ASSETS_BUILD_EXAMPLES)
   foreach(example IN ITEMS include_library first_algorithms geometry2d repository_assets repository_expansion problem_combinations audio_spectrum)
@@ -20,6 +30,9 @@ if(ALGORITHM_ASSETS_BUILD_EXAMPLES)
     target_link_libraries(algorithm_assets_${example} PRIVATE algorithm_assets::algorithm_assets)
     set_target_properties(algorithm_assets_${example} PROPERTIES CXX_EXTENSIONS OFF)
   endforeach()
+  add_executable(algorithm_assets_mesh3d examples/mesh3d.cpp)
+  target_link_libraries(algorithm_assets_mesh3d PRIVATE algorithm_assets::eigen)
+  set_target_properties(algorithm_assets_mesh3d PROPERTIES CXX_EXTENSIONS OFF)
 endif()
 
 option(ALGORITHM_ASSETS_BUILD_BENCHMARKS "Build reproducible local benchmarks" OFF)
@@ -27,6 +40,9 @@ if(ALGORITHM_ASSETS_BUILD_BENCHMARKS)
   add_executable(algorithm_assets_geometry_benchmark benchmarks/geometry_benchmark.cpp)
   target_link_libraries(algorithm_assets_geometry_benchmark PRIVATE algorithm_assets::algorithm_assets)
   set_target_properties(algorithm_assets_geometry_benchmark PROPERTIES CXX_EXTENSIONS OFF)
+  add_executable(algorithm_assets_mesh3d_benchmark benchmarks/mesh3d_benchmark.cpp)
+  target_link_libraries(algorithm_assets_mesh3d_benchmark PRIVATE algorithm_assets::eigen)
+  set_target_properties(algorithm_assets_mesh3d_benchmark PROPERTIES CXX_EXTENSIONS OFF)
 endif()
 
 option(ALGORITHM_ASSETS_BUILD_TESTS "Build correctness and catalog tests" OFF)
@@ -41,7 +57,7 @@ if(ALGORITHM_ASSETS_BUILD_TESTS)
     file(WRITE ${header_source} "#include <${header}>\n")
     target_sources(algorithm_assets_tests PRIVATE ${header_source})
   endforeach()
-  target_link_libraries(algorithm_assets_tests PRIVATE algorithm_assets::algorithm_assets)
+  target_link_libraries(algorithm_assets_tests PRIVATE algorithm_assets::eigen)
   set_target_properties(algorithm_assets_tests PROPERTIES CXX_EXTENSIONS OFF)
   if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(algorithm_assets_tests PRIVATE -Wall -Wextra -Wpedantic)
@@ -74,6 +90,23 @@ if(ALGORITHM_ASSETS_BUILD_TESTS)
     set_target_properties(judge_p${problem} PROPERTIES CXX_EXTENSIONS OFF)
   endforeach()
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
+  add_executable(algorithm_assets_mesh3d_tests tests/mesh3d_test.cpp tests/mesh3d_odr.cpp)
+  target_link_libraries(algorithm_assets_mesh3d_tests PRIVATE algorithm_assets::eigen)
+  set_target_properties(algorithm_assets_mesh3d_tests PROPERTIES CXX_EXTENSIONS OFF)
+  if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(algorithm_assets_mesh3d_tests PRIVATE -Wall -Wextra -Wpedantic -Werror)
+  endif()
+  add_test(NAME mesh3d COMMAND algorithm_assets_mesh3d_tests)
+  add_test(NAME eigen_vendor COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/eigen_vendor_test.py)
+  if(TARGET algorithm_assets_mesh3d)
+    execute_process(COMMAND ${Python3_EXECUTABLE} -c "import numpy, scipy"
+      RESULT_VARIABLE mesh_reference_available OUTPUT_QUIET ERROR_QUIET)
+    if(mesh_reference_available EQUAL 0)
+      add_test(NAME mesh3d_reference COMMAND ${Python3_EXECUTABLE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/mesh3d_reference_test.py
+        $<TARGET_FILE:algorithm_assets_mesh3d> ${CMAKE_CURRENT_BINARY_DIR}/mesh3d-reference)
+    endif()
+  endif()
   add_executable(judge_cf510e judge/generated/codeforces_510e.cpp)
   target_compile_features(judge_cf510e PRIVATE cxx_std_20)
   set_target_properties(judge_cf510e PROPERTIES CXX_EXTENSIONS OFF)
@@ -134,7 +167,10 @@ if(ALGORITHM_ASSETS_BUILD_TESTS)
 endif()
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(TARGETS algorithm_assets EXPORT AlgorithmAssetsTargets)
+install(DIRECTORY third_party/eigen3/Eigen DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/algorithm_assets/third_party/eigen3)
+file(GLOB eigen_notices "${CMAKE_CURRENT_SOURCE_DIR}/third_party/eigen3/COPYING*")
+install(FILES ${eigen_notices} DESTINATION ${CMAKE_INSTALL_DATADIR}/AlgorithmAssets/licenses/eigen3)
+install(TARGETS algorithm_assets algorithm_assets_eigen EXPORT AlgorithmAssetsTargets)
 install(EXPORT AlgorithmAssetsTargets
   FILE AlgorithmAssetsTargets.cmake
   NAMESPACE algorithm_assets::

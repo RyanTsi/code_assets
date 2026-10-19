@@ -153,6 +153,19 @@ class CatalogTests(unittest.TestCase):
                                    graph_updates="none",representation="csr_nonnegative_weights",
                                    cycle_output="witness")["status"],"not_covered")
 
+    def test_mesh_assets_and_numerical_gaps(self):
+        import json
+        for name, wanted in [('mesh_dirichlet', 'mesh.dirichlet'), ('mesh_bvh', 'mesh.triangle_bvh')]:
+            fields=json.loads((ROOT/'examples/queries'/f'{name}.json').read_text())
+            self.assertEqual([x['id'] for x in self.query(**fields)['candidates']],[wanted])
+            fields['faces']='general_polygons'
+            self.assertEqual(self.query(**fields)['status'],'not_covered')
+        fields=json.loads((ROOT/'examples/queries/mesh_exact_gap.json').read_text())
+        self.assertEqual(self.query(**fields)['status'],'not_covered')
+        fields=json.loads((ROOT/'examples/queries/mesh_dirichlet.json').read_text())
+        fields['n']=2147483648
+        self.assertEqual(self.query(**fields)['status'],'not_covered')
+
     def test_geometry_bounds_state_and_input_shape(self):
         fields = dict(problem="geometry.closest_pair", n=100,
                       coordinates="int64_abs_le_1e9", result_guarantee="exact_squared_distance",

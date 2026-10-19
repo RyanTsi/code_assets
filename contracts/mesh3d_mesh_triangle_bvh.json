@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "mesh.triangle_bvh",
+  "kind": "algorithm",
+  "name": "快照三角网格 BVH 查询与缓存",
+  "display_name": "快照三角网格 BVH 查询与缓存",
+  "header": "include/algorithm_assets/mesh/bvh.hpp",
+  "documentation": "docs/algorithms/mesh.triangle_bvh.md",
+  "problem": "mesh_spatial_queries",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "faces": "triangles",
+    "updates": "immutable_snapshot",
+    "queries": {
+      "subset_of": [
+        "closest_point",
+        "raycast"
+      ]
+    },
+    "result_guarantee": "approximate",
+    "face_count_fits_bvh_indices": true
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "conditional"
+  },
+  "input": {
+    "conditions": "非空mesh指针，允许0个三角形；1≤leaf_size≤64，F<UINT32_MAX/2。query点按坐标域校验；射线方向有限非零，将归一化，max_distance非NaN且≥0。"
+  },
+  "output": {
+    "conditions": "optional最近面/点/重心/平方距离，或最近射线命中/归一化方向下的距离；结果带revision。无命中返回nullopt。共面/近乎平行射线可被容差分支忽略，不是精确射线谓词。"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+    "scope": "非空mesh指针，允许0个三角形；1≤leaf_size≤64，F<UINT32_MAX/2。query点按坐标域校验；射线方向有限非零，将归一化，max_distance非NaN且≥0。 optional最近面/点/重心/平方距离，或最近射线命中/归一化方向下的距离；结果带revision。无命中返回nullopt。共面/近乎平行射线可被容差分支忽略，不是精确射线谓词。"
+  },
+  "complexity": {
+    "operations": "中位数分割建树平均 O(F log F)，nth_element不承诺无条件最坏线性选择。单查询最坏O(F)，平衡树DFS工作栈O(log(F+1))。",
+    "space": "至多2F-1个64字节节点及4F排序索引容量，构建栈O(logF)；源mesh共享，不复制。缓存单写者，独立不可变BVH可并发查询。",
+    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "mesh.surface"
+    },
+    {
+      "type": "uses",
+      "target": "geometry3d.closest_point_triangle"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants, not formal verification",
+    "tests": "tests/mesh3d_test.cpp",
+    "example": "examples/mesh3d.cpp",
+    "benchmark": "benchmarks/mesh3d_results.csv"
+  },
+  "provenance": {
+    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+    "license": "Project implementation license not selected",
+    "dependencies": "No external runtime dependency"
+  }
+}

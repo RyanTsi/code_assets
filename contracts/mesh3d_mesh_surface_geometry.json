@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "id": "mesh.surface_geometry",
+  "kind": "algorithm",
+  "name": "三角网格面积与法向",
+  "display_name": "三角网格面积与法向",
+  "header": "include/algorithm_assets/mesh/geometry.hpp",
+  "documentation": "docs/algorithms/mesh.surface_geometry.md",
+  "problem": "triangle_mesh_geometry",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "faces": "triangles",
+    "degenerate_faces": "reject",
+    "result_guarantee": "approximate"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "有限坐标三角网格。零面积三角形抛 domain_error；多边形抛 invalid_argument。孤立顶点或相消的顶点法向返回零向量。"
+  },
+  "output": {
+    "conditions": "拥有数组；总面积通过已有 CompensatedSum 累加。顶点法向是面积加权，不是角度加权，也不是角点分裂法向。"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+    "scope": "有限坐标三角网格。零面积三角形抛 domain_error；多边形抛 invalid_argument。孤立顶点或相消的顶点法向返回零向量。 拥有数组；总面积通过已有 CompensatedSum 累加。顶点法向是面积加权，不是角度加权，也不是角点分裂法向。"
+  },
+  "complexity": {
+    "operations": "单面 O(1)；全部 O(n+m)。",
+    "space": "全部输出约8m面积+24m面法向+24n顶点法向，另外O(1)工作区。",
+    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "mesh.surface"
+    },
+    {
+      "type": "uses",
+      "target": "numeric.compensated_sum"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants, not formal verification",
+    "tests": "tests/mesh3d_test.cpp",
+    "example": "examples/mesh3d.cpp",
+    "benchmark": "not_measured"
+  },
+  "provenance": {
+    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+    "license": "Project implementation license not selected",
+    "dependencies": "No external runtime dependency"
+  }
+}

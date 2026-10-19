@@ -49,6 +49,12 @@
 - 几何规则见 `docs/project/GEOMETRY2D.md`：整数坐标界、精确谓词与近似构造分开；不得以零 EPS 或 long double 宣称精确浮点几何。几何模块不默认加入全库便利头文件。
 - 可选关系 `condition` 当前为人类可读说明，不是已验证的通用组合规则；模板互斥内核依赖必须注明条件。
 
+## Eigen 与三维网格
+
+- `third_party/eigen3/` 保留未修改的固定Eigen 3.4.0，来源及逐文件哈希在 `provenance/dependencies/`；升级同步清单和许可文本，运行 `tests/eigen_vendor_test.py`。
+- Eigen消费目标为 `algorithm_assets::eigen`，相关翻译单元配置须一致；不要让原默认总头文件或核心目标隐式依赖Eigen。
+- 三维首版边界见 `docs/project/MESH3D_INTEGRATION.md`；近似数值不等于精确谓词、组合校验不等于自交认证、参数面示例不等于B-rep内核、顶点场不等于一般FE自由度。
+
 ## 个人仓库载入流程
 
 - 两个来源固定提交和 Markdown 清单在 `provenance/repository-assets/`；逐文件处理状态为 `decisions.json`，正文/章节/仅目录审核必须区分。partial、deferred 不等于已实现。

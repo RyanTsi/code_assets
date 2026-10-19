@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "mesh.vtu_export",
+  "kind": "algorithm",
+  "name": "四面体与顶点标量场 VTU 导出",
+  "display_name": "四面体与顶点标量场 VTU 导出",
+  "header": "include/algorithm_assets/mesh/vtu_io.hpp",
+  "documentation": "docs/algorithms/mesh.vtu_export.md",
+  "problem": "tetrahedral_vtu_export",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "cell_type": "linear_tetrahedron",
+    "field_domain": "vertex_scalar",
+    "format": "vtu_ascii"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "TetrahedralMesh；标量为空或长度n且有限；字段名须为有效文本且不含控制字符。"
+  },
+  "output": {
+    "conditions": "流式ASCII XML，Float64点、UInt32连接、UInt64偏移；保留四面体而非导出表皮。字段是顶点采样标量，不冒充一般FE场或积分点应力。"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+    "scope": "TetrahedralMesh；标量为空或长度n且有限；字段名须为有效文本且不含控制字符。 流式ASCII XML，Float64点、UInt32连接、UInt64偏移；保留四面体而非导出表皮。字段是顶点采样标量，不冒充一般FE场或积分点应力。"
+  },
+  "complexity": {
+    "operations": "O(n+m+字段值数)文本格式化。",
+    "space": "O(字段名称长度)额外工作区，不缓存完整文件；IO失败可能部分写入。",
+    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "mesh.tetrahedral"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants, not formal verification",
+    "tests": "tests/mesh3d_test.cpp",
+    "example": "examples/mesh3d.cpp",
+    "benchmark": "not_measured"
+  },
+  "provenance": {
+    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+    "license": "Project implementation license not selected",
+    "dependencies": "No external runtime dependency"
+  }
+}

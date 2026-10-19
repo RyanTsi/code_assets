@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "id": "geometry3d.closest_point_triangle",
+  "kind": "algorithm",
+  "name": "三维点到三角形最近点",
+  "display_name": "三维点到三角形最近点",
+  "header": "include/algorithm_assets/geometry3d/primitives.hpp",
+  "documentation": "docs/algorithms/geometry3d.closest_point_triangle.md",
+  "problem": "point_triangle_closest",
+  "parameters": [],
+  "requires": {
+    "coordinates": "float64_abs_le_1e50",
+    "result_guarantee": "approximate",
+    "output": "point_barycentric_squared_distance"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "supported"
+  },
+  "input": {
+    "conditions": "四个有限且绝对值≤1e50的 Point3；退化允许。"
+  },
+  "output": {
+    "conditions": "拥有的最近点、重心坐标和平方距离；全部为近似值，不返回原始输入索引。"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+    "scope": "四个有限且绝对值≤1e50的 Point3；退化允许。 拥有的最近点、重心坐标和平方距离；全部为近似值，不返回原始输入索引。"
+  },
+  "complexity": {
+    "operations": "O(1)。",
+    "space": "O(1)，固定值和数组，无堆分配。",
+    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "geometry3d.primitives"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants, not formal verification",
+    "tests": "tests/mesh3d_test.cpp",
+    "example": "examples/mesh3d.cpp",
+    "benchmark": "not_measured"
+  },
+  "provenance": {
+    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+    "license": "Project implementation license not selected",
+    "dependencies": "No external runtime dependency"
+  }
+}

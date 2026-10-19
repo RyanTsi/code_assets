@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "mesh.obj_io",
+  "kind": "algorithm",
+  "name": "保留面角与逻辑 ID 的 OBJ 交换",
+  "display_name": "保留面角与逻辑 ID 的 OBJ 交换",
+  "header": "include/algorithm_assets/mesh/obj_io.hpp",
+  "documentation": "docs/algorithms/mesh.obj_io.md",
+  "problem": "mesh_obj_exchange",
+  "parameters": [
+    "n",
+    "m"
+  ],
+  "requires": {
+    "format": "obj_subset",
+    "attributes": "complete_corner_uv_normals_and_material_ids"
+  },
+  "capabilities": {
+    "persistence": "unsupported",
+    "snapshot": "unsupported",
+    "checkpoint": "unsupported",
+    "rollback": "unsupported",
+    "undo": "unsupported",
+    "redo": "unsupported",
+    "arbitrary_deletion": "unsupported",
+    "concurrent_writes": "unsupported",
+    "concurrent_reads": "conditional"
+  },
+  "input": {
+    "conditions": "支持v、两维vt、vn、单环f、usemtl；支持负索引，不支持正向引用。UV/normal必须全角点完整或全部缺省。o/g/s/mtllib的忽略种类会返回；其他不支持记录拒绝。"
+  },
+  "output": {
+    "conditions": "拥有的网格和材质标签；不加载MTL、纹理或场景。写入用aa_material_ID保留数值ID，名称/外观不保证往返。扩展ID和unit只在本读写器之间保证，普通OBJ软件可忽略注释。"
+  },
+  "constraints": {
+    "max_n": 4294967294,
+    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+    "scope": "支持v、两维vt、vn、单环f、usemtl；支持负索引，不支持正向引用。UV/normal必须全角点完整或全部缺省。o/g/s/mtllib的忽略种类会返回；其他不支持记录拒绝。 拥有的网格和材质标签；不加载MTL、纹理或场景。写入用aa_material_ID保留数值ID，名称/外观不保证往返。扩展ID和unit只在本读写器之间保证，普通OBJ软件可忽略注释。"
+  },
+  "complexity": {
+    "operations": "与文本大小和构造校验相关；材质表O(log材质数)查找，ID哈希期望线性。",
+    "space": "O(n+C+m+材质数+最长行)；writer流式输出，无完整文件副本。I/O失败可能已经输出部分文本。",
+    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+  },
+  "memory_lower_bound": {
+    "constant": 0,
+    "terms": [],
+    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+  },
+  "relations": [
+    {
+      "type": "uses",
+      "target": "mesh.surface"
+    }
+  ],
+  "evidence": {
+    "correctness": "Reasoned invariants, not formal verification",
+    "tests": "tests/mesh3d_test.cpp",
+    "example": "examples/mesh3d.cpp",
+    "benchmark": "not_measured"
+  },
+  "provenance": {
+    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+    "license": "Project implementation license not selected",
+    "dependencies": "No external runtime dependency"
+  }
+}

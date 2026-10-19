@@ -197,7 +197,7 @@ def match(query: dict, assets: list[dict]) -> dict:
     else:
         status = "not_covered"
     return {
-        "catalog_version": "0.1.0-pilot-5", "status": status, "candidates": candidates,
+        "catalog_version": "0.1.0-pilot-6", "status": status, "candidates": candidates,
         "evaluations": evaluations,
         "resource_status": "unknown" if candidates else "not_applicable",
         "scope": "All registered implementations and recipes for this problem ID; no novel composition search",

@@ -1,0 +1,10 @@
+{
+  "problem": "mesh_spatial_queries",
+  "n": 81,
+  "m": 128,
+  "faces": "triangles",
+  "updates": "immutable_snapshot",
+  "queries": ["raycast"],
+  "face_count_fits_bvh_indices": true,
+  "result_guarantee": "exact"
+}
