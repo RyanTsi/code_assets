@@ -1,83 +1,78 @@
 {
-  "schema_version": 1,
-  "id": "optimization.knapsack_bounded",
-  "kind": "algorithm",
-  "name": "单调队列多重背包",
-  "display_name": "单调队列多重背包",
-  "header": "include/algorithm_assets/optimization/knapsack.hpp",
-  "documentation": "docs/algorithms/optimization.knapsack_bounded.md",
-  "problem": "knapsack",
-  "parameters": [
-    "n",
-    "capacity"
-  ],
-  "requires": {
-    "multiplicity": "bounded",
-    "objective": "maximum_value_at_most_capacity",
-    "input_type": "int64",
-    "output": "value"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "Items with size_t count; zero count ignored, zero cost supported"
-  },
-  "output": {
-    "conditions": "Exact int64 optimum or actual feasible overflow; no witness"
-  },
-  "constraints": {
-    "max_n": 9223372036854775807,
-    "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/algorithms/optimization.knapsack_bounded.md",
-    "numeric_and_state": "Items with size_t count; zero count ignored, zero cost supported; Exact int64 optimum or actual feasible overflow; no witness",
-    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
-  },
-  "complexity": {
-    "operations": "O(n*(capacity+1)), no log(count) grouping",
-    "space": "8*(capacity+1) DP + up to16*(capacity/min_positive_cost+1) retained queue",
-    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
-  },
-  "memory_lower_bound": {
-    "constant": 8,
-    "terms": [
-      {
-        "coefficient": 8,
-        "factors": [
-          "capacity"
-        ]
-      }
+    "schema_version": 1,
+    "id": "optimization.knapsack_bounded",
+    "kind": "algorithm",
+    "name": "单调队列多重背包",
+    "display_name": "单调队列多重背包",
+    "header": "include/algorithm_assets/optimization/knapsack.hpp",
+    "documentation": "docs/algorithms/optimization.knapsack_bounded.md",
+    "problem": "knapsack",
+    "parameters": ["n", "capacity"],
+    "requires": {
+        "multiplicity": "bounded",
+        "objective": "maximum_value_at_most_capacity",
+        "input_type": "int64",
+        "output": "value"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "Items with size_t count; zero count ignored, zero cost supported"
+    },
+    "output": {
+        "conditions": "Exact int64 optimum or actual feasible overflow; no witness"
+    },
+    "constraints": {
+        "max_n": 9223372036854775807,
+        "limits": "size_t, container max_size and allocation limits additionally apply",
+        "complete_contract": "docs/algorithms/optimization.knapsack_bounded.md",
+        "numeric_and_state": "Items with size_t count; zero count ignored, zero cost supported; Exact int64 optimum or actual feasible overflow; no witness",
+        "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+    },
+    "complexity": {
+        "operations": "O(n*(capacity+1)), no log(count) grouping",
+        "space": "8*(capacity+1) DP + up to16*(capacity/min_positive_cost+1) retained queue",
+        "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+    },
+    "memory_lower_bound": {
+        "constant": 8,
+        "terms": [
+            {
+                "coefficient": 8,
+                "factors": ["capacity"]
+            }
+        ],
+        "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "numeric.wide_int64_sum",
+            "condition": "Calls checked_int64_add helper; does not use the wide accumulator object"
+        }
     ],
-    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "numeric.wide_int64_sum",
-      "condition": "Calls checked_int64_add helper; does not use the wide accumulator object"
+    "evidence": {
+        "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+        "tests": "tests/repository_expansion_test.cpp",
+        "example": "examples/repository_expansion.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/EXPANSION_VALIDATION.md"
+    },
+    "provenance": {
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "path": "动态规划/背包问题/多重背包.md",
+        "blob_sha": "8d35f73d5fa32bcebe385daa26024c6c5b945196",
+        "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+        "license": "No repository license discovered; project distribution license not selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
-    "tests": "tests/repository_expansion_test.cpp",
-    "example": "examples/repository_expansion.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/EXPANSION_VALIDATION.md"
-  },
-  "provenance": {
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "path": "动态规划/背包问题/多重背包.md",
-    "blob_sha": "8d35f73d5fa32bcebe385daa26024c6c5b945196",
-    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-    "license": "No repository license discovered; project distribution license not selected"
-  }
 }

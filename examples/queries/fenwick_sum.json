@@ -1,11 +1,8 @@
 {
-  "problem": "range_sum",
-  "n": 500000,
-  "input_type": "int64",
-  "updates": [
-    "add",
-    "query"
-  ],
-  "stored_blocks_fit_int64": true,
-  "result_guarantee": "exact"
+    "problem": "range_sum",
+    "n": 500000,
+    "input_type": "int64",
+    "updates": ["add", "query"],
+    "stored_blocks_fit_int64": true,
+    "result_guarantee": "exact"
 }

@@ -1,0 +1,8 @@
+{
+    "format": {
+        "tab_size": 4,
+        "use_tabchars": false,
+        "line_width": 100,
+        "line_ending": "unix"
+    }
+}

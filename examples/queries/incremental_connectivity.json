@@ -1,5 +1,8 @@
 {
-  "problem": "connectivity", "n": 100000,
-  "directed": false, "rollback": false,
-  "execution_mode": "online", "updates": ["add", "query"]
+    "problem": "connectivity",
+    "n": 100000,
+    "directed": false,
+    "rollback": false,
+    "execution_mode": "online",
+    "updates": ["add", "query"]
 }

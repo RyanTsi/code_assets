@@ -8,24 +8,54 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
-    "schema_version", "id", "kind", "name", "header", "documentation", "problem",
-    "parameters", "requires", "capabilities", "input", "output", "constraints",
-    "complexity", "memory_lower_bound", "relations", "evidence", "provenance",
+    "schema_version",
+    "id",
+    "kind",
+    "name",
+    "header",
+    "documentation",
+    "problem",
+    "parameters",
+    "requires",
+    "capabilities",
+    "input",
+    "output",
+    "constraints",
+    "complexity",
+    "memory_lower_bound",
+    "relations",
+    "evidence",
+    "provenance",
 }
 CAPABILITIES = {
-    "persistence", "checkpoint", "rollback", "undo", "redo", "arbitrary_deletion",
-    "concurrent_reads", "concurrent_writes",
+    "persistence",
+    "checkpoint",
+    "rollback",
+    "undo",
+    "redo",
+    "arbitrary_deletion",
+    "concurrent_reads",
+    "concurrent_writes",
 }
 RELATIONS = {"uses", "alternative", "composes_into", "representation_for"}
 STATUSES = {"supported", "unsupported", "conditional", "unknown"}
 COMMON_QUERY_FIELDS = {
-    "problem", "n", "m", "q", "value_bytes", "capabilities", "max_memory_bytes", "max_time_ms",
+    "problem",
+    "n",
+    "m",
+    "q",
+    "value_bytes",
+    "capabilities",
+    "max_memory_bytes",
+    "max_time_ms",
 }
 
 
 def load_assets() -> list[dict]:
-    return [json.loads(path.read_text(encoding="utf-8"))
-            for path in sorted((ROOT / "contracts").glob("*.json"))]
+    return [
+        json.loads(path.read_text(encoding="utf-8"))
+        for path in sorted((ROOT / "contracts").glob("*.json"))
+    ]
 
 
 def local_file(relative: str) -> Path:
@@ -46,9 +76,15 @@ def validate(assets: list[dict]) -> None:
         missing = REQUIRED - asset.keys()
         if missing:
             raise ValueError(f"{asset.get('id')}: missing {sorted(missing)}")
-        if asset["schema_version"] != 1 or asset["kind"] not in {"algorithm", "representation", "recipe"}:
+        if asset["schema_version"] != 1 or asset["kind"] not in {
+            "algorithm",
+            "representation",
+            "recipe",
+        }:
             raise ValueError(f"{asset['id']}: unsupported schema or kind")
-        if "display_name" in asset and (not isinstance(asset["display_name"], str) or not asset["display_name"].strip()):
+        if "display_name" in asset and (
+            not isinstance(asset["display_name"], str) or not asset["display_name"].strip()
+        ):
             raise ValueError(f"{asset['id']}: display_name must be nonempty text")
         if not CAPABILITIES.issubset(asset["capabilities"]):
             raise ValueError(f"{asset['id']}: missing capability declarations")
@@ -56,33 +92,45 @@ def validate(assets: list[dict]) -> None:
             raise ValueError(f"{asset['id']}: invalid capability status")
         if not isinstance(asset["requires"], dict) or not isinstance(asset["parameters"], list):
             raise ValueError(f"{asset['id']}: invalid matching specification")
-        if any(not isinstance(p, str) or not p for p in asset["parameters"]) or len(set(asset["parameters"])) != len(asset["parameters"]):
+        if any(not isinstance(p, str) or not p for p in asset["parameters"]) or len(
+            set(asset["parameters"])
+        ) != len(asset["parameters"]):
             raise ValueError(f"{asset['id']}: invalid parameter names")
         for rule in asset["requires"].values():
-            if isinstance(rule, dict) and (len(rule) != 1 or
-                                           next(iter(rule)) not in {"one_of", "subset_of"}):
+            if isinstance(rule, dict) and (
+                len(rule) != 1 or next(iter(rule)) not in {"one_of", "subset_of"}
+            ):
                 raise ValueError(f"{asset['id']}: unsupported predicate")
         if not isinstance(asset["constraints"].get("max_n"), int):
             raise ValueError(f"{asset['id']}: max_n must be an integer")
         local_file(asset["header"])
         documentation = asset["documentation"]
         if not isinstance(documentation, str) or "#" in documentation:
-            raise ValueError(f"{asset['id']}: documentation must be an independent page, not a section")
+            raise ValueError(
+                f"{asset['id']}: documentation must be an independent page, not a section"
+            )
         page = local_file(documentation)
-        directory = {"algorithm": "algorithms", "representation": "representations",
-                     "recipe": "recipes"}[asset["kind"]]
+        directory = {
+            "algorithm": "algorithms",
+            "representation": "representations",
+            "recipe": "recipes",
+        }[asset["kind"]]
         if page.suffix != ".md" or page.parent != ROOT / "docs" / directory:
             raise ValueError(f"{asset['id']}: documentation must be under docs/{directory}/")
         page_key = str(page).casefold()
         if page_key in documentation_owners:
-            raise ValueError(f"{asset['id']}: documentation already owned by {documentation_owners[page_key]}")
+            raise ValueError(
+                f"{asset['id']}: documentation already owned by {documentation_owners[page_key]}"
+            )
         documentation_owners[page_key] = asset["id"]
         local_file(asset["evidence"]["tests"])
         local_file(asset["evidence"]["example"])
         for relation in asset["relations"]:
             if relation["type"] not in RELATIONS or relation["target"] not in ids:
                 raise ValueError(f"{asset['id']}: invalid relation {relation}")
-            if "condition" in relation and (not isinstance(relation["condition"], str) or not relation["condition"].strip()):
+            if "condition" in relation and (
+                not isinstance(relation["condition"], str) or not relation["condition"].strip()
+            ):
                 raise ValueError(f"{asset['id']}: relation condition must be nonempty text")
         model = asset["memory_lower_bound"]
         if not isinstance(model.get("constant"), int) or model["constant"] < 0:
@@ -90,12 +138,18 @@ def validate(assets: list[dict]) -> None:
         for term in model["terms"]:
             if not isinstance(term["coefficient"], int) or term["coefficient"] < 0:
                 raise ValueError(f"{asset['id']}: invalid memory coefficient")
-            if not term["factors"] or any(factor not in set(asset["parameters"]) | {"value_bytes"}
-                                          for factor in term["factors"]):
+            if not term["factors"] or any(
+                factor not in set(asset["parameters"]) | {"value_bytes"}
+                for factor in term["factors"]
+            ):
                 raise ValueError(f"{asset['id']}: invalid memory factors")
     # Dependency cycles are different from harmless bidirectional alternatives.
-    dependencies = {asset["id"]: [relation["target"] for relation in asset["relations"]
-                                   if relation["type"] == "uses"] for asset in assets}
+    dependencies = {
+        asset["id"]: [
+            relation["target"] for relation in asset["relations"] if relation["type"] == "uses"
+        ]
+        for asset in assets
+    }
     completed: set[str] = set()
 
     def visit(node: str, stack: set[str]) -> None:
@@ -119,9 +173,9 @@ def satisfies(value, expected) -> bool:
         return strictly_equal(value, expected)
     if "one_of" in expected:
         return any(strictly_equal(value, option) for option in expected["one_of"])
-    return (isinstance(value, list) and
-            all(any(strictly_equal(item, option) for option in expected["subset_of"])
-                for item in value))
+    return isinstance(value, list) and all(
+        any(strictly_equal(item, option) for option in expected["subset_of"]) for item in value
+    )
 
 
 def match(query: dict, assets: list[dict]) -> dict:
@@ -136,8 +190,9 @@ def match(query: dict, assets: list[dict]) -> dict:
     if query.get("value_bytes") == 0:
         raise ValueError("value_bytes must be positive")
     requested = query.get("capabilities", {})
-    if not isinstance(requested, dict) or any(value not in {"supported", "unsupported"}
-                                            for value in requested.values()):
+    if not isinstance(requested, dict) or any(
+        value not in {"supported", "unsupported"} for value in requested.values()
+    ):
         raise ValueError("Requested capabilities must be supported or unsupported")
 
     evaluations = []
@@ -145,7 +200,9 @@ def match(query: dict, assets: list[dict]) -> dict:
         if asset["problem"] != query["problem"]:
             continue
         missing, rejected = [], []
-        for key in query.keys() - COMMON_QUERY_FIELDS - asset["requires"].keys() - set(asset["parameters"]):
+        for key in (
+            query.keys() - COMMON_QUERY_FIELDS - asset["requires"].keys() - set(asset["parameters"])
+        ):
             rejected.append(f"No registered rule can verify requirement '{key}'")
         for key, expected in asset["requires"].items():
             if key not in query or query[key] is None:
@@ -176,16 +233,30 @@ def match(query: dict, assets: list[dict]) -> dict:
                 value *= query[factor]
             else:
                 lower_bound += value
-        over_budget = (not rejected and not missing and bound_known and
-                       query.get("max_memory_bytes") is not None and
-                       lower_bound > query["max_memory_bytes"])
-        evaluations.append({"id": asset["id"], "kind": asset["kind"],
-                            "missing": sorted(set(missing)), "rejected": rejected,
-                            "over_budget": over_budget,
-                            "payload_lower_bound_bytes": lower_bound if bound_known else None,
-                            "complexity": asset["complexity"], "header": asset["header"]})
-    eligible = [item for item in evaluations
-                if not item["missing"] and not item["rejected"] and not item["over_budget"]]
+        over_budget = (
+            not rejected
+            and not missing
+            and bound_known
+            and query.get("max_memory_bytes") is not None
+            and lower_bound > query["max_memory_bytes"]
+        )
+        evaluations.append(
+            {
+                "id": asset["id"],
+                "kind": asset["kind"],
+                "missing": sorted(set(missing)),
+                "rejected": rejected,
+                "over_budget": over_budget,
+                "payload_lower_bound_bytes": lower_bound if bound_known else None,
+                "complexity": asset["complexity"],
+                "header": asset["header"],
+            }
+        )
+    eligible = [
+        item
+        for item in evaluations
+        if not item["missing"] and not item["rejected"] and not item["over_budget"]
+    ]
     singles = [item for item in eligible if item["kind"] != "recipe"]
     candidates = singles or eligible
     if candidates:
@@ -197,7 +268,9 @@ def match(query: dict, assets: list[dict]) -> dict:
     else:
         status = "not_covered"
     return {
-        "catalog_version": "0.1.0-pilot-6", "status": status, "candidates": candidates,
+        "catalog_version": "0.1.0-pilot-6",
+        "status": status,
+        "candidates": candidates,
         "evaluations": evaluations,
         "resource_status": "unknown" if candidates else "not_applicable",
         "scope": "All registered implementations and recipes for this problem ID; no novel composition search",

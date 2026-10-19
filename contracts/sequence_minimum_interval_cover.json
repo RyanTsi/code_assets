@@ -1,69 +1,67 @@
 {
-  "schema_version": 1,
-  "id": "sequence.minimum_interval_cover",
-  "kind": "algorithm",
-  "name": "最少区间覆盖",
-  "display_name": "最少区间覆盖",
-  "header": "include/algorithm_assets/sequence/intervals.hpp",
-  "documentation": "docs/algorithms/sequence.minimum_interval_cover.md",
-  "problem": "interval_cover",
-  "parameters": [
-    "n"
-  ],
-  "requires": {
-    "coordinates": "int64",
-    "interval_semantics": "half_open",
-    "cost": "unit",
-    "updates": "none"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "Valid intervals and target; no arithmetic +/-1 conversion"
-  },
-  "output": {
-    "conditions": "optional owned minimum original index set; empty target needs zero; gap nullopt"
-  },
-  "constraints": {
-    "max_n": 9223372036854775807,
-    "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/algorithms/sequence.minimum_interval_cover.md",
-    "numeric_and_state": "Valid intervals and target; no arithmetic +/-1 conversion; optional owned minimum original index set; empty target needs zero; gap nullopt",
-    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
-  },
-  "complexity": {
-    "operations": "O(n log(n+1))",
-    "space": "8n sorted indices + O(k) output",
-    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
-  },
-  "relations": [],
-  "evidence": {
-    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
-    "tests": "tests/repository_expansion_test.cpp",
-    "example": "examples/repository_expansion.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/EXPANSION_VALIDATION.md"
-  },
-  "provenance": {
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "path": "其他/最小区间覆盖数.md",
-    "blob_sha": "44e7c152a370eeb3c52442fda3ff176927faf01f",
-    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-    "license": "No repository license discovered; project distribution license not selected"
-  }
+    "schema_version": 1,
+    "id": "sequence.minimum_interval_cover",
+    "kind": "algorithm",
+    "name": "最少区间覆盖",
+    "display_name": "最少区间覆盖",
+    "header": "include/algorithm_assets/sequence/intervals.hpp",
+    "documentation": "docs/algorithms/sequence.minimum_interval_cover.md",
+    "problem": "interval_cover",
+    "parameters": ["n"],
+    "requires": {
+        "coordinates": "int64",
+        "interval_semantics": "half_open",
+        "cost": "unit",
+        "updates": "none"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "Valid intervals and target; no arithmetic +/-1 conversion"
+    },
+    "output": {
+        "conditions": "optional owned minimum original index set; empty target needs zero; gap nullopt"
+    },
+    "constraints": {
+        "max_n": 9223372036854775807,
+        "limits": "size_t, container max_size and allocation limits additionally apply",
+        "complete_contract": "docs/algorithms/sequence.minimum_interval_cover.md",
+        "numeric_and_state": "Valid intervals and target; no arithmetic +/-1 conversion; optional owned minimum original index set; empty target needs zero; gap nullopt",
+        "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+    },
+    "complexity": {
+        "operations": "O(n log(n+1))",
+        "space": "8n sorted indices + O(k) output",
+        "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+    },
+    "relations": [],
+    "evidence": {
+        "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+        "tests": "tests/repository_expansion_test.cpp",
+        "example": "examples/repository_expansion.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/EXPANSION_VALIDATION.md"
+    },
+    "provenance": {
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "path": "其他/最小区间覆盖数.md",
+        "blob_sha": "44e7c152a370eeb3c52442fda3ff176927faf01f",
+        "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+        "license": "No repository license discovered; project distribution license not selected"
+    }
 }

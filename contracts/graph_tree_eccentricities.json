@@ -1,78 +1,73 @@
 {
-  "schema_version": 1,
-  "id": "graph.tree_eccentricities",
-  "kind": "recipe",
-  "name": "树上全部最远距离",
-  "display_name": "树上全部最远距离",
-  "header": "include/algorithm_assets/recipes/tree_eccentricities.hpp",
-  "documentation": "docs/recipes/graph.tree_eccentricities.md",
-  "problem": "tree_eccentricities",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "graph_class": "undirected_tree",
-    "edge_lengths": "unit",
-    "edge_listing": "once_undirected"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_reads": "supported",
-    "concurrent_writes": "unsupported"
-  },
-  "input": {
-    "conditions": "n>=1; n-1 once-listed edges; valid source; connected; CSR validates endpoints"
-  },
-  "output": {
-    "conditions": "Owned uint32 source distances, eccentricities and diameter certificate"
-  },
-  "constraints": {
-    "max_n": 4294967294,
-    "complete_contract": "docs/recipes/graph.tree_eccentricities.md",
-    "errors": "Invalid domain rejected; documented arithmetic overflow rejected; allocations propagate; see complete contract"
-  },
-  "complexity": {
-    "operations": "O(n) time and storage; O(1) stack; returned 8n bytes on 64-bit",
-    "guarantee": "Worst-case asymptotic bounds, no calibrated latency or peak-memory claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [
-      {
-        "coefficient": 8,
-        "factors": [
-          "n"
-        ]
-      }
+    "schema_version": 1,
+    "id": "graph.tree_eccentricities",
+    "kind": "recipe",
+    "name": "树上全部最远距离",
+    "display_name": "树上全部最远距离",
+    "header": "include/algorithm_assets/recipes/tree_eccentricities.hpp",
+    "documentation": "docs/recipes/graph.tree_eccentricities.md",
+    "problem": "tree_eccentricities",
+    "parameters": ["n", "m"],
+    "requires": {
+        "graph_class": "undirected_tree",
+        "edge_lengths": "unit",
+        "edge_listing": "once_undirected"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_reads": "supported",
+        "concurrent_writes": "unsupported"
+    },
+    "input": {
+        "conditions": "n>=1; n-1 once-listed edges; valid source; connected; CSR validates endpoints"
+    },
+    "output": {
+        "conditions": "Owned uint32 source distances, eccentricities and diameter certificate"
+    },
+    "constraints": {
+        "max_n": 4294967294,
+        "complete_contract": "docs/recipes/graph.tree_eccentricities.md",
+        "errors": "Invalid domain rejected; documented arithmetic overflow rejected; allocations propagate; see complete contract"
+    },
+    "complexity": {
+        "operations": "O(n) time and storage; O(1) stack; returned 8n bytes on 64-bit",
+        "guarantee": "Worst-case asymptotic bounds, no calibrated latency or peak-memory claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [
+            {
+                "coefficient": 8,
+                "factors": ["n"]
+            }
+        ],
+        "scope": "Conservative allocated payload lower bound, not peak or feasibility proof"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "graph.unweighted_csr"
+        }
     ],
-    "scope": "Conservative allocated payload lower bound, not peak or feasibility proof"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "graph.unweighted_csr"
+    "evidence": {
+        "correctness": "Documented sweep, DP and tree metric invariants; not formal verification",
+        "tests": "tests/problem_combinations_test.cpp",
+        "example": "examples/problem_combinations.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/COMBINATION_VALIDATION.md"
+    },
+    "provenance": {
+        "repository": "RyanTsi/blog",
+        "commit": "6ea0ef09d8479c8775654c1627710af6da1d5392",
+        "path": "content/posts/图论做题记录.md",
+        "blob_sha": "adfcbb9da0bced9f62d6f311f5e6fcaf34083197",
+        "implementation": "Independent engineering implementation; source supplies problem entry and motivation",
+        "license": "No repository license discovered; distribution license not selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Documented sweep, DP and tree metric invariants; not formal verification",
-    "tests": "tests/problem_combinations_test.cpp",
-    "example": "examples/problem_combinations.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/COMBINATION_VALIDATION.md"
-  },
-  "provenance": {
-    "repository": "RyanTsi/blog",
-    "commit": "6ea0ef09d8479c8775654c1627710af6da1d5392",
-    "path": "content/posts/图论做题记录.md",
-    "blob_sha": "adfcbb9da0bced9f62d6f311f5e6fcaf34083197",
-    "implementation": "Independent engineering implementation; source supplies problem entry and motivation",
-    "license": "No repository license discovered; distribution license not selected"
-  }
 }

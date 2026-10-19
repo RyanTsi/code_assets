@@ -27,11 +27,15 @@ class GraphTests(unittest.TestCase):
                 if relation["type"] == "alternative":
                     a, b = sorted((a, b))
                 expected.add((a, b, relation["type"]))
-        actual = {(r["source"], r["target"], r["type"]) for e in data["edges"] for r in e["relations"]}
+        actual = {
+            (r["source"], r["target"], r["type"]) for e in data["edges"] for r in e["relations"]
+        }
         self.assertEqual(expected, actual)
         self.assertEqual(len(data["edges"]), len({tuple(sorted((a, b))) for a, b, _ in expected}))
         for node in data["nodes"]:
-            self.assertEqual(node["source"], catalog.local_file(node["header"]).read_text(encoding="utf-8"))
+            self.assertEqual(
+                node["source"], catalog.local_file(node["header"]).read_text(encoding="utf-8")
+            )
 
     def test_isolated_assets_and_future_labels(self):
         assets = copy.deepcopy(self.assets)
@@ -51,11 +55,24 @@ class GraphTests(unittest.TestCase):
 
     def test_conditional_relations_and_display_names(self):
         self.assets[0]["display_name"] = "Readable display name"
-        self.assets[0]["relations"] = [{"type": "uses", "target": self.assets[1]["id"], "condition": "Checked for this coordinate kernel only"}]
+        self.assets[0]["relations"] = [
+            {
+                "type": "uses",
+                "target": self.assets[1]["id"],
+                "condition": "Checked for this coordinate kernel only",
+            }
+        ]
         data = build_graph.build_data(self.assets)
-        self.assertEqual(next(n for n in data["nodes"] if n["id"] == self.assets[0]["id"])["label"], "Readable display name")
-        declaration = next(r for edge in data["edges"] for r in edge["relations"]
-                           if r["source"] == self.assets[0]["id"] and r["type"] == "uses")
+        self.assertEqual(
+            next(n for n in data["nodes"] if n["id"] == self.assets[0]["id"])["label"],
+            "Readable display name",
+        )
+        declaration = next(
+            r
+            for edge in data["edges"]
+            for r in edge["relations"]
+            if r["source"] == self.assets[0]["id"] and r["type"] == "uses"
+        )
         self.assertEqual(declaration["condition"], "Checked for this coordinate kernel only")
         self.assets[0]["relations"][0]["condition"] = {}
         with self.assertRaises(ValueError):
@@ -67,20 +84,27 @@ class GraphTests(unittest.TestCase):
 
     def test_safe_standalone_html_roundtrip(self):
         data = build_graph.build_data(self.assets)
-        data["nodes"][0]["source"] += '\n</script><script>alert("unsafe")</script> GRAPH_DATA /* GRAPH_SCRIPT */ &'
+        data["nodes"][0][
+            "source"
+        ] += '\n</script><script>alert("unsafe")</script> GRAPH_DATA /* GRAPH_SCRIPT */ &'
         html = build_graph.render(data)
-        payload = re.search(r'<script id="catalog-data" type="application/json">(.*?)</script>', html, re.S).group(1)
-        self.assertNotIn('<', payload)
+        payload = re.search(
+            r'<script id="catalog-data" type="application/json">(.*?)</script>', html, re.S
+        ).group(1)
+        self.assertNotIn("<", payload)
         self.assertEqual(json.loads(payload), data)
-        self.assertEqual(html.count('<script'), 2)
+        self.assertEqual(html.count("<script"), 2)
         self.assertNotIn('src="http', html)
         self.assertNotIn('href="http', html)
-        self.assertNotIn('/* GRAPH_STYLE */', html)
+        self.assertNotIn("/* GRAPH_STYLE */", html)
 
     def test_delivered_page_matches_current_catalog(self):
         expected = build_graph.render(build_graph.build_data(self.assets))
-        self.assertEqual((ROOT / "visualization/index.html").read_text(encoding="utf-8"), expected,
-                         "Regenerate with python tools/build_graph.py")
+        self.assertEqual(
+            (ROOT / "visualization/index.html").read_text(encoding="utf-8"),
+            expected,
+            "Regenerate with python tools/build_graph.py",
+        )
 
 
 if __name__ == "__main__":

@@ -1,95 +1,80 @@
 {
-  "schema_version": 1,
-  "id": "connectivity.dsu",
-  "kind": "algorithm",
-  "name": "DisjointSet",
-  "header": "include/algorithm_assets/connectivity/disjoint_set.hpp",
-  "documentation": "docs/algorithms/connectivity.dsu.md",
-  "problem": "connectivity",
-  "parameters": [
-    "n"
-  ],
-  "requires": {
-    "directed": false,
-    "execution_mode": {
-      "one_of": [
-        "online",
-        "offline"
-      ]
+    "schema_version": 1,
+    "id": "connectivity.dsu",
+    "kind": "algorithm",
+    "name": "DisjointSet",
+    "header": "include/algorithm_assets/connectivity/disjoint_set.hpp",
+    "documentation": "docs/algorithms/connectivity.dsu.md",
+    "problem": "connectivity",
+    "parameters": ["n"],
+    "requires": {
+        "directed": false,
+        "execution_mode": {
+            "one_of": ["online", "offline"]
+        },
+        "updates": {
+            "subset_of": ["add", "query"]
+        },
+        "rollback": false
     },
-    "updates": {
-      "subset_of": [
-        "add",
-        "query"
-      ]
+    "capabilities": {
+        "persistence": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_reads": "unsupported",
+        "concurrent_writes": "unsupported"
     },
-    "rollback": false
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_reads": "unsupported",
-    "concurrent_writes": "unsupported"
-  },
-  "input": {
-    "universe": "Fixed n vertices, IDs [0,n), n may be zero",
-    "operations": [
-      "leader(v)",
-      "same(u,v)",
-      "component_size(v)",
-      "merge(u,v)"
-    ]
-  },
-  "output": {
-    "merge": "True iff two components were joined",
-    "representative": "An implementation representative, not a stable semantic label",
-    "partition": "Exact; initially each vertex is separate"
-  },
-  "constraints": {
-    "max_n": 2147483647,
-    "errors": "out_of_range for invalid IDs; length_error for excessive n; allocation may throw",
-    "mutation": "All nontrivial queries may compress paths",
-    "copy": "A full value copy costs O(n); it is not a checkpoint API",
-    "threading": "Use external synchronization; queries also mutate"
-  },
-  "complexity": {
-    "initialization": "Theta(n)",
-    "operations": "O(alpha(n)) amortized across a sequence; O(log(n+1)) individual worst case",
-    "space": "4n logical payload bytes, plus vector capacity/header; O(1) stack",
-    "guarantee": "amortized"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [
-      {
-        "coefficient": 4,
-        "factors": [
-          "n"
-        ]
-      }
+    "input": {
+        "universe": "Fixed n vertices, IDs [0,n), n may be zero",
+        "operations": ["leader(v)", "same(u,v)", "component_size(v)", "merge(u,v)"]
+    },
+    "output": {
+        "merge": "True iff two components were joined",
+        "representative": "An implementation representative, not a stable semantic label",
+        "partition": "Exact; initially each vertex is separate"
+    },
+    "constraints": {
+        "max_n": 2147483647,
+        "errors": "out_of_range for invalid IDs; length_error for excessive n; allocation may throw",
+        "mutation": "All nontrivial queries may compress paths",
+        "copy": "A full value copy costs O(n); it is not a checkpoint API",
+        "threading": "Use external synchronization; queries also mutate"
+    },
+    "complexity": {
+        "initialization": "Theta(n)",
+        "operations": "O(alpha(n)) amortized across a sequence; O(log(n+1)) individual worst case",
+        "space": "4n logical payload bytes, plus vector capacity/header; O(1) stack",
+        "guarantee": "amortized"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [
+            {
+                "coefficient": 4,
+                "factors": ["n"]
+            }
+        ],
+        "scope": "Conservative lower bound on owned payload, not a peak-allocation upper bound; excludes container headers, allocator overhead and caller input"
+    },
+    "relations": [
+        {
+            "type": "alternative",
+            "target": "connectivity.rollback_dsu"
+        }
     ],
-    "scope": "Conservative lower bound on owned payload, not a peak-allocation upper bound; excludes container headers, allocator overhead and caller input"
-  },
-  "relations": [
-    {
-      "type": "alternative",
-      "target": "connectivity.rollback_dsu"
+    "evidence": {
+        "correctness": "Reasoned invariants in documentation; not formally verified",
+        "tests": "tests/algorithms_test.cpp",
+        "example": "examples/first_algorithms.cpp",
+        "benchmark": "not_measured",
+        "notes": "Random label-partition oracle; boundary IDs; size/count; redundant unions"
+    },
+    "provenance": {
+        "implementation": "Written for this project; no source code copied",
+        "reference": "../oi-wiki-reference/docs/ and standard algorithm definitions",
+        "license": "Project distribution license not yet selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants in documentation; not formally verified",
-    "tests": "tests/algorithms_test.cpp",
-    "example": "examples/first_algorithms.cpp",
-    "benchmark": "not_measured",
-    "notes": "Random label-partition oracle; boundary IDs; size/count; redundant unions"
-  },
-  "provenance": {
-    "implementation": "Written for this project; no source code copied",
-    "reference": "../oi-wiki-reference/docs/ and standard algorithm definitions",
-    "license": "Project distribution license not yet selected"
-  }
 }

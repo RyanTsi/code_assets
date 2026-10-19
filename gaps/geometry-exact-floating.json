@@ -1,10 +1,14 @@
 {
-  "problem": "geometry.convex_hull",
-  "query": "examples/queries/geometry_exact_float_gap.json",
-  "status": "not_covered",
-  "checked_scope": "All registered geometry convex hull variants and existing recipes; no new composition search",
-  "missing_capability": "Certified exact orientation of arbitrary valid binary64 coordinates and exact topology near degeneracy",
-  "current_limit": "Bounded int64 orientation/hull are exact; floating long double/EPS operations are approximate. Neither enlarging EPS nor setting it to zero supplies exact predicates.",
-  "extension_if_needed": "Consider an independently verified adaptive exact predicate backend with declared exponent/rounding constraints. Exact predicates alone do not make floating intersection constructions exact.",
-  "related_gaps": ["full-range int64 predicates", "exact rational intersections", "online insert/delete geometry indices"]
+    "problem": "geometry.convex_hull",
+    "query": "examples/queries/geometry_exact_float_gap.json",
+    "status": "not_covered",
+    "checked_scope": "All registered geometry convex hull variants and existing recipes; no new composition search",
+    "missing_capability": "Certified exact orientation of arbitrary valid binary64 coordinates and exact topology near degeneracy",
+    "current_limit": "Bounded int64 orientation/hull are exact; floating long double/EPS operations are approximate. Neither enlarging EPS nor setting it to zero supplies exact predicates.",
+    "extension_if_needed": "Consider an independently verified adaptive exact predicate backend with declared exponent/rounding constraints. Exact predicates alone do not make floating intersection constructions exact.",
+    "related_gaps": [
+        "full-range int64 predicates",
+        "exact rational intersections",
+        "online insert/delete geometry indices"
+    ]
 }

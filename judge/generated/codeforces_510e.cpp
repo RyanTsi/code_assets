@@ -9,26 +9,45 @@
 namespace algorithm_assets {
 class PrimeSieve {
 public:
-  explicit PrimeSieve(std::uint32_t limit) : limit_(limit), composite_((std::size_t{limit}/2+1+63)/64) {
-    mark(1);
-    for (std::uint64_t p=3;p<=limit/p;p+=2) if (!marked(p))
-      for (auto multiple=p*p;multiple<=limit;multiple+=2*p) mark(multiple);
-  }
-  [[nodiscard]] bool is_prime(std::uint32_t x) const {
-    if (x>limit_) throw std::out_of_range("Primality query outside sieve");
-    return x==2 || (x>=3 && (x&1U) && !marked(x));
-  }
-  template<class Emit> void for_each_prime(Emit&& emit) const {
-    if (limit_>=2) std::invoke(emit,std::uint32_t{2});
-    for (std::uint64_t p=3;p<=limit_;p+=2) if (!marked(p)) std::invoke(emit,static_cast<std::uint32_t>(p));
-  }
-  [[nodiscard]] std::vector<std::uint32_t> primes() const {
-    std::vector<std::uint32_t> result; for_each_prime([&](auto p){result.push_back(p);}); return result;
-  }
+    explicit PrimeSieve(std::uint32_t limit)
+        : limit_(limit), composite_((std::size_t{limit} / 2 + 1 + 63) / 64) {
+        mark(1);
+        for (std::uint64_t p = 3; p <= limit / p; p += 2)
+            if (!marked(p))
+                for (auto multiple = p * p; multiple <= limit; multiple += 2 * p)
+                    mark(multiple);
+    }
+    [[nodiscard]] bool is_prime(std::uint32_t x) const {
+        if (x > limit_)
+            throw std::out_of_range("Primality query outside sieve");
+        return x == 2 || (x >= 3 && (x & 1U) && !marked(x));
+    }
+    template <class Emit> void for_each_prime(Emit&& emit) const {
+        if (limit_ >= 2)
+            std::invoke(emit, std::uint32_t{2});
+        for (std::uint64_t p = 3; p <= limit_; p += 2)
+            if (!marked(p))
+                std::invoke(emit, static_cast<std::uint32_t>(p));
+    }
+    [[nodiscard]] std::vector<std::uint32_t> primes() const {
+        std::vector<std::uint32_t> result;
+        for_each_prime([&](auto p) {
+            result.push_back(p);
+        });
+        return result;
+    }
+
 private:
-  bool marked(std::uint64_t odd) const noexcept { const auto i=odd/2; return (composite_[i/64]>>(i%64))&1U; }
-  void mark(std::uint64_t odd) noexcept { const auto i=odd/2; composite_[i/64]|=std::uint64_t{1}<<(i%64); }
-  std::uint32_t limit_; std::vector<std::uint64_t> composite_;
+    bool marked(std::uint64_t odd) const noexcept {
+        const auto i = odd / 2;
+        return (composite_[i / 64] >> (i % 64)) & 1U;
+    }
+    void mark(std::uint64_t odd) noexcept {
+        const auto i = odd / 2;
+        composite_[i / 64] |= std::uint64_t{1} << (i % 64);
+    }
+    std::uint32_t limit_;
+    std::vector<std::uint64_t> composite_;
 };
 } // namespace algorithm_assets
 // end include/algorithm_assets/algebra/prime_sieve.hpp
@@ -45,109 +64,162 @@ namespace algorithm_assets {
 // Flat paired residual arcs; no recursion and no per-vertex adjacency allocation.
 class Dinic {
 public:
-  using Vertex=std::uint32_t;
-  struct FlowResult { std::uint64_t added; bool maximal; };
-  struct EdgeState { Vertex from,to; std::uint64_t capacity,flow; };
-  explicit Dinic(std::size_t n) {
-    if (n>static_cast<std::size_t>(std::numeric_limits<std::int32_t>::max()))
-      throw std::length_error("Too many flow vertices");
-    head_.assign(n,none); level_.resize(n); current_.resize(n); queue_.reserve(n); path_.reserve(n);
-  }
-  std::size_t add_edge(Vertex from,Vertex to,std::uint64_t capacity) {
-    validate(from); validate(to);
-    if (arcs_.size()>static_cast<std::size_t>(none)-2 || arcs_.max_size()-arcs_.size()<2)
-      throw std::length_error("Too many residual arcs");
-    const auto needed=arcs_.size()+2;
-    if (needed>arcs_.capacity()) {
-      const auto maximum=std::min(arcs_.max_size(),static_cast<std::size_t>(none)-1);
-      const auto grown=arcs_.capacity()>maximum/2?maximum:2*arcs_.capacity();
-      arcs_.reserve(std::max(needed,grown));
+    using Vertex = std::uint32_t;
+    struct FlowResult {
+        std::uint64_t added;
+        bool maximal;
+    };
+    struct EdgeState {
+        Vertex from, to;
+        std::uint64_t capacity, flow;
+    };
+    explicit Dinic(std::size_t n) {
+        if (n > static_cast<std::size_t>(std::numeric_limits<std::int32_t>::max()))
+            throw std::length_error("Too many flow vertices");
+        head_.assign(n, none);
+        level_.resize(n);
+        current_.resize(n);
+        queue_.reserve(n);
+        path_.reserve(n);
     }
-    const auto index=static_cast<Vertex>(arcs_.size());
-    arcs_.push_back({to,head_[from],capacity}); head_[from]=index;
-    arcs_.push_back({from,head_[to],0}); head_[to]=index+1;
-    return index/2;
-  }
-  [[nodiscard]] EdgeState edge(std::size_t index) const {
-    if (index>=arcs_.size()/2) throw std::out_of_range("Invalid flow edge");
-    const auto& forward=arcs_[2*index]; const auto& reverse=arcs_[2*index+1];
-    return {reverse.to,forward.to,forward.residual+reverse.residual,reverse.residual};
-  }
-  FlowResult max_flow(Vertex source,Vertex sink,std::uint64_t limit=std::numeric_limits<std::uint64_t>::max()) {
-    validate(source); validate(sink);
-    if (source==sink) throw std::invalid_argument("Source and sink must differ");
-    if (terminals_set_ && (source!=source_ || sink!=sink_))
-      throw std::invalid_argument("Reset flow before changing terminals");
-    source_=source; sink_=sink; terminals_set_=true;
-    std::uint64_t total=0;
-    while (total<limit && build_levels(source,sink)) {
-      current_=head_;
-      while (total<limit) {
-        const auto sent=augment(source,sink,limit-total);
-        if (!sent) break;
-        total+=sent;
-      }
-    }
-    return {total,!build_levels(source,sink)};
-  }
-  void reset_flow() noexcept {
-    for (std::size_t i=0;i<arcs_.size();i+=2) {
-      arcs_[i].residual+=arcs_[i+1].residual; arcs_[i+1].residual=0;
-    }
-    terminals_set_=false;
-  }
-  [[nodiscard]] std::vector<bool> residual_reachable(Vertex source) const {
-    validate(source);
-    std::vector<bool> seen(head_.size()); std::vector<Vertex> queue{source}; seen[source]=true;
-    for (std::size_t i=0;i<queue.size();++i)
-      for (auto e=head_[queue[i]];e!=none;e=arcs_[e].next)
-        if (arcs_[e].residual && !seen[arcs_[e].to]) {
-          seen[arcs_[e].to]=true; queue.push_back(arcs_[e].to);
+    std::size_t add_edge(Vertex from, Vertex to, std::uint64_t capacity) {
+        validate(from);
+        validate(to);
+        if (arcs_.size() > static_cast<std::size_t>(none) - 2 ||
+            arcs_.max_size() - arcs_.size() < 2)
+            throw std::length_error("Too many residual arcs");
+        const auto needed = arcs_.size() + 2;
+        if (needed > arcs_.capacity()) {
+            const auto maximum = std::min(arcs_.max_size(), static_cast<std::size_t>(none) - 1);
+            const auto grown = arcs_.capacity() > maximum / 2 ? maximum : 2 * arcs_.capacity();
+            arcs_.reserve(std::max(needed, grown));
         }
-    return seen;
-  }
-  [[nodiscard]] std::size_t vertex_count() const noexcept { return head_.size(); }
-  [[nodiscard]] std::size_t edge_count() const noexcept { return arcs_.size()/2; }
+        const auto index = static_cast<Vertex>(arcs_.size());
+        arcs_.push_back({to, head_[from], capacity});
+        head_[from] = index;
+        arcs_.push_back({from, head_[to], 0});
+        head_[to] = index + 1;
+        return index / 2;
+    }
+    [[nodiscard]] EdgeState edge(std::size_t index) const {
+        if (index >= arcs_.size() / 2)
+            throw std::out_of_range("Invalid flow edge");
+        const auto& forward = arcs_[2 * index];
+        const auto& reverse = arcs_[2 * index + 1];
+        return {reverse.to, forward.to, forward.residual + reverse.residual, reverse.residual};
+    }
+    FlowResult max_flow(Vertex source, Vertex sink,
+                        std::uint64_t limit = std::numeric_limits<std::uint64_t>::max()) {
+        validate(source);
+        validate(sink);
+        if (source == sink)
+            throw std::invalid_argument("Source and sink must differ");
+        if (terminals_set_ && (source != source_ || sink != sink_))
+            throw std::invalid_argument("Reset flow before changing terminals");
+        source_ = source;
+        sink_ = sink;
+        terminals_set_ = true;
+        std::uint64_t total = 0;
+        while (total < limit && build_levels(source, sink)) {
+            current_ = head_;
+            while (total < limit) {
+                const auto sent = augment(source, sink, limit - total);
+                if (!sent)
+                    break;
+                total += sent;
+            }
+        }
+        return {total, !build_levels(source, sink)};
+    }
+    void reset_flow() noexcept {
+        for (std::size_t i = 0; i < arcs_.size(); i += 2) {
+            arcs_[i].residual += arcs_[i + 1].residual;
+            arcs_[i + 1].residual = 0;
+        }
+        terminals_set_ = false;
+    }
+    [[nodiscard]] std::vector<bool> residual_reachable(Vertex source) const {
+        validate(source);
+        std::vector<bool> seen(head_.size());
+        std::vector<Vertex> queue{source};
+        seen[source] = true;
+        for (std::size_t i = 0; i < queue.size(); ++i)
+            for (auto e = head_[queue[i]]; e != none; e = arcs_[e].next)
+                if (arcs_[e].residual && !seen[arcs_[e].to]) {
+                    seen[arcs_[e].to] = true;
+                    queue.push_back(arcs_[e].to);
+                }
+        return seen;
+    }
+    [[nodiscard]] std::size_t vertex_count() const noexcept {
+        return head_.size();
+    }
+    [[nodiscard]] std::size_t edge_count() const noexcept {
+        return arcs_.size() / 2;
+    }
+
 private:
-  static constexpr Vertex none=std::numeric_limits<Vertex>::max();
-  struct Arc { Vertex to,next; std::uint64_t residual; };
-  void validate(Vertex v) const { if (v>=head_.size()) throw std::out_of_range("Invalid flow vertex"); }
-  bool build_levels(Vertex source,Vertex sink) {
-    std::fill(level_.begin(),level_.end(),-1);
-    queue_.clear(); queue_.push_back(source); level_[source]=0;
-    for (std::size_t i=0;i<queue_.size();++i) {
-      const auto u=queue_[i];
-      for (auto e=head_[u];e!=none;e=arcs_[e].next)
-        if (arcs_[e].residual && level_[arcs_[e].to]<0) {
-          level_[arcs_[e].to]=level_[u]+1; queue_.push_back(arcs_[e].to);
+    static constexpr Vertex none = std::numeric_limits<Vertex>::max();
+    struct Arc {
+        Vertex to, next;
+        std::uint64_t residual;
+    };
+    void validate(Vertex v) const {
+        if (v >= head_.size())
+            throw std::out_of_range("Invalid flow vertex");
+    }
+    bool build_levels(Vertex source, Vertex sink) {
+        std::fill(level_.begin(), level_.end(), -1);
+        queue_.clear();
+        queue_.push_back(source);
+        level_[source] = 0;
+        for (std::size_t i = 0; i < queue_.size(); ++i) {
+            const auto u = queue_[i];
+            for (auto e = head_[u]; e != none; e = arcs_[e].next)
+                if (arcs_[e].residual && level_[arcs_[e].to] < 0) {
+                    level_[arcs_[e].to] = level_[u] + 1;
+                    queue_.push_back(arcs_[e].to);
+                }
+        }
+        return level_[sink] >= 0;
+    }
+    std::uint64_t augment(Vertex source, Vertex sink, std::uint64_t limit) {
+        path_.clear();
+        auto u = source;
+        for (;;) {
+            if (u == sink) {
+                auto sent = limit;
+                for (auto e : path_)
+                    sent = std::min(sent, arcs_[e].residual);
+                for (auto e : path_) {
+                    arcs_[e].residual -= sent;
+                    arcs_[e ^ 1U].residual += sent;
+                }
+                return sent;
+            }
+            auto& cursor = current_[u];
+            while (cursor != none &&
+                   (!arcs_[cursor].residual || level_[arcs_[cursor].to] != level_[u] + 1))
+                cursor = arcs_[cursor].next;
+            if (cursor != none) {
+                path_.push_back(cursor);
+                u = arcs_[cursor].to;
+                continue;
+            }
+            level_[u] = -1;
+            if (path_.empty())
+                return 0;
+            const auto back = path_.back();
+            path_.pop_back();
+            u = arcs_[back ^ 1U].to;
+            current_[u] = arcs_[back].next;
         }
     }
-    return level_[sink]>=0;
-  }
-  std::uint64_t augment(Vertex source,Vertex sink,std::uint64_t limit) {
-    path_.clear(); auto u=source;
-    for (;;) {
-      if (u==sink) {
-        auto sent=limit;
-        for (auto e:path_) sent=std::min(sent,arcs_[e].residual);
-        for (auto e:path_) { arcs_[e].residual-=sent; arcs_[e^1U].residual+=sent; }
-        return sent;
-      }
-      auto& cursor=current_[u];
-      while (cursor!=none && (!arcs_[cursor].residual || level_[arcs_[cursor].to]!=level_[u]+1))
-        cursor=arcs_[cursor].next;
-      if (cursor!=none) { path_.push_back(cursor); u=arcs_[cursor].to; continue; }
-      level_[u]=-1;
-      if (path_.empty()) return 0;
-      const auto back=path_.back(); path_.pop_back(); u=arcs_[back^1U].to;
-      current_[u]=arcs_[back].next;
-    }
-  }
-  std::vector<Vertex> head_,current_,queue_,path_;
-  std::vector<std::int32_t> level_;
-  std::vector<Arc> arcs_;
-  Vertex source_=0,sink_=0;
-  bool terminals_set_=false;
+    std::vector<Vertex> head_, current_, queue_, path_;
+    std::vector<std::int32_t> level_;
+    std::vector<Arc> arcs_;
+    Vertex source_ = 0, sink_ = 0;
+    bool terminals_set_ = false;
 };
 } // namespace algorithm_assets
 // end include/algorithm_assets/graph/dinic.hpp
@@ -160,68 +232,75 @@ private:
 
 // CF510E-specific reduction, not a general prime-ring API.
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-  std::uint32_t n;
-  if (!(std::cin >> n)) return 0;
-  std::vector<std::uint32_t> ages(n);
-  for (auto& age : ages) std::cin >> age;
-  const auto odd_count = std::count_if(ages.begin(), ages.end(), [](auto age) { return age % 2 != 0; });
-  if (2 * odd_count != n) {
-    std::cout << "Impossible\n";
-    return 0;
-  }
-  // Ages >= 2 exclude the exceptional even prime 2: all legal edges cross parity.
-  const algorithm_assets::PrimeSieve primes(2 * *std::max_element(ages.begin(), ages.end()));
-  const auto source = n, sink = n + 1;
-  algorithm_assets::Dinic network(n + 2);
-  for (std::uint32_t i = 0; i < n; ++i) {
-    if (ages[i] % 2) network.add_edge(source, i, 2);
-    else network.add_edge(i, sink, 2);
-  }
-  const auto first_candidate = network.edge_count();
-  for (std::uint32_t i = 0; i < n; ++i)
-    if (ages[i] % 2)
-      for (std::uint32_t j = 0; j < n; ++j)
-        if (ages[j] % 2 == 0 && primes.is_prime(ages[i] + ages[j]))
-          network.add_edge(i, j, 1);
-  if (network.max_flow(source, sink).added != n) {
-    std::cout << "Impossible\n";
-    return 0;
-  }
-  // A saturated integral flow selects a simple degree-two graph.
-  // Fixed two-neighbor storage avoids a vector allocation at each vertex.
-  std::vector<std::array<std::uint32_t, 2>> neighbors(n);
-  std::vector<unsigned char> degree(n, 0);
-  for (auto id = first_candidate; id < network.edge_count(); ++id) {
-    const auto edge = network.edge(id);
-    if (edge.flow != 0) {
-      neighbors[edge.from][degree[edge.from]++] = edge.to;
-      neighbors[edge.to][degree[edge.to]++] = edge.from;
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::uint32_t n;
+    if (!(std::cin >> n))
+        return 0;
+    std::vector<std::uint32_t> ages(n);
+    for (auto& age : ages)
+        std::cin >> age;
+    const auto odd_count = std::count_if(ages.begin(), ages.end(), [](auto age) {
+        return age % 2 != 0;
+    });
+    if (2 * odd_count != n) {
+        std::cout << "Impossible\n";
+        return 0;
     }
-  }
-  std::vector<unsigned char> visited(n, 0);
-  std::vector<std::uint32_t> order;
-  std::vector<std::size_t> boundaries{0};
-  order.reserve(n);
-  for (std::uint32_t start = 0; start < n; ++start) {
-    if (visited[start]) continue;
-    auto previous = n, current = start;
-    do {
-      visited[current] = 1;
-      order.push_back(current);
-      const auto next = neighbors[current][neighbors[current][0] == previous ? 1 : 0];
-      previous = current;
-      current = next;
-    } while (current != start);
-    boundaries.push_back(order.size());
-  }
-  std::cout << boundaries.size() - 1 << '\n';
-  for (std::size_t table = 1; table < boundaries.size(); ++table) {
-    std::cout << boundaries[table] - boundaries[table - 1];
-    for (auto i = boundaries[table - 1]; i < boundaries[table]; ++i)
-      std::cout << ' ' << order[i] + 1;
-    std::cout << '\n';
-  }
+    // Ages >= 2 exclude the exceptional even prime 2: all legal edges cross parity.
+    const algorithm_assets::PrimeSieve primes(2 * *std::max_element(ages.begin(), ages.end()));
+    const auto source = n, sink = n + 1;
+    algorithm_assets::Dinic network(n + 2);
+    for (std::uint32_t i = 0; i < n; ++i) {
+        if (ages[i] % 2)
+            network.add_edge(source, i, 2);
+        else
+            network.add_edge(i, sink, 2);
+    }
+    const auto first_candidate = network.edge_count();
+    for (std::uint32_t i = 0; i < n; ++i)
+        if (ages[i] % 2)
+            for (std::uint32_t j = 0; j < n; ++j)
+                if (ages[j] % 2 == 0 && primes.is_prime(ages[i] + ages[j]))
+                    network.add_edge(i, j, 1);
+    if (network.max_flow(source, sink).added != n) {
+        std::cout << "Impossible\n";
+        return 0;
+    }
+    // A saturated integral flow selects a simple degree-two graph.
+    // Fixed two-neighbor storage avoids a vector allocation at each vertex.
+    std::vector<std::array<std::uint32_t, 2>> neighbors(n);
+    std::vector<unsigned char> degree(n, 0);
+    for (auto id = first_candidate; id < network.edge_count(); ++id) {
+        const auto edge = network.edge(id);
+        if (edge.flow != 0) {
+            neighbors[edge.from][degree[edge.from]++] = edge.to;
+            neighbors[edge.to][degree[edge.to]++] = edge.from;
+        }
+    }
+    std::vector<unsigned char> visited(n, 0);
+    std::vector<std::uint32_t> order;
+    std::vector<std::size_t> boundaries{0};
+    order.reserve(n);
+    for (std::uint32_t start = 0; start < n; ++start) {
+        if (visited[start])
+            continue;
+        auto previous = n, current = start;
+        do {
+            visited[current] = 1;
+            order.push_back(current);
+            const auto next = neighbors[current][neighbors[current][0] == previous ? 1 : 0];
+            previous = current;
+            current = next;
+        } while (current != start);
+        boundaries.push_back(order.size());
+    }
+    std::cout << boundaries.size() - 1 << '\n';
+    for (std::size_t table = 1; table < boundaries.size(); ++table) {
+        std::cout << boundaries[table] - boundaries[table - 1];
+        for (auto i = boundaries[table - 1]; i < boundaries[table]; ++i)
+            std::cout << ' ' << order[i] + 1;
+        std::cout << '\n';
+    }
 }
 // end judge/adapters/codeforces_510e.cpp

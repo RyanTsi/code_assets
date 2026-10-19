@@ -1,68 +1,66 @@
 {
-  "schema_version": 1,
-  "id": "graph.lca",
-  "kind": "algorithm",
-  "name": "森林倍增 LCA",
-  "display_name": "森林倍增 LCA",
-  "header": "include/algorithm_assets/graph/lowest_common_ancestor.hpp",
-  "documentation": "docs/algorithms/graph.lca.md",
-  "problem": "lowest_common_ancestor",
-  "parameters": [
-    "n"
-  ],
-  "requires": {
-    "representation": "parent_forest",
-    "updates": "none",
-    "distance": "edge_count"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "uint32 parent array, roots point to themselves; cycles rejected"
-  },
-  "output": {
-    "conditions": "optional ancestor/LCA/uint64 distance; different roots nullopt"
-  },
-  "constraints": {
-    "max_n": 4294967294,
-    "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/algorithms/graph.lca.md",
-    "numeric_and_state": "uint32 parent array, roots point to themselves; cycles rejected; optional ancestor/LCA/uint64 distance; different roots nullopt",
-    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
-  },
-  "complexity": {
-    "operations": "Build O(n log(d+1)), query O(log(d+1))",
-    "space": "4n*(2+max(1,bit_width(max_depth))) resident; O(n) construction scratch",
-    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
-  },
-  "relations": [],
-  "evidence": {
-    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
-    "tests": "tests/repository_expansion_test.cpp",
-    "example": "examples/repository_expansion.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/EXPANSION_VALIDATION.md"
-  },
-  "provenance": {
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "path": "图论/其他/最近公共祖先.md",
-    "blob_sha": "5d4c16d352b14287ade89789ce4c11e3d14f0331",
-    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-    "license": "No repository license discovered; project distribution license not selected"
-  }
+    "schema_version": 1,
+    "id": "graph.lca",
+    "kind": "algorithm",
+    "name": "森林倍增 LCA",
+    "display_name": "森林倍增 LCA",
+    "header": "include/algorithm_assets/graph/lowest_common_ancestor.hpp",
+    "documentation": "docs/algorithms/graph.lca.md",
+    "problem": "lowest_common_ancestor",
+    "parameters": ["n"],
+    "requires": {
+        "representation": "parent_forest",
+        "updates": "none",
+        "distance": "edge_count"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "uint32 parent array, roots point to themselves; cycles rejected"
+    },
+    "output": {
+        "conditions": "optional ancestor/LCA/uint64 distance; different roots nullopt"
+    },
+    "constraints": {
+        "max_n": 4294967294,
+        "limits": "size_t, container max_size and allocation limits additionally apply",
+        "complete_contract": "docs/algorithms/graph.lca.md",
+        "numeric_and_state": "uint32 parent array, roots point to themselves; cycles rejected; optional ancestor/LCA/uint64 distance; different roots nullopt",
+        "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+    },
+    "complexity": {
+        "operations": "Build O(n log(d+1)), query O(log(d+1))",
+        "space": "4n*(2+max(1,bit_width(max_depth))) resident; O(n) construction scratch",
+        "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+    },
+    "relations": [],
+    "evidence": {
+        "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+        "tests": "tests/repository_expansion_test.cpp",
+        "example": "examples/repository_expansion.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/EXPANSION_VALIDATION.md"
+    },
+    "provenance": {
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "path": "图论/其他/最近公共祖先.md",
+        "blob_sha": "5d4c16d352b14287ade89789ce4c11e3d14f0331",
+        "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+        "license": "No repository license discovered; project distribution license not selected"
+    }
 }

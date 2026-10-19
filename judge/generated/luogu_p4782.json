@@ -1,10 +1,10 @@
 {
-  "adapter": "judge/adapters/luogu_p4782.cpp",
-  "sources_sha256": {
-    "judge/adapters/luogu_p4782.cpp": "5d9164eae23ba81e90080a4e5fbe8abb7e6fe87482b5620075d24368a38b7a46",
-    "include/algorithm_assets/graph/two_sat.hpp": "f6c41f1bfbe0c7096f52deb557bd4cc3f83c3838d85e1d43a0a1d911b6af7fa7",
-    "include/algorithm_assets/graph/strong_components.hpp": "df61772e56bf1584a286be91486deaaab7958bf48c0bd3ebe218e0d4f70d0e24",
-    "include/algorithm_assets/graph/unweighted_csr.hpp": "96ef2f83092605263d87c102354f74cda10495f07302e1bc093db3ee13ccddaa"
-  },
-  "submission_sha256": "d4b0de4b4cd1b36177c07a9e2e4f3ce246d301139194e1ec53f39436c3b24921"
+    "adapter": "judge/adapters/luogu_p4782.cpp",
+    "sources_sha256": {
+        "judge/adapters/luogu_p4782.cpp": "9a600b9318bc750ba2d101414f78687a6a5adcae8dcb28fa81c9b73d00c0854c",
+        "include/algorithm_assets/graph/two_sat.hpp": "78dedd0a07fa4d64aae13a1ec6fb7046448fcd4558021adaacb87effd189a6b5",
+        "include/algorithm_assets/graph/strong_components.hpp": "14d059b702b49b9310f11ec71e720e9d1b6324e477bb56495b395d588bd32d2c",
+        "include/algorithm_assets/graph/unweighted_csr.hpp": "870a13c0c8d1aed500cbf6ad2c13b4a80545f6a843c0fc905eb0e51d2a74f87f"
+    },
+    "submission_sha256": "99c996e7be77dd31d561dfdc397c8c720cbdb5cd954c971fad592c1aa14e3aef"
 }

@@ -12,6 +12,8 @@
 
 [工程资料](docs/project/README.md) 集中维护设计约定、计划、验证与应用案例。个人博客和笔记的116个来源文件、审核范围与取舍见 [来源台账](docs/project/REPOSITORY_IMPORT.md)；正式判题与可复现单文件见 [判题证据](judge/VALIDATION.md)。
 
+自有代码统一使用4个空格缩进，格式检查运行 `python tools/format_code.py`，自动修复加 `--write`。工具安装、范围与生成产物维护见 [格式规范](docs/project/FORMATTING.md)。
+
 三维首版提供存储/校验、几何/BVH、Eigen求解、有限编辑与undo/redo、渲染/OBJ、参数曲面与四面体交换。通过 `algorithm_assets::eigen` 显式启用本地固定Eigen，原核心目标不增加依赖。运行与边界见 [三维集成说明](docs/project/MESH3D_INTEGRATION.md)。
 
 ## 交互式关系图

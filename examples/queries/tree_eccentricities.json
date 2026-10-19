@@ -1,1 +1,8 @@
-{"problem":"tree_eccentricities","n":200000,"m":199999,"graph_class":"undirected_tree","edge_lengths":"unit","edge_listing":"once_undirected"}
+{
+    "problem": "tree_eccentricities",
+    "n": 200000,
+    "m": 199999,
+    "graph_class": "undirected_tree",
+    "edge_lengths": "unit",
+    "edge_listing": "once_undirected"
+}

@@ -1,5 +1,8 @@
 {
-  "problem": "sum", "n": 10000,
-  "finite_inputs": true, "reassociation": false,
-  "intermediates_finite": true, "result_guarantee": "floating_approximate"
+    "problem": "sum",
+    "n": 10000,
+    "finite_inputs": true,
+    "reassociation": false,
+    "intermediates_finite": true,
+    "result_guarantee": "floating_approximate"
 }

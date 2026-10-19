@@ -1,9 +1,9 @@
 {
-  "adapter": "judge/adapters/codeforces_822c.cpp",
-  "sources_sha256": {
-    "judge/adapters/codeforces_822c.cpp": "38cf035bbec985c7e7d5bf3b2d0a0f012d8926fddea2707a245d603eabc909a0",
-    "include/algorithm_assets/recipes/disjoint_interval_pair.hpp": "b4a4c7fffaeaec64b4360079635d06e9ae4ef0767014bd535763bac58934c29d",
-    "include/algorithm_assets/sequence/coordinate_compression.hpp": "cd392e6e4e48b4c8aea9c45a0c5d156fe99096cf3226d21dfe6f3573947e5cc7"
-  },
-  "submission_sha256": "cf7bbf9c87e52e62b4a629d0e25a45e43566adb1c8ee0ab02db053cb1aee0655"
+    "adapter": "judge/adapters/codeforces_822c.cpp",
+    "sources_sha256": {
+        "judge/adapters/codeforces_822c.cpp": "9ac542e3d66d0af00c2d11ceaf1da1d4da716a2b2fda48c2e1cdc5d05658dbc8",
+        "include/algorithm_assets/recipes/disjoint_interval_pair.hpp": "e8d09495b1d2f15944c7131951157a3a181e70a28ce37e5571189405a9384bfc",
+        "include/algorithm_assets/sequence/coordinate_compression.hpp": "d8e6d3305e4f1c93bc1aeed53e509501cc98f9b0413d081998c3130b70966ae2"
+    },
+    "submission_sha256": "ee69397ba6de2e41654735ebabb8613e12f05d4ee3713c38b319cca2f080296c"
 }

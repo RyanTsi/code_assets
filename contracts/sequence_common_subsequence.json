@@ -1,69 +1,66 @@
 {
-  "schema_version": 1,
-  "id": "sequence.common_subsequence",
-  "kind": "algorithm",
-  "name": "最长公共子序列长度",
-  "display_name": "最长公共子序列长度",
-  "header": "include/algorithm_assets/sequence/subsequences.hpp",
-  "documentation": "docs/algorithms/sequence.common_subsequence.md",
-  "problem": "common_subsequence",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "text_unit": "byte",
-    "output": "length",
-    "updates": "none"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "Borrowed arbitrary-byte string_views, empty allowed"
-  },
-  "output": {
-    "conditions": "Exact size_t LCS length; no traceback"
-  },
-  "constraints": {
-    "max_n": 9223372036854775807,
-    "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/algorithms/sequence.common_subsequence.md",
-    "numeric_and_state": "Borrowed arbitrary-byte string_views, empty allowed; Exact size_t LCS length; no traceback",
-    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
-  },
-  "complexity": {
-    "operations": "O(n*m)",
-    "space": "8(min(n,m)+1) one row",
-    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
-  },
-  "relations": [],
-  "evidence": {
-    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
-    "tests": "tests/repository_expansion_test.cpp",
-    "example": "examples/repository_expansion.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/EXPANSION_VALIDATION.md"
-  },
-  "provenance": {
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "path": "动态规划/子序列问题/最长公共子序列.md",
-    "blob_sha": "f367c8ff154a69a171ae67dc1513f5d6557893c3",
-    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-    "license": "No repository license discovered; project distribution license not selected"
-  }
+    "schema_version": 1,
+    "id": "sequence.common_subsequence",
+    "kind": "algorithm",
+    "name": "最长公共子序列长度",
+    "display_name": "最长公共子序列长度",
+    "header": "include/algorithm_assets/sequence/subsequences.hpp",
+    "documentation": "docs/algorithms/sequence.common_subsequence.md",
+    "problem": "common_subsequence",
+    "parameters": ["n", "m"],
+    "requires": {
+        "text_unit": "byte",
+        "output": "length",
+        "updates": "none"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "Borrowed arbitrary-byte string_views, empty allowed"
+    },
+    "output": {
+        "conditions": "Exact size_t LCS length; no traceback"
+    },
+    "constraints": {
+        "max_n": 9223372036854775807,
+        "limits": "size_t, container max_size and allocation limits additionally apply",
+        "complete_contract": "docs/algorithms/sequence.common_subsequence.md",
+        "numeric_and_state": "Borrowed arbitrary-byte string_views, empty allowed; Exact size_t LCS length; no traceback",
+        "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+    },
+    "complexity": {
+        "operations": "O(n*m)",
+        "space": "8(min(n,m)+1) one row",
+        "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+    },
+    "relations": [],
+    "evidence": {
+        "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+        "tests": "tests/repository_expansion_test.cpp",
+        "example": "examples/repository_expansion.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/EXPANSION_VALIDATION.md"
+    },
+    "provenance": {
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "path": "动态规划/子序列问题/最长公共子序列.md",
+        "blob_sha": "f367c8ff154a69a171ae67dc1513f5d6557893c3",
+        "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+        "license": "No repository license discovered; project distribution license not selected"
+    }
 }

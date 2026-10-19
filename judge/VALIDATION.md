@@ -2,6 +2,8 @@
 
 2026-10-14：库与单文件均为 C++20。`judge/adapters/` 仅转换题目 I/O；`generated/` 由真实库头文件展开而成，不维护另一套算法。相邻 JSON 记录每个源文件与最终提交的 SHA-256；修改公共头文件后重新打包并验证。
 
+2026-10-19格式统一后，`generated/` 已从4空格缩进的当前代码重新生成，源码哈希相应改变。下列线上AC仅绑定 `history/` 中的原始提交及其哈希；新生成版本需要重新提交才能获得对应版本的线上结论。本次执行本地回归，不将历史AC自动转移到新版本。
+
 ```sh
 python tools/bundle_submission.py
 python tools/bundle_submission.py --check

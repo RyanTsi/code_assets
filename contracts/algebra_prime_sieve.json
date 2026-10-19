@@ -1,68 +1,66 @@
 {
-  "schema_version": 1,
-  "id": "algebra.prime_sieve",
-  "kind": "algorithm",
-  "name": "奇数位压缩素数筛",
-  "display_name": "奇数位压缩素数筛",
-  "header": "include/algorithm_assets/algebra/prime_sieve.hpp",
-  "documentation": "docs/algorithms/algebra.prime_sieve.md",
-  "problem": "primality_table",
-  "parameters": [
-    "n"
-  ],
-  "requires": {
-    "input_type": "uint32",
-    "output": "primality_or_primes",
-    "updates": "none"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "uint32 inclusive limit N, queries within limit"
-  },
-  "output": {
-    "conditions": "Exact primality or owned sorted primes or callback; 0/1 false"
-  },
-  "constraints": {
-    "max_n": 4294967295,
-    "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/algorithms/algebra.prime_sieve.md",
-    "numeric_and_state": "uint32 inclusive limit N, queries within limit; Exact primality or owned sorted primes or callback; 0/1 false",
-    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
-  },
-  "complexity": {
-    "operations": "O(N log log N) construction; O(1) query; O(N) enumeration plus callback",
-    "space": "Approximately N/16 marking bytes; owned prime output adds4*pi(N)",
-    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
-  },
-  "relations": [],
-  "evidence": {
-    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
-    "tests": "tests/repository_expansion_test.cpp",
-    "example": "examples/repository_expansion.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/EXPANSION_VALIDATION.md"
-  },
-  "provenance": {
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "path": "数学/数论/质数筛.md",
-    "blob_sha": "79841144659dc38879cd0a8fda740f6834d5e3f8",
-    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-    "license": "No repository license discovered; project distribution license not selected"
-  }
+    "schema_version": 1,
+    "id": "algebra.prime_sieve",
+    "kind": "algorithm",
+    "name": "奇数位压缩素数筛",
+    "display_name": "奇数位压缩素数筛",
+    "header": "include/algorithm_assets/algebra/prime_sieve.hpp",
+    "documentation": "docs/algorithms/algebra.prime_sieve.md",
+    "problem": "primality_table",
+    "parameters": ["n"],
+    "requires": {
+        "input_type": "uint32",
+        "output": "primality_or_primes",
+        "updates": "none"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "uint32 inclusive limit N, queries within limit"
+    },
+    "output": {
+        "conditions": "Exact primality or owned sorted primes or callback; 0/1 false"
+    },
+    "constraints": {
+        "max_n": 4294967295,
+        "limits": "size_t, container max_size and allocation limits additionally apply",
+        "complete_contract": "docs/algorithms/algebra.prime_sieve.md",
+        "numeric_and_state": "uint32 inclusive limit N, queries within limit; Exact primality or owned sorted primes or callback; 0/1 false",
+        "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+    },
+    "complexity": {
+        "operations": "O(N log log N) construction; O(1) query; O(N) enumeration plus callback",
+        "space": "Approximately N/16 marking bytes; owned prime output adds4*pi(N)",
+        "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+    },
+    "relations": [],
+    "evidence": {
+        "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+        "tests": "tests/repository_expansion_test.cpp",
+        "example": "examples/repository_expansion.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/EXPANSION_VALIDATION.md"
+    },
+    "provenance": {
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "path": "数学/数论/质数筛.md",
+        "blob_sha": "79841144659dc38879cd0a8fda740f6834d5e3f8",
+        "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+        "license": "No repository license discovered; project distribution license not selected"
+    }
 }

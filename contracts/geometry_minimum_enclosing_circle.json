@@ -1,73 +1,71 @@
 {
-  "schema_version": 1,
-  "id": "geometry.minimum_enclosing_circle",
-  "kind": "algorithm",
-  "name": "近似最小覆盖圆",
-  "display_name": "近似最小覆盖圆",
-  "header": "include/algorithm_assets/geometry/minimum_enclosing_circle.hpp",
-  "documentation": "docs/algorithms/geometry.minimum_enclosing_circle.md",
-  "problem": "geometry.minimum_enclosing_circle",
-  "parameters": [
-    "n"
-  ],
-  "requires": {
-    "coordinates": "float64_abs_le_1e50",
-    "result_guarantee": "approximate",
-    "updates": "none"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "Borrowed finite double points, seeded shuffle, repeated/collinear points supported"
-  },
-  "output": {
-    "conditions": "optional Circle; empty nullopt; rounded center rescanned for radius; no certified minimality"
-  },
-  "constraints": {
-    "max_n": 9223372036854775807,
-    "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/algorithms/geometry.minimum_enclosing_circle.md",
-    "numeric_and_state": "Borrowed finite double points, seeded shuffle, repeated/collinear points supported; optional Circle; empty nullopt; rounded center rescanned for radius; no certified minimality",
-    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
-  },
-  "complexity": {
-    "operations": "Worst O(n^3); ideal uniform-permutation exact-arithmetic expected O(n)",
-    "space": "2*sizeof(long double)*n shuffled workspace plus fixed PRNG/local disks",
-    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "geometry.circle"
+    "schema_version": 1,
+    "id": "geometry.minimum_enclosing_circle",
+    "kind": "algorithm",
+    "name": "近似最小覆盖圆",
+    "display_name": "近似最小覆盖圆",
+    "header": "include/algorithm_assets/geometry/minimum_enclosing_circle.hpp",
+    "documentation": "docs/algorithms/geometry.minimum_enclosing_circle.md",
+    "problem": "geometry.minimum_enclosing_circle",
+    "parameters": ["n"],
+    "requires": {
+        "coordinates": "float64_abs_le_1e50",
+        "result_guarantee": "approximate",
+        "updates": "none"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "Borrowed finite double points, seeded shuffle, repeated/collinear points supported"
+    },
+    "output": {
+        "conditions": "optional Circle; empty nullopt; rounded center rescanned for radius; no certified minimality"
+    },
+    "constraints": {
+        "max_n": 9223372036854775807,
+        "limits": "size_t, container max_size and allocation limits additionally apply",
+        "complete_contract": "docs/algorithms/geometry.minimum_enclosing_circle.md",
+        "numeric_and_state": "Borrowed finite double points, seeded shuffle, repeated/collinear points supported; optional Circle; empty nullopt; rounded center rescanned for radius; no certified minimality",
+        "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+    },
+    "complexity": {
+        "operations": "Worst O(n^3); ideal uniform-permutation exact-arithmetic expected O(n)",
+        "space": "2*sizeof(long double)*n shuffled workspace plus fixed PRNG/local disks",
+        "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "geometry.circle"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+        "tests": "tests/repository_expansion_test.cpp",
+        "example": "examples/repository_expansion.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/EXPANSION_VALIDATION.md"
+    },
+    "provenance": {
+        "repository": "RyanTsi/blog",
+        "commit": "6ea0ef09d8479c8775654c1627710af6da1d5392",
+        "path": "content/posts/最小圆覆盖.md",
+        "blob_sha": "63b68bfada37e9abf33518739d494b21eda17e31",
+        "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+        "license": "No repository license discovered; project distribution license not selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
-    "tests": "tests/repository_expansion_test.cpp",
-    "example": "examples/repository_expansion.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/EXPANSION_VALIDATION.md"
-  },
-  "provenance": {
-    "repository": "RyanTsi/blog",
-    "commit": "6ea0ef09d8479c8775654c1627710af6da1d5392",
-    "path": "content/posts/最小圆覆盖.md",
-    "blob_sha": "63b68bfada37e9abf33518739d494b21eda17e31",
-    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-    "license": "No repository license discovered; project distribution license not selected"
-  }
 }

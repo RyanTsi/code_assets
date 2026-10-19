@@ -1,9 +1,9 @@
 {
-  "adapter": "judge/adapters/luogu_p3389.cpp",
-  "sources_sha256": {
-    "judge/adapters/luogu_p3389.cpp": "bfe341cf52db1a36020416574e0f573f2a860756de1bba130dafb934e8c7e55c",
-    "include/algorithm_assets/numeric/dense_lu.hpp": "d1f91d45f74ca6559c068d2dce7b4378dc90851067068366ac9b33513bf778d2",
-    "include/algorithm_assets/numeric/compensated_sum.hpp": "d8c5bdcd0d872ff1575e5149bc90fd4d9e46d20d4f54db73a9f5ed5f9c6eef96"
-  },
-  "submission_sha256": "cc0b0cfd0569b98e67bb5a09dbb57298a201dcd6b8e80f0a0e38c8f61f0202ea"
+    "adapter": "judge/adapters/luogu_p3389.cpp",
+    "sources_sha256": {
+        "judge/adapters/luogu_p3389.cpp": "a81577a45087f663d6619dd1cbf34ec11ef4dbc9fa84b45232fa1490afdb934d",
+        "include/algorithm_assets/numeric/dense_lu.hpp": "7f5ae29ec49ab1870dbf57e034e189055192ab5147dddff52162d12bfc133bcc",
+        "include/algorithm_assets/numeric/compensated_sum.hpp": "328e55ea687f6e09415346a29cf786778469d05b2a322a8f53c251b6c62ef7a0"
+    },
+    "submission_sha256": "28d8b5dda398c0fbe0508de83b8bdeb1bf268d9b7178b2ad1332d4385052046d"
 }

@@ -1,70 +1,66 @@
 {
-  "schema_version": 1,
-  "id": "mesh.validation",
-  "kind": "algorithm",
-  "name": "表面网格能力校验与边界环",
-  "display_name": "表面网格能力校验与边界环",
-  "header": "include/algorithm_assets/mesh/topology.hpp",
-  "documentation": "docs/algorithms/mesh.validation.md",
-  "problem": "surface_mesh_validation",
-  "parameters": [
-    "n",
-    "m",
-    "corners"
-  ],
-  "requires": {
-    "topology": "single_ring_polygon_faces",
-    "self_intersection_test": false
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "结构合法的 SurfaceMesh。允许开口、退化、孤立点和非流形输入以便诊断。"
-  },
-  "output": {
-    "conditions": "结构/组合能力报告；重复面检测仅针对三角形按顶点集合判断。退化面积为浮点零测试，不认证近退化。没有自交、闭实体或全局嵌入合法性证书。"
-  },
-  "constraints": {
-    "max_n": 4294967294,
-    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
-    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
-    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
-    "scope": "结构合法的 SurfaceMesh。允许开口、退化、孤立点和非流形输入以便诊断。 结构/组合能力报告；重复面检测仅针对三角形按顶点集合判断。退化面积为浮点零测试，不认证近退化。没有自交、闭实体或全局嵌入合法性证书。"
-  },
-  "complexity": {
-    "operations": "三角形 O(n+C log(C+1))；一般多边形另有 O(sum(face_arity^2)) 顶点 link 遍历。边界环先校验再重建邻接。",
-    "space": "O(n+C+m+E)，报告是固定大小；输出边界环另计。",
-    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "mesh.topology"
+    "schema_version": 1,
+    "id": "mesh.validation",
+    "kind": "algorithm",
+    "name": "表面网格能力校验与边界环",
+    "display_name": "表面网格能力校验与边界环",
+    "header": "include/algorithm_assets/mesh/topology.hpp",
+    "documentation": "docs/algorithms/mesh.validation.md",
+    "problem": "surface_mesh_validation",
+    "parameters": ["n", "m", "corners"],
+    "requires": {
+        "topology": "single_ring_polygon_faces",
+        "self_intersection_test": false
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "结构合法的 SurfaceMesh。允许开口、退化、孤立点和非流形输入以便诊断。"
+    },
+    "output": {
+        "conditions": "结构/组合能力报告；重复面检测仅针对三角形按顶点集合判断。退化面积为浮点零测试，不认证近退化。没有自交、闭实体或全局嵌入合法性证书。"
+    },
+    "constraints": {
+        "max_n": 4294967294,
+        "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+        "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+        "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+        "scope": "结构合法的 SurfaceMesh。允许开口、退化、孤立点和非流形输入以便诊断。 结构/组合能力报告；重复面检测仅针对三角形按顶点集合判断。退化面积为浮点零测试，不认证近退化。没有自交、闭实体或全局嵌入合法性证书。"
+    },
+    "complexity": {
+        "operations": "三角形 O(n+C log(C+1))；一般多边形另有 O(sum(face_arity^2)) 顶点 link 遍历。边界环先校验再重建邻接。",
+        "space": "O(n+C+m+E)，报告是固定大小；输出边界环另计。",
+        "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "mesh.topology"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants, not formal verification",
+        "tests": "tests/mesh3d_test.cpp",
+        "example": "examples/mesh3d.cpp",
+        "benchmark": "benchmarks/mesh3d_results.csv"
+    },
+    "provenance": {
+        "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+        "license": "Project implementation license not selected",
+        "dependencies": "No external runtime dependency"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants, not formal verification",
-    "tests": "tests/mesh3d_test.cpp",
-    "example": "examples/mesh3d.cpp",
-    "benchmark": "benchmarks/mesh3d_results.csv"
-  },
-  "provenance": {
-    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
-    "license": "Project implementation license not selected",
-    "dependencies": "No external runtime dependency"
-  }
 }

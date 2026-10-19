@@ -13,23 +13,35 @@
 namespace algorithm_assets {
 class CoordinateCompression {
 public:
-  explicit CoordinateCompression(std::vector<std::int64_t> values) : keys_(std::move(values)) {
-    std::sort(keys_.begin(),keys_.end()); keys_.erase(std::unique(keys_.begin(),keys_.end()),keys_.end());
-    if (keys_.capacity()>2*keys_.size()) std::vector<std::int64_t>(keys_).swap(keys_);
-  }
-  explicit CoordinateCompression(std::span<const std::int64_t> values)
-    : CoordinateCompression(std::vector<std::int64_t>(values.begin(),values.end())) {}
-  [[nodiscard]] std::size_t lower_rank(std::int64_t value) const {
-    return static_cast<std::size_t>(std::lower_bound(keys_.begin(),keys_.end(),value)-keys_.begin());
-  }
-  [[nodiscard]] std::optional<std::size_t> rank(std::int64_t value) const {
-    auto i=lower_rank(value); return i<keys_.size() && keys_[i]==value?std::optional<std::size_t>{i}:std::nullopt;
-  }
-  [[nodiscard]] std::int64_t value_at(std::size_t rank) const { return keys_.at(rank); }
-  [[nodiscard]] std::span<const std::int64_t> keys() const noexcept { return keys_; }
-  [[nodiscard]] std::size_t size() const noexcept { return keys_.size(); }
+    explicit CoordinateCompression(std::vector<std::int64_t> values) : keys_(std::move(values)) {
+        std::sort(keys_.begin(), keys_.end());
+        keys_.erase(std::unique(keys_.begin(), keys_.end()), keys_.end());
+        if (keys_.capacity() > 2 * keys_.size())
+            std::vector<std::int64_t>(keys_).swap(keys_);
+    }
+    explicit CoordinateCompression(std::span<const std::int64_t> values)
+        : CoordinateCompression(std::vector<std::int64_t>(values.begin(), values.end())) {
+    }
+    [[nodiscard]] std::size_t lower_rank(std::int64_t value) const {
+        return static_cast<std::size_t>(std::lower_bound(keys_.begin(), keys_.end(), value) -
+                                        keys_.begin());
+    }
+    [[nodiscard]] std::optional<std::size_t> rank(std::int64_t value) const {
+        auto i = lower_rank(value);
+        return i < keys_.size() && keys_[i] == value ? std::optional<std::size_t>{i} : std::nullopt;
+    }
+    [[nodiscard]] std::int64_t value_at(std::size_t rank) const {
+        return keys_.at(rank);
+    }
+    [[nodiscard]] std::span<const std::int64_t> keys() const noexcept {
+        return keys_;
+    }
+    [[nodiscard]] std::size_t size() const noexcept {
+        return keys_.size();
+    }
+
 private:
-  std::vector<std::int64_t> keys_;
+    std::vector<std::int64_t> keys_;
 };
 } // namespace algorithm_assets
 // end include/algorithm_assets/sequence/coordinate_compression.hpp
@@ -45,57 +57,76 @@ private:
 #include <vector>
 
 namespace algorithm_assets {
-struct PricedInterval { std::int64_t begin, end, cost; }; // [begin, end)
-struct DisjointIntervalPair { std::int64_t cost; std::size_t first, second; };
+struct PricedInterval {
+    std::int64_t begin, end, cost;
+}; // [begin, end)
+struct DisjointIntervalPair {
+    std::int64_t cost;
+    std::size_t first, second;
+};
 
 // Earliest-ending sweep + compressed exact durations. Returns original indices.
-inline std::optional<DisjointIntervalPair> cheapest_disjoint_interval_pair(
-    std::span<const PricedInterval> intervals, std::int64_t total_duration) {
-  using Limits = std::numeric_limits<std::int64_t>;
-  if (total_duration <= 0) throw std::invalid_argument("Total duration must be positive");
-  std::vector<std::int64_t> durations;
-  durations.reserve(intervals.size());
-  for (const auto& interval : intervals) {
-    if (interval.begin >= interval.end || interval.cost < 0)
-      throw std::invalid_argument("Intervals must be nonempty with nonnegative costs");
-    if (interval.begin < 0 && interval.end > Limits::max() + interval.begin)
-      throw std::overflow_error("Interval duration exceeds INT64_MAX");
-    durations.push_back(interval.end - interval.begin);
-  }
-  const CoordinateCompression lengths(std::move(durations));
-  std::vector<std::size_t> starts(intervals.size()), ends(intervals.size());
-  std::iota(starts.begin(), starts.end(), std::size_t{0});
-  ends = starts;
-  std::sort(starts.begin(), starts.end(), [&](auto a, auto b) { return intervals[a].begin < intervals[b].begin; });
-  std::sort(ends.begin(), ends.end(), [&](auto a, auto b) { return intervals[a].end < intervals[b].end; });
-  constexpr auto absent = std::numeric_limits<std::size_t>::max();
-  struct Best { std::int64_t cost = 0; std::size_t index = absent; };
-  std::vector<Best> best(lengths.size());
-  std::optional<DisjointIntervalPair> result;
-  bool has_overflowing_pair = false;
-  std::size_t cursor = 0;
-  for (const auto right : starts) {
-    const auto& current = intervals[right];
-    while (cursor < ends.size() && intervals[ends[cursor]].end <= current.begin) {
-      const auto left = ends[cursor++];
-      const auto& interval = intervals[left];
-      auto& entry = best[*lengths.rank(interval.end - interval.begin)];
-      if (entry.index == absent || interval.cost < entry.cost) entry = {interval.cost, left};
+inline std::optional<DisjointIntervalPair>
+cheapest_disjoint_interval_pair(std::span<const PricedInterval> intervals,
+                                std::int64_t total_duration) {
+    using Limits = std::numeric_limits<std::int64_t>;
+    if (total_duration <= 0)
+        throw std::invalid_argument("Total duration must be positive");
+    std::vector<std::int64_t> durations;
+    durations.reserve(intervals.size());
+    for (const auto& interval : intervals) {
+        if (interval.begin >= interval.end || interval.cost < 0)
+            throw std::invalid_argument("Intervals must be nonempty with nonnegative costs");
+        if (interval.begin < 0 && interval.end > Limits::max() + interval.begin)
+            throw std::overflow_error("Interval duration exceeds INT64_MAX");
+        durations.push_back(interval.end - interval.begin);
     }
-    const auto duration = current.end - current.begin;
-    if (duration >= total_duration) continue;
-    const auto rank = lengths.rank(total_duration - duration);
-    if (!rank || best[*rank].index == absent) continue;
-    const auto left = best[*rank];
-    if (current.cost > Limits::max() - left.cost) {
-      has_overflowing_pair = true;
-      continue; // A larger cost cannot improve a representable optimum.
+    const CoordinateCompression lengths(std::move(durations));
+    std::vector<std::size_t> starts(intervals.size()), ends(intervals.size());
+    std::iota(starts.begin(), starts.end(), std::size_t{0});
+    ends = starts;
+    std::sort(starts.begin(), starts.end(), [&](auto a, auto b) {
+        return intervals[a].begin < intervals[b].begin;
+    });
+    std::sort(ends.begin(), ends.end(), [&](auto a, auto b) {
+        return intervals[a].end < intervals[b].end;
+    });
+    constexpr auto absent = std::numeric_limits<std::size_t>::max();
+    struct Best {
+        std::int64_t cost = 0;
+        std::size_t index = absent;
+    };
+    std::vector<Best> best(lengths.size());
+    std::optional<DisjointIntervalPair> result;
+    bool has_overflowing_pair = false;
+    std::size_t cursor = 0;
+    for (const auto right : starts) {
+        const auto& current = intervals[right];
+        while (cursor < ends.size() && intervals[ends[cursor]].end <= current.begin) {
+            const auto left = ends[cursor++];
+            const auto& interval = intervals[left];
+            auto& entry = best[*lengths.rank(interval.end - interval.begin)];
+            if (entry.index == absent || interval.cost < entry.cost)
+                entry = {interval.cost, left};
+        }
+        const auto duration = current.end - current.begin;
+        if (duration >= total_duration)
+            continue;
+        const auto rank = lengths.rank(total_duration - duration);
+        if (!rank || best[*rank].index == absent)
+            continue;
+        const auto left = best[*rank];
+        if (current.cost > Limits::max() - left.cost) {
+            has_overflowing_pair = true;
+            continue; // A larger cost cannot improve a representable optimum.
+        }
+        const auto cost = left.cost + current.cost;
+        if (!result || cost < result->cost)
+            result = DisjointIntervalPair{cost, left.index, right};
     }
-    const auto cost = left.cost + current.cost;
-    if (!result || cost < result->cost) result = DisjointIntervalPair{cost, left.index, right};
-  }
-  if (!result && has_overflowing_pair) throw std::overflow_error("Minimum pair cost exceeds INT64_MAX");
-  return result;
+    if (!result && has_overflowing_pair)
+        throw std::overflow_error("Minimum pair cost exceeds INT64_MAX");
+    return result;
 }
 } // namespace algorithm_assets
 // end include/algorithm_assets/recipes/disjoint_interval_pair.hpp
@@ -105,15 +136,18 @@ inline std::optional<DisjointIntervalPair> cheapest_disjoint_interval_pair(
 #include <iostream>
 #include <vector>
 int main() {
-  std::ios::sync_with_stdio(false); std::cin.tie(nullptr);
-  std::size_t n; std::int64_t duration;
-  if (!(std::cin >> n >> duration)) return 0;
-  std::vector<algorithm_assets::PricedInterval> intervals(n);
-  for (auto& interval : intervals) {
-    std::cin >> interval.begin >> interval.end >> interval.cost;
-    ++interval.end; // Inclusive integer days -> half-open; CF bounds make this safe.
-  }
-  const auto answer = algorithm_assets::cheapest_disjoint_interval_pair(intervals, duration);
-  std::cout << (answer ? answer->cost : -1) << '\n';
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::size_t n;
+    std::int64_t duration;
+    if (!(std::cin >> n >> duration))
+        return 0;
+    std::vector<algorithm_assets::PricedInterval> intervals(n);
+    for (auto& interval : intervals) {
+        std::cin >> interval.begin >> interval.end >> interval.cost;
+        ++interval.end; // Inclusive integer days -> half-open; CF bounds make this safe.
+    }
+    const auto answer = algorithm_assets::cheapest_disjoint_interval_pair(intervals, duration);
+    std::cout << (answer ? answer->cost : -1) << '\n';
 }
 // end judge/adapters/codeforces_822c.cpp

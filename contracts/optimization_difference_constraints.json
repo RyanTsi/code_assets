@@ -1,74 +1,71 @@
 {
-  "schema_version": 1,
-  "id": "optimization.difference_constraints",
-  "kind": "recipe",
-  "name": "差分约束配方",
-  "display_name": "差分约束配方",
-  "header": "include/algorithm_assets/graph/bellman_ford.hpp",
-  "documentation": "docs/recipes/optimization.difference_constraints.md",
-  "problem": "difference_constraints",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "inequality": "x_to_le_x_from_plus_weight",
-    "weights": "bounded_signed_int64",
-    "result_guarantee": "exact"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "v->u,w encodes x[u]<=x[v]+w; Bellman weight bound"
-  },
-  "output": {
-    "conditions": "optional owned int64 feasible potential; nullopt if inconsistent"
-  },
-  "constraints": {
-    "max_n": 9223372036854775807,
-    "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/recipes/optimization.difference_constraints.md",
-    "numeric_and_state": "v->u,w encodes x[u]<=x[v]+w; Bellman weight bound; optional owned int64 feasible potential; nullopt if inconsistent",
-    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
-  },
-  "complexity": {
-    "operations": "O(n*(n+m))",
-    "space": "Bellman workspace + 8n solution",
-    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "graph.bellman_ford"
+    "schema_version": 1,
+    "id": "optimization.difference_constraints",
+    "kind": "recipe",
+    "name": "差分约束配方",
+    "display_name": "差分约束配方",
+    "header": "include/algorithm_assets/graph/bellman_ford.hpp",
+    "documentation": "docs/recipes/optimization.difference_constraints.md",
+    "problem": "difference_constraints",
+    "parameters": ["n", "m"],
+    "requires": {
+        "inequality": "x_to_le_x_from_plus_weight",
+        "weights": "bounded_signed_int64",
+        "result_guarantee": "exact"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "v->u,w encodes x[u]<=x[v]+w; Bellman weight bound"
+    },
+    "output": {
+        "conditions": "optional owned int64 feasible potential; nullopt if inconsistent"
+    },
+    "constraints": {
+        "max_n": 9223372036854775807,
+        "limits": "size_t, container max_size and allocation limits additionally apply",
+        "complete_contract": "docs/recipes/optimization.difference_constraints.md",
+        "numeric_and_state": "v->u,w encodes x[u]<=x[v]+w; Bellman weight bound; optional owned int64 feasible potential; nullopt if inconsistent",
+        "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+    },
+    "complexity": {
+        "operations": "O(n*(n+m))",
+        "space": "Bellman workspace + 8n solution",
+        "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "graph.bellman_ford"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+        "tests": "tests/repository_expansion_test.cpp",
+        "example": "examples/repository_expansion.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/EXPANSION_VALIDATION.md"
+    },
+    "provenance": {
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "path": "2-SAT&&差分约束.md",
+        "blob_sha": "3c48077e77ad63ef2a930f7087127cbde4b316c4",
+        "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+        "license": "No repository license discovered; project distribution license not selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
-    "tests": "tests/repository_expansion_test.cpp",
-    "example": "examples/repository_expansion.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/EXPANSION_VALIDATION.md"
-  },
-  "provenance": {
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "path": "2-SAT&&差分约束.md",
-    "blob_sha": "3c48077e77ad63ef2a930f7087127cbde4b316c4",
-    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-    "license": "No repository license discovered; project distribution license not selected"
-  }
 }

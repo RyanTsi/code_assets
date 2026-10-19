@@ -24,33 +24,49 @@ namespace algorithm_assets::geometry {
 
 // Integer predicates are exact for |coordinate| <= 1e9. Floating predicates
 // use long double intermediates, not an adaptive exact arithmetic kernel.
-template<class T>
+template <class T>
 concept Coordinate = std::same_as<T, double> || std::same_as<T, std::int64_t>;
 
-template<Coordinate T> struct Vector2 {
-  T x{}, y{};
-  constexpr bool operator==(const Vector2&) const = default;
-  constexpr Vector2 operator-() const { return {-x, -y}; }
-  constexpr Vector2 operator+(Vector2 b) const { return {x + b.x, y + b.y}; }
-  constexpr Vector2 operator-(Vector2 b) const { return {x - b.x, y - b.y}; }
-  constexpr Vector2 operator*(T scale) const { return {x * scale, y * scale}; }
+template <Coordinate T> struct Vector2 {
+    T x{}, y{};
+    constexpr bool operator==(const Vector2&) const = default;
+    constexpr Vector2 operator-() const {
+        return {-x, -y};
+    }
+    constexpr Vector2 operator+(Vector2 b) const {
+        return {x + b.x, y + b.y};
+    }
+    constexpr Vector2 operator-(Vector2 b) const {
+        return {x - b.x, y - b.y};
+    }
+    constexpr Vector2 operator*(T scale) const {
+        return {x * scale, y * scale};
+    }
 };
 
-template<Coordinate T> struct Point2 {
-  T x{}, y{};
-  constexpr bool operator==(const Point2&) const = default;
-  constexpr Vector2<T> operator-(Point2 b) const { return {x - b.x, y - b.y}; }
-  constexpr Point2 operator+(Vector2<T> v) const { return {x + v.x, y + v.y}; }
-  constexpr Point2 operator-(Vector2<T> v) const { return {x - v.x, y - v.y}; }
+template <Coordinate T> struct Point2 {
+    T x{}, y{};
+    constexpr bool operator==(const Point2&) const = default;
+    constexpr Vector2<T> operator-(Point2 b) const {
+        return {x - b.x, y - b.y};
+    }
+    constexpr Point2 operator+(Vector2<T> v) const {
+        return {x + v.x, y + v.y};
+    }
+    constexpr Point2 operator-(Vector2<T> v) const {
+        return {x - v.x, y - v.y};
+    }
 };
 
 using Point = Point2<double>;
 using Vector = Vector2<double>;
 using IntegerPoint = Point2<std::int64_t>;
 static_assert(sizeof(Point) == 16 && sizeof(IntegerPoint) == 16 &&
-              std::numeric_limits<double>::is_iec559 && std::numeric_limits<double>::digits == 53,
+                  std::numeric_limits<double>::is_iec559 &&
+                  std::numeric_limits<double>::digits == 53,
               "Geometry requires binary64 double and 16-byte point storage");
-template<Coordinate T> using SquaredDistance = std::conditional_t<std::same_as<T, double>, long double, std::int64_t>;
+template <Coordinate T>
+using SquaredDistance = std::conditional_t<std::same_as<T, double>, long double, std::int64_t>;
 
 enum class Turn { clockwise = -1, collinear = 0, counterclockwise = 1 };
 enum class RelativePosition { left, right, before, after, on_segment, degenerate };
@@ -59,155 +75,187 @@ enum class IntersectionKind { none, finite, infinite };
 
 // A fixed-capacity result avoids heap allocations for intersections/tangents.
 // Only elements [0,count) are meaningful; infinite sets have count == 0.
-template<class T, std::size_t Capacity> struct IntersectionSet {
-  IntersectionKind kind = IntersectionKind::none;
-  std::array<T, Capacity> values{};
-  std::size_t count = 0;
-  void add(const T& value) {
-    if (count == Capacity) throw std::length_error("IntersectionSet capacity exceeded");
-    values[count++] = value;
-    kind = IntersectionKind::finite;
-  }
+template <class T, std::size_t Capacity> struct IntersectionSet {
+    IntersectionKind kind = IntersectionKind::none;
+    std::array<T, Capacity> values{};
+    std::size_t count = 0;
+    void add(const T& value) {
+        if (count == Capacity)
+            throw std::length_error("IntersectionSet capacity exceeded");
+        values[count++] = value;
+        kind = IntersectionKind::finite;
+    }
 };
 
 class Tolerance {
 public:
-  explicit Tolerance(double absolute = 1e-12,
-                     double relative = 32 * std::numeric_limits<double>::epsilon())
-      : absolute_(absolute), relative_(relative) {
-    if (!std::isfinite(absolute) || !std::isfinite(relative) || absolute < 0 || relative < 0)
-      throw std::invalid_argument("Tolerance must be finite and nonnegative");
-  }
-  [[nodiscard]] int sign(long double value, long double scale = 1) const {
-    const auto error = absolute_ + relative_ * std::abs(scale);
-    return value > error ? 1 : value < -error ? -1 : 0;
-  }
-  [[nodiscard]] int compare(long double a, long double b) const {
-    return sign(a - b, std::max(std::abs(a), std::abs(b)));
-  }
+    explicit Tolerance(double absolute = 1e-12,
+                       double relative = 32 * std::numeric_limits<double>::epsilon())
+        : absolute_(absolute), relative_(relative) {
+        if (!std::isfinite(absolute) || !std::isfinite(relative) || absolute < 0 || relative < 0)
+            throw std::invalid_argument("Tolerance must be finite and nonnegative");
+    }
+    [[nodiscard]] int sign(long double value, long double scale = 1) const {
+        const auto error = absolute_ + relative_ * std::abs(scale);
+        return value > error ? 1 : value < -error ? -1 : 0;
+    }
+    [[nodiscard]] int compare(long double a, long double b) const {
+        return sign(a - b, std::max(std::abs(a), std::abs(b)));
+    }
+
 private:
-  double absolute_, relative_;
+    double absolute_, relative_;
 };
 
 namespace detail {
-template<Coordinate T> inline void validate(Point2<T> p) {
-  if constexpr (std::same_as<T, double>) {
-    if (!std::isfinite(p.x) || !std::isfinite(p.y) || std::abs(p.x) > 1e100 || std::abs(p.y) > 1e100)
-      throw std::invalid_argument("Floating coordinates must be finite and within +/-1e100");
-  } else {
-    constexpr std::int64_t bound = 1'000'000'000;
-    if (p.x < -bound || p.x > bound || p.y < -bound || p.y > bound)
-      throw std::invalid_argument("Exact integer coordinates must be within +/-1e9");
-  }
+template <Coordinate T> inline void validate(Point2<T> p) {
+    if constexpr (std::same_as<T, double>) {
+        if (!std::isfinite(p.x) || !std::isfinite(p.y) || std::abs(p.x) > 1e100 ||
+            std::abs(p.y) > 1e100)
+            throw std::invalid_argument("Floating coordinates must be finite and within +/-1e100");
+    } else {
+        constexpr std::int64_t bound = 1'000'000'000;
+        if (p.x < -bound || p.x > bound || p.y < -bound || p.y > bound)
+            throw std::invalid_argument("Exact integer coordinates must be within +/-1e9");
+    }
 }
-template<Coordinate T> inline void validate(std::span<const Point2<T>> points) {
-  for (const auto p : points) validate(p);
+template <Coordinate T> inline void validate(std::span<const Point2<T>> points) {
+    for (const auto p : points)
+        validate(p);
 }
-template<Coordinate T> constexpr bool lex_less(Point2<T> a, Point2<T> b) {
-  return a.x < b.x || (a.x == b.x && a.y < b.y);
+template <Coordinate T> constexpr bool lex_less(Point2<T> a, Point2<T> b) {
+    return a.x < b.x || (a.x == b.x && a.y < b.y);
 }
-template<Coordinate T> constexpr SquaredDistance<T> squared_unchecked(Point2<T> a, Point2<T> b) {
-  // Cast BEFORE subtraction in the floating kernel, preserving guard digits.
-  const SquaredDistance<T> dx = static_cast<SquaredDistance<T>>(a.x) - b.x;
-  const SquaredDistance<T> dy = static_cast<SquaredDistance<T>>(a.y) - b.y;
-  const auto squared = dx * dx + dy * dy;
-  if constexpr (std::same_as<T, double>) {
-    if (squared == 0 && a != b) throw std::underflow_error("Distinct point distance squared underflowed");
-  }
-  return squared;
+template <Coordinate T> constexpr SquaredDistance<T> squared_unchecked(Point2<T> a, Point2<T> b) {
+    // Cast BEFORE subtraction in the floating kernel, preserving guard digits.
+    const SquaredDistance<T> dx = static_cast<SquaredDistance<T>>(a.x) - b.x;
+    const SquaredDistance<T> dy = static_cast<SquaredDistance<T>>(a.y) - b.y;
+    const auto squared = dx * dx + dy * dy;
+    if constexpr (std::same_as<T, double>) {
+        if (squared == 0 && a != b)
+            throw std::underflow_error("Distinct point distance squared underflowed");
+    }
+    return squared;
 }
-template<Coordinate T> constexpr SquaredDistance<T> determinant(Point2<T> a, Point2<T> b, Point2<T> c) {
-  const SquaredDistance<T> bx = static_cast<SquaredDistance<T>>(b.x) - a.x;
-  const SquaredDistance<T> by = static_cast<SquaredDistance<T>>(b.y) - a.y;
-  const SquaredDistance<T> cx = static_cast<SquaredDistance<T>>(c.x) - a.x;
-  const SquaredDistance<T> cy = static_cast<SquaredDistance<T>>(c.y) - a.y;
-  return bx * cy - by * cx;
+template <Coordinate T>
+constexpr SquaredDistance<T> determinant(Point2<T> a, Point2<T> b, Point2<T> c) {
+    const SquaredDistance<T> bx = static_cast<SquaredDistance<T>>(b.x) - a.x;
+    const SquaredDistance<T> by = static_cast<SquaredDistance<T>>(b.y) - a.y;
+    const SquaredDistance<T> cx = static_cast<SquaredDistance<T>>(c.x) - a.x;
+    const SquaredDistance<T> cy = static_cast<SquaredDistance<T>>(c.y) - a.y;
+    return bx * cy - by * cx;
 }
-template<Coordinate T> constexpr int turn_unchecked(Point2<T> a, Point2<T> b, Point2<T> c) {
-  const auto value = determinant(a, b, c);
-  return (value > 0) - (value < 0);
+template <Coordinate T> constexpr int turn_unchecked(Point2<T> a, Point2<T> b, Point2<T> c) {
+    const auto value = determinant(a, b, c);
+    return (value > 0) - (value < 0);
 }
-template<Coordinate T> constexpr bool on_segment_unchecked(Point2<T> a, Point2<T> b, Point2<T> p) {
-  return turn_unchecked(a, b, p) == 0 &&
-         std::min(a.x, b.x) <= p.x && p.x <= std::max(a.x, b.x) &&
-         std::min(a.y, b.y) <= p.y && p.y <= std::max(a.y, b.y);
+template <Coordinate T> constexpr bool on_segment_unchecked(Point2<T> a, Point2<T> b, Point2<T> p) {
+    return turn_unchecked(a, b, p) == 0 && std::min(a.x, b.x) <= p.x && p.x <= std::max(a.x, b.x) &&
+           std::min(a.y, b.y) <= p.y && p.y <= std::max(a.y, b.y);
 }
 inline Point make_point(long double x, long double y) {
-  if (!std::isfinite(x) || !std::isfinite(y) || std::abs(x) > 1e100L || std::abs(y) > 1e100L)
-    throw std::overflow_error("Constructed point is outside the floating coordinate domain");
-  return {static_cast<double>(x), static_cast<double>(y)};
+    if (!std::isfinite(x) || !std::isfinite(y) || std::abs(x) > 1e100L || std::abs(y) > 1e100L)
+        throw std::overflow_error("Constructed point is outside the floating coordinate domain");
+    return {static_cast<double>(x), static_cast<double>(y)};
 }
 inline double checked_real(long double value) {
-  const auto result = static_cast<double>(value);
-  if (!std::isfinite(result)) throw std::overflow_error("Geometry result overflowed");
-  return result;
+    const auto result = static_cast<double>(value);
+    if (!std::isfinite(result))
+        throw std::overflow_error("Geometry result overflowed");
+    return result;
 }
 } // namespace detail
 
-template<Coordinate T> constexpr SquaredDistance<T> dot(Vector2<T> a, Vector2<T> b) {
-  return static_cast<SquaredDistance<T>>(a.x) * b.x + static_cast<SquaredDistance<T>>(a.y) * b.y;
+template <Coordinate T> constexpr SquaredDistance<T> dot(Vector2<T> a, Vector2<T> b) {
+    return static_cast<SquaredDistance<T>>(a.x) * b.x + static_cast<SquaredDistance<T>>(a.y) * b.y;
 }
-template<Coordinate T> constexpr SquaredDistance<T> cross(Vector2<T> a, Vector2<T> b) {
-  return static_cast<SquaredDistance<T>>(a.x) * b.y - static_cast<SquaredDistance<T>>(a.y) * b.x;
+template <Coordinate T> constexpr SquaredDistance<T> cross(Vector2<T> a, Vector2<T> b) {
+    return static_cast<SquaredDistance<T>>(a.x) * b.y - static_cast<SquaredDistance<T>>(a.y) * b.x;
 }
-template<Coordinate T> inline RelativePosition relative_position(Point2<T> a, Point2<T> b, Point2<T> p) {
-  detail::validate(a); detail::validate(b); detail::validate(p);
-  if (a == b) return a == p ? RelativePosition::on_segment : RelativePosition::degenerate;
-  const auto turn = detail::turn_unchecked(a, b, p);
-  if (turn > 0) return RelativePosition::left;
-  if (turn < 0) return RelativePosition::right;
-  if (dot(b - a, p - a) < 0) return RelativePosition::before;
-  if (detail::squared_unchecked(a, p) > detail::squared_unchecked(a, b)) return RelativePosition::after;
-  return RelativePosition::on_segment;
+template <Coordinate T>
+inline RelativePosition relative_position(Point2<T> a, Point2<T> b, Point2<T> p) {
+    detail::validate(a);
+    detail::validate(b);
+    detail::validate(p);
+    if (a == b)
+        return a == p ? RelativePosition::on_segment : RelativePosition::degenerate;
+    const auto turn = detail::turn_unchecked(a, b, p);
+    if (turn > 0)
+        return RelativePosition::left;
+    if (turn < 0)
+        return RelativePosition::right;
+    if (dot(b - a, p - a) < 0)
+        return RelativePosition::before;
+    if (detail::squared_unchecked(a, p) > detail::squared_unchecked(a, b))
+        return RelativePosition::after;
+    return RelativePosition::on_segment;
 }
-template<Coordinate T> constexpr Vector2<T> perpendicular_ccw(Vector2<T> v) { return {-v.y, v.x}; }
+template <Coordinate T> constexpr Vector2<T> perpendicular_ccw(Vector2<T> v) {
+    return {-v.y, v.x};
+}
 
-template<Coordinate T> inline Turn orientation(Point2<T> a, Point2<T> b, Point2<T> c) {
-  detail::validate(a); detail::validate(b); detail::validate(c);
-  return static_cast<Turn>(detail::turn_unchecked(a, b, c));
+template <Coordinate T> inline Turn orientation(Point2<T> a, Point2<T> b, Point2<T> c) {
+    detail::validate(a);
+    detail::validate(b);
+    detail::validate(c);
+    return static_cast<Turn>(detail::turn_unchecked(a, b, c));
 }
 inline Turn orientation(Point a, Point b, Point c, Tolerance tolerance) {
-  detail::validate(a); detail::validate(b); detail::validate(c);
-  const long double bx = static_cast<long double>(b.x) - a.x, by = static_cast<long double>(b.y) - a.y;
-  const long double cx = static_cast<long double>(c.x) - a.x, cy = static_cast<long double>(c.y) - a.y;
-  return static_cast<Turn>(tolerance.sign(bx * cy - by * cx, std::abs(bx * cy) + std::abs(by * cx)));
+    detail::validate(a);
+    detail::validate(b);
+    detail::validate(c);
+    const long double bx = static_cast<long double>(b.x) - a.x,
+                      by = static_cast<long double>(b.y) - a.y;
+    const long double cx = static_cast<long double>(c.x) - a.x,
+                      cy = static_cast<long double>(c.y) - a.y;
+    return static_cast<Turn>(
+        tolerance.sign(bx * cy - by * cx, std::abs(bx * cy) + std::abs(by * cx)));
 }
-template<Coordinate T> inline SquaredDistance<T> squared_distance(Point2<T> a, Point2<T> b) {
-  detail::validate(a); detail::validate(b);
-  return detail::squared_unchecked(a, b);
+template <Coordinate T> inline SquaredDistance<T> squared_distance(Point2<T> a, Point2<T> b) {
+    detail::validate(a);
+    detail::validate(b);
+    return detail::squared_unchecked(a, b);
 }
-template<Coordinate T> inline double distance(Point2<T> a, Point2<T> b) {
-  detail::validate(a); detail::validate(b);
-  return detail::checked_real(std::hypot(static_cast<long double>(a.x) - b.x, static_cast<long double>(a.y) - b.y));
+template <Coordinate T> inline double distance(Point2<T> a, Point2<T> b) {
+    detail::validate(a);
+    detail::validate(b);
+    return detail::checked_real(
+        std::hypot(static_cast<long double>(a.x) - b.x, static_cast<long double>(a.y) - b.y));
 }
 inline bool almost_equal(Point a, Point b, Tolerance tolerance = Tolerance{}) {
-  detail::validate(a); detail::validate(b);
-  return tolerance.compare(a.x, b.x) == 0 && tolerance.compare(a.y, b.y) == 0;
+    detail::validate(a);
+    detail::validate(b);
+    return tolerance.compare(a.x, b.x) == 0 && tolerance.compare(a.y, b.y) == 0;
 }
 inline Vector unit(Vector v) {
-  detail::validate(Point{v.x, v.y});
-  const auto length = std::hypot(v.x, v.y);
-  if (length == 0) throw std::invalid_argument("A zero vector has no unit direction");
-  return {v.x / length, v.y / length};
+    detail::validate(Point{v.x, v.y});
+    const auto length = std::hypot(v.x, v.y);
+    if (length == 0)
+        throw std::invalid_argument("A zero vector has no unit direction");
+    return {v.x / length, v.y / length};
 }
 inline Vector rotate(Vector v, double radians) {
-  detail::validate(Point{v.x, v.y});
-  if (!std::isfinite(radians)) throw std::invalid_argument("Angle must be finite");
-  const auto sine = std::sin(radians), cosine = std::cos(radians);
-  const auto p = detail::make_point(static_cast<long double>(v.x) * cosine - static_cast<long double>(v.y) * sine,
-                                  static_cast<long double>(v.x) * sine + static_cast<long double>(v.y) * cosine);
-  return {p.x, p.y};
+    detail::validate(Point{v.x, v.y});
+    if (!std::isfinite(radians))
+        throw std::invalid_argument("Angle must be finite");
+    const auto sine = std::sin(radians), cosine = std::cos(radians);
+    const auto p = detail::make_point(
+        static_cast<long double>(v.x) * cosine - static_cast<long double>(v.y) * sine,
+        static_cast<long double>(v.x) * sine + static_cast<long double>(v.y) * cosine);
+    return {p.x, p.y};
 }
 inline Point polar(double radius, double radians) {
-  if (!std::isfinite(radius) || radius < 0 || radius > 1e100 || !std::isfinite(radians))
-    throw std::invalid_argument("Invalid polar radius/angle");
-  return {radius * std::cos(radians), radius * std::sin(radians)};
+    if (!std::isfinite(radius) || radius < 0 || radius > 1e100 || !std::isfinite(radians))
+        throw std::invalid_argument("Invalid polar radius/angle");
+    return {radius * std::cos(radians), radius * std::sin(radians)};
 }
 
-template<Coordinate T> struct PointPair {
-  Point2<T> first{}, second{};
-  SquaredDistance<T> squared_distance{};
-  [[nodiscard]] double distance() const { return detail::checked_real(std::sqrt(static_cast<long double>(squared_distance))); }
+template <Coordinate T> struct PointPair {
+    Point2<T> first{}, second{};
+    SquaredDistance<T> squared_distance{};
+    [[nodiscard]] double distance() const {
+        return detail::checked_real(std::sqrt(static_cast<long double>(squared_distance)));
+    }
 };
 
 } // namespace algorithm_assets::geometry
@@ -219,172 +267,242 @@ namespace algorithm_assets::geometry {
 // A line is an anchor and a unit direction, never a zero-length segment.
 class Line {
 public:
-  Line() = default; // The x axis is a valid default value.
-  [[nodiscard]] static Line through(Point a, Point b) {
-    detail::validate(a); detail::validate(b);
-    const long double dx = static_cast<long double>(b.x) - a.x, dy = static_cast<long double>(b.y) - a.y;
-    const auto length = std::hypot(dx, dy);
-    if (length == 0) throw std::invalid_argument("Distinct points required for a line");
-    return Line(a, {static_cast<double>(dx / length), static_cast<double>(dy / length)});
-  }
-  [[nodiscard]] static Line from_direction(Point anchor, Vector direction) {
-    detail::validate(anchor);
-    return Line(anchor, unit(direction));
-  }
-  [[nodiscard]] static Line from_equation(double a, double b, double c) {
-    if (!std::isfinite(a) || !std::isfinite(b) || !std::isfinite(c))
-      throw std::invalid_argument("Line coefficients must be finite");
-    const auto length = std::hypot(static_cast<long double>(a), static_cast<long double>(b));
-    if (length == 0) throw std::invalid_argument("Line normal must be nonzero");
-    const auto nx = a / length, ny = b / length, offset = c / length;
-    return Line(detail::make_point(nx * offset, ny * offset), {static_cast<double>(-ny), static_cast<double>(nx)});
-  }
-  [[nodiscard]] Point anchor() const noexcept { return anchor_; }
-  [[nodiscard]] Vector direction() const noexcept { return direction_; }
+    Line() = default; // The x axis is a valid default value.
+    [[nodiscard]] static Line through(Point a, Point b) {
+        detail::validate(a);
+        detail::validate(b);
+        const long double dx = static_cast<long double>(b.x) - a.x,
+                          dy = static_cast<long double>(b.y) - a.y;
+        const auto length = std::hypot(dx, dy);
+        if (length == 0)
+            throw std::invalid_argument("Distinct points required for a line");
+        return Line(a, {static_cast<double>(dx / length), static_cast<double>(dy / length)});
+    }
+    [[nodiscard]] static Line from_direction(Point anchor, Vector direction) {
+        detail::validate(anchor);
+        return Line(anchor, unit(direction));
+    }
+    [[nodiscard]] static Line from_equation(double a, double b, double c) {
+        if (!std::isfinite(a) || !std::isfinite(b) || !std::isfinite(c))
+            throw std::invalid_argument("Line coefficients must be finite");
+        const auto length = std::hypot(static_cast<long double>(a), static_cast<long double>(b));
+        if (length == 0)
+            throw std::invalid_argument("Line normal must be nonzero");
+        const auto nx = a / length, ny = b / length, offset = c / length;
+        return Line(detail::make_point(nx * offset, ny * offset),
+                    {static_cast<double>(-ny), static_cast<double>(nx)});
+    }
+    [[nodiscard]] Point anchor() const noexcept {
+        return anchor_;
+    }
+    [[nodiscard]] Vector direction() const noexcept {
+        return direction_;
+    }
+
 private:
-  Line(Point anchor, Vector direction) : anchor_(anchor), direction_(direction) {}
-  Point anchor_{};
-  Vector direction_{1, 0};
+    Line(Point anchor, Vector direction) : anchor_(anchor), direction_(direction) {
+    }
+    Point anchor_{};
+    Vector direction_{1, 0};
 };
-template<Coordinate T> struct Segment2 { Point2<T> first{}, second{}; };
+template <Coordinate T> struct Segment2 {
+    Point2<T> first{}, second{};
+};
 using Segment = Segment2<double>;
 using IntegerSegment = Segment2<std::int64_t>;
 enum class SegmentIntersectionKind { none, point, overlap };
 struct SegmentIntersection {
-  SegmentIntersectionKind kind = SegmentIntersectionKind::none;
-  Point first{}, second{}; // For overlap: lexicographically ordered endpoints.
+    SegmentIntersectionKind kind = SegmentIntersectionKind::none;
+    Point first{}, second{}; // For overlap: lexicographically ordered endpoints.
 };
 
 namespace detail {
 inline long double signed_line_distance(const Line& line, Point p) {
-  const auto a = line.anchor();
-  const auto u = line.direction();
-  return static_cast<long double>(u.x) * (static_cast<long double>(p.y) - a.y) -
-         static_cast<long double>(u.y) * (static_cast<long double>(p.x) - a.x);
+    const auto a = line.anchor();
+    const auto u = line.direction();
+    return static_cast<long double>(u.x) * (static_cast<long double>(p.y) - a.y) -
+           static_cast<long double>(u.y) * (static_cast<long double>(p.x) - a.x);
 }
 inline long double line_parameter(const Line& line, Point p) {
-  const auto a = line.anchor();
-  const auto u = line.direction();
-  return static_cast<long double>(u.x) * (static_cast<long double>(p.x) - a.x) +
-         static_cast<long double>(u.y) * (static_cast<long double>(p.y) - a.y);
+    const auto a = line.anchor();
+    const auto u = line.direction();
+    return static_cast<long double>(u.x) * (static_cast<long double>(p.x) - a.x) +
+           static_cast<long double>(u.y) * (static_cast<long double>(p.y) - a.y);
 }
 } // namespace detail
 
 inline Point projection(Point p, const Line& line) {
-  detail::validate(p);
-  const auto a = line.anchor();
-  const auto u = line.direction();
-  const auto t = detail::line_parameter(line, p);
-  return detail::make_point(a.x + t * u.x, a.y + t * u.y);
+    detail::validate(p);
+    const auto a = line.anchor();
+    const auto u = line.direction();
+    const auto t = detail::line_parameter(line, p);
+    return detail::make_point(a.x + t * u.x, a.y + t * u.y);
 }
 inline Point reflection(Point p, const Line& line) {
-  const auto foot = projection(p, line);
-  return detail::make_point(2.L * foot.x - p.x, 2.L * foot.y - p.y);
+    const auto foot = projection(p, line);
+    return detail::make_point(2.L * foot.x - p.x, 2.L * foot.y - p.y);
 }
 inline Line perpendicular_bisector(Point a, Point b) {
-  const auto direction = perpendicular_ccw(Line::through(a, b).direction());
-  return Line::from_direction(detail::make_point((static_cast<long double>(a.x) + b.x) / 2,
-                                                (static_cast<long double>(a.y) + b.y) / 2), direction);
+    const auto direction = perpendicular_ccw(Line::through(a, b).direction());
+    return Line::from_direction(detail::make_point((static_cast<long double>(a.x) + b.x) / 2,
+                                                   (static_cast<long double>(a.y) + b.y) / 2),
+                                direction);
 }
 inline bool parallel(const Line& a, const Line& b, Tolerance tolerance = Tolerance{}) {
-  return tolerance.sign(cross(a.direction(), b.direction())) == 0;
+    return tolerance.sign(cross(a.direction(), b.direction())) == 0;
 }
 inline bool perpendicular(const Line& a, const Line& b, Tolerance tolerance = Tolerance{}) {
-  return tolerance.sign(dot(a.direction(), b.direction())) == 0;
+    return tolerance.sign(dot(a.direction(), b.direction())) == 0;
 }
 inline double distance(const Line& line, Point p) {
-  detail::validate(p);
-  return detail::checked_real(std::abs(detail::signed_line_distance(line, p)));
+    detail::validate(p);
+    return detail::checked_real(std::abs(detail::signed_line_distance(line, p)));
 }
-inline double distance(Point p, const Line& line) { return distance(line, p); }
+inline double distance(Point p, const Line& line) {
+    return distance(line, p);
+}
 inline bool contains(const Line& line, Point p, Tolerance tolerance = Tolerance{}) {
-  detail::validate(p);
-  return tolerance.sign(detail::signed_line_distance(line, p), detail::line_parameter(line, p)) == 0;
+    detail::validate(p);
+    return tolerance.sign(detail::signed_line_distance(line, p), detail::line_parameter(line, p)) ==
+           0;
 }
-inline IntersectionSet<Point, 1> intersection(const Line& a, const Line& b, Tolerance tolerance = Tolerance{}) {
-  IntersectionSet<Point, 1> result;
-  const auto determinant = cross(a.direction(), b.direction());
-  if (tolerance.sign(determinant) == 0) {
-    if (contains(a, b.anchor(), tolerance)) result.kind = IntersectionKind::infinite;
+inline IntersectionSet<Point, 1> intersection(const Line& a, const Line& b,
+                                              Tolerance tolerance = Tolerance{}) {
+    IntersectionSet<Point, 1> result;
+    const auto determinant = cross(a.direction(), b.direction());
+    if (tolerance.sign(determinant) == 0) {
+        if (contains(a, b.anchor(), tolerance))
+            result.kind = IntersectionKind::infinite;
+        return result;
+    }
+    const auto u = a.direction(), v = b.direction();
+    const auto aa = a.anchor(), ba = b.anchor();
+    const auto t = ((static_cast<long double>(ba.x) - aa.x) * v.y -
+                    (static_cast<long double>(ba.y) - aa.y) * v.x) /
+                   determinant;
+    result.add(detail::make_point(aa.x + t * u.x, aa.y + t * u.y));
     return result;
-  }
-  const auto u = a.direction(), v = b.direction();
-  const auto aa = a.anchor(), ba = b.anchor();
-  const auto t = ((static_cast<long double>(ba.x) - aa.x) * v.y -
-                  (static_cast<long double>(ba.y) - aa.y) * v.x) / determinant;
-  result.add(detail::make_point(aa.x + t * u.x, aa.y + t * u.y));
-  return result;
 }
 inline double distance(const Line& a, const Line& b, Tolerance tolerance = Tolerance{}) {
-  return parallel(a, b, tolerance) ? distance(a, b.anchor()) : 0;
+    return parallel(a, b, tolerance) ? distance(a, b.anchor()) : 0;
 }
 inline Point closest_point(const Segment& segment, Point p) {
-  detail::validate(segment.first); detail::validate(segment.second); detail::validate(p);
-  const long double dx = static_cast<long double>(segment.second.x) - segment.first.x;
-  const long double dy = static_cast<long double>(segment.second.y) - segment.first.y;
-  const auto norm = dx * dx + dy * dy;
-  if (norm == 0) return segment.first;
-  const auto t = std::clamp(((static_cast<long double>(p.x) - segment.first.x) * dx +
-                             (static_cast<long double>(p.y) - segment.first.y) * dy) / norm, 0.L, 1.L);
-  return detail::make_point(segment.first.x + t * dx, segment.first.y + t * dy);
+    detail::validate(segment.first);
+    detail::validate(segment.second);
+    detail::validate(p);
+    const long double dx = static_cast<long double>(segment.second.x) - segment.first.x;
+    const long double dy = static_cast<long double>(segment.second.y) - segment.first.y;
+    const auto norm = dx * dx + dy * dy;
+    if (norm == 0)
+        return segment.first;
+    const auto t = std::clamp(((static_cast<long double>(p.x) - segment.first.x) * dx +
+                               (static_cast<long double>(p.y) - segment.first.y) * dy) /
+                                  norm,
+                              0.L, 1.L);
+    return detail::make_point(segment.first.x + t * dx, segment.first.y + t * dy);
 }
-inline double distance(const Segment& segment, Point p) { return distance(closest_point(segment, p), p); }
-inline double distance(Point p, const Segment& segment) { return distance(segment, p); }
+inline double distance(const Segment& segment, Point p) {
+    return distance(closest_point(segment, p), p);
+}
+inline double distance(Point p, const Segment& segment) {
+    return distance(segment, p);
+}
 inline bool contains(const Segment& segment, Point p, Tolerance tolerance = Tolerance{}) {
-  // Distance tolerance is local to segment length, not the global origin.
-  return tolerance.sign(distance(segment, p), distance(segment.first, segment.second)) == 0;
+    // Distance tolerance is local to segment length, not the global origin.
+    return tolerance.sign(distance(segment, p), distance(segment.first, segment.second)) == 0;
 }
 inline bool contains(const IntegerSegment& segment, IntegerPoint p) {
-  detail::validate(segment.first); detail::validate(segment.second); detail::validate(p);
-  return detail::on_segment_unchecked(segment.first, segment.second, p);
+    detail::validate(segment.first);
+    detail::validate(segment.second);
+    detail::validate(p);
+    return detail::on_segment_unchecked(segment.first, segment.second, p);
 }
 inline bool intersects(const IntegerSegment& a, const IntegerSegment& b) {
-  detail::validate(a.first); detail::validate(a.second); detail::validate(b.first); detail::validate(b.second);
-  const int a1 = detail::turn_unchecked(a.first, a.second, b.first), a2 = detail::turn_unchecked(a.first, a.second, b.second);
-  const int b1 = detail::turn_unchecked(b.first, b.second, a.first), b2 = detail::turn_unchecked(b.first, b.second, a.second);
-  if (a1 == 0 && contains(a, b.first)) return true;
-  if (a2 == 0 && contains(a, b.second)) return true;
-  if (b1 == 0 && contains(b, a.first)) return true;
-  if (b2 == 0 && contains(b, a.second)) return true;
-  return a1 * a2 < 0 && b1 * b2 < 0;
+    detail::validate(a.first);
+    detail::validate(a.second);
+    detail::validate(b.first);
+    detail::validate(b.second);
+    const int a1 = detail::turn_unchecked(a.first, a.second, b.first),
+              a2 = detail::turn_unchecked(a.first, a.second, b.second);
+    const int b1 = detail::turn_unchecked(b.first, b.second, a.first),
+              b2 = detail::turn_unchecked(b.first, b.second, a.second);
+    if (a1 == 0 && contains(a, b.first))
+        return true;
+    if (a2 == 0 && contains(a, b.second))
+        return true;
+    if (b1 == 0 && contains(b, a.first))
+        return true;
+    if (b2 == 0 && contains(b, a.second))
+        return true;
+    return a1 * a2 < 0 && b1 * b2 < 0;
 }
 inline bool intersects(const Line& line, const Segment& segment, Tolerance tolerance);
-inline SegmentIntersection intersection(const Segment& a, const Segment& b, Tolerance tolerance = Tolerance{}) {
-  detail::validate(a.first); detail::validate(a.second); detail::validate(b.first); detail::validate(b.second);
-  if (a.first == a.second) return contains(b, a.first, tolerance) ? SegmentIntersection{SegmentIntersectionKind::point, a.first, a.first} : SegmentIntersection{};
-  if (b.first == b.second) return contains(a, b.first, tolerance) ? SegmentIntersection{SegmentIntersectionKind::point, b.first, b.first} : SegmentIntersection{};
-  const auto first = Line::through(a.first, a.second), second = Line::through(b.first, b.second);
-  if (!intersects(first, b, tolerance) || !intersects(second, a, tolerance)) return {};
-  const auto crossing = intersection(first, second, tolerance);
-  if (crossing.kind == IntersectionKind::finite) {
-    const auto p = crossing.values[0];
-    return contains(a, p, tolerance) && contains(b, p, tolerance) ? SegmentIntersection{SegmentIntersectionKind::point, p, p} : SegmentIntersection{};
-  }
-  if (crossing.kind == IntersectionKind::none) return {};
-  auto lo1 = a.first, hi1 = a.second, lo2 = b.first, hi2 = b.second;
-  if (detail::lex_less(hi1, lo1)) std::swap(lo1, hi1);
-  if (detail::lex_less(hi2, lo2)) std::swap(lo2, hi2);
-  const auto lo = detail::lex_less(lo1, lo2) ? lo2 : lo1;
-  const auto hi = detail::lex_less(hi1, hi2) ? hi1 : hi2;
-  if (detail::lex_less(hi, lo) && !almost_equal(lo, hi, tolerance)) return {};
-  if (almost_equal(lo, hi, tolerance)) return {SegmentIntersectionKind::point, lo, lo};
-  return {SegmentIntersectionKind::overlap, lo, hi};
+inline SegmentIntersection intersection(const Segment& a, const Segment& b,
+                                        Tolerance tolerance = Tolerance{}) {
+    detail::validate(a.first);
+    detail::validate(a.second);
+    detail::validate(b.first);
+    detail::validate(b.second);
+    if (a.first == a.second)
+        return contains(b, a.first, tolerance)
+                   ? SegmentIntersection{SegmentIntersectionKind::point, a.first, a.first}
+                   : SegmentIntersection{};
+    if (b.first == b.second)
+        return contains(a, b.first, tolerance)
+                   ? SegmentIntersection{SegmentIntersectionKind::point, b.first, b.first}
+                   : SegmentIntersection{};
+    const auto first = Line::through(a.first, a.second), second = Line::through(b.first, b.second);
+    if (!intersects(first, b, tolerance) || !intersects(second, a, tolerance))
+        return {};
+    const auto crossing = intersection(first, second, tolerance);
+    if (crossing.kind == IntersectionKind::finite) {
+        const auto p = crossing.values[0];
+        return contains(a, p, tolerance) && contains(b, p, tolerance)
+                   ? SegmentIntersection{SegmentIntersectionKind::point, p, p}
+                   : SegmentIntersection{};
+    }
+    if (crossing.kind == IntersectionKind::none)
+        return {};
+    auto lo1 = a.first, hi1 = a.second, lo2 = b.first, hi2 = b.second;
+    if (detail::lex_less(hi1, lo1))
+        std::swap(lo1, hi1);
+    if (detail::lex_less(hi2, lo2))
+        std::swap(lo2, hi2);
+    const auto lo = detail::lex_less(lo1, lo2) ? lo2 : lo1;
+    const auto hi = detail::lex_less(hi1, hi2) ? hi1 : hi2;
+    if (detail::lex_less(hi, lo) && !almost_equal(lo, hi, tolerance))
+        return {};
+    if (almost_equal(lo, hi, tolerance))
+        return {SegmentIntersectionKind::point, lo, lo};
+    return {SegmentIntersectionKind::overlap, lo, hi};
 }
 inline bool intersects(const Segment& a, const Segment& b, Tolerance tolerance = Tolerance{}) {
-  return intersection(a, b, tolerance).kind != SegmentIntersectionKind::none;
+    return intersection(a, b, tolerance).kind != SegmentIntersectionKind::none;
 }
-inline bool intersects(const Line& line, const Segment& segment, Tolerance tolerance = Tolerance{}) {
-  detail::validate(segment.first); detail::validate(segment.second);
-  const int first = tolerance.sign(detail::signed_line_distance(line, segment.first), detail::line_parameter(line, segment.first));
-  const int second = tolerance.sign(detail::signed_line_distance(line, segment.second), detail::line_parameter(line, segment.second));
-  return first * second <= 0;
+inline bool intersects(const Line& line, const Segment& segment,
+                       Tolerance tolerance = Tolerance{}) {
+    detail::validate(segment.first);
+    detail::validate(segment.second);
+    const int first = tolerance.sign(detail::signed_line_distance(line, segment.first),
+                                     detail::line_parameter(line, segment.first));
+    const int second = tolerance.sign(detail::signed_line_distance(line, segment.second),
+                                      detail::line_parameter(line, segment.second));
+    return first * second <= 0;
 }
-inline double distance(const Line& line, const Segment& segment, Tolerance tolerance = Tolerance{}) {
-  return intersects(line, segment, tolerance) ? 0 : std::min(distance(line, segment.first), distance(line, segment.second));
+inline double distance(const Line& line, const Segment& segment,
+                       Tolerance tolerance = Tolerance{}) {
+    return intersects(line, segment, tolerance)
+               ? 0
+               : std::min(distance(line, segment.first), distance(line, segment.second));
 }
-inline double distance(const Segment& segment, const Line& line, Tolerance tolerance = Tolerance{}) { return distance(line, segment, tolerance); }
+inline double distance(const Segment& segment, const Line& line,
+                       Tolerance tolerance = Tolerance{}) {
+    return distance(line, segment, tolerance);
+}
 inline double distance(const Segment& a, const Segment& b, Tolerance tolerance = Tolerance{}) {
-  return intersects(a, b, tolerance) ? 0 : std::min({distance(a, b.first), distance(a, b.second), distance(b, a.first), distance(b, a.second)});
+    return intersects(a, b, tolerance) ? 0
+                                       : std::min({distance(a, b.first), distance(a, b.second),
+                                                   distance(b, a.first), distance(b, a.second)});
 }
 
 } // namespace algorithm_assets::geometry
@@ -402,41 +520,45 @@ namespace algorithm_assets {
 // reassociation/fast-math can invalidate the compensation formula.
 class CompensatedSum {
 public:
-  void add(double value) {
-    if (!std::isfinite(value)) {
-      throw std::invalid_argument("CompensatedSum requires finite inputs");
+    void add(double value) {
+        if (!std::isfinite(value)) {
+            throw std::invalid_argument("CompensatedSum requires finite inputs");
+        }
+        const auto next = sum_ + value;
+        if (!std::isfinite(next)) {
+            throw std::overflow_error("CompensatedSum working sum overflowed");
+        }
+        const auto error =
+            std::abs(sum_) >= std::abs(value) ? (sum_ - next) + value : (value - next) + sum_;
+        const auto correction = correction_ + error;
+        if (!std::isfinite(correction) || !std::isfinite(next + correction)) {
+            throw std::overflow_error("CompensatedSum correction overflowed");
+        }
+        sum_ = next;
+        correction_ = correction;
     }
-    const auto next = sum_ + value;
-    if (!std::isfinite(next)) {
-      throw std::overflow_error("CompensatedSum working sum overflowed");
-    }
-    const auto error = std::abs(sum_) >= std::abs(value) ? (sum_ - next) + value
-                                                       : (value - next) + sum_;
-    const auto correction = correction_ + error;
-    if (!std::isfinite(correction) || !std::isfinite(next + correction)) {
-      throw std::overflow_error("CompensatedSum correction overflowed");
-    }
-    sum_ = next;
-    correction_ = correction;
-  }
 
-  [[nodiscard]] double value() const noexcept { return sum_ + correction_; }
-  void reset() noexcept { sum_ = correction_ = 0.0; }
+    [[nodiscard]] double value() const noexcept {
+        return sum_ + correction_;
+    }
+    void reset() noexcept {
+        sum_ = correction_ = 0.0;
+    }
 
 private:
-  double sum_ = 0.0;
-  double correction_ = 0.0;
+    double sum_ = 0.0;
+    double correction_ = 0.0;
 };
 
 inline double compensated_sum(std::span<const double> values) {
-  CompensatedSum accumulator;
-  for (const auto value : values) {
-    accumulator.add(value);
-  }
-  return accumulator.value();
+    CompensatedSum accumulator;
+    for (const auto value : values) {
+        accumulator.add(value);
+    }
+    return accumulator.value();
 }
 
-}  // namespace algorithm_assets
+} // namespace algorithm_assets
 // end include/algorithm_assets/numeric/compensated_sum.hpp
 
 
@@ -447,96 +569,137 @@ inline double compensated_sum(std::span<const double> values) {
 namespace algorithm_assets::geometry {
 
 namespace detail {
-template<Coordinate T> inline std::span<const Point2<T>> open_boundary(std::span<const Point2<T>> points) {
-  if (points.size() > 1 && points.front() == points.back()) return points.first(points.size() - 1);
-  return points;
+template <Coordinate T>
+inline std::span<const Point2<T>> open_boundary(std::span<const Point2<T>> points) {
+    if (points.size() > 1 && points.front() == points.back())
+        return points.first(points.size() - 1);
+    return points;
 }
 } // namespace detail
 
-template<Coordinate T> inline double triangle_area(Point2<T> a, Point2<T> b, Point2<T> c) {
-  detail::validate(a); detail::validate(b); detail::validate(c);
-  return detail::checked_real(std::abs(static_cast<long double>(detail::determinant(a, b, c))) / 2);
+template <Coordinate T> inline double triangle_area(Point2<T> a, Point2<T> b, Point2<T> c) {
+    detail::validate(a);
+    detail::validate(b);
+    detail::validate(c);
+    return detail::checked_real(std::abs(static_cast<long double>(detail::determinant(a, b, c))) /
+                                2);
 }
-template<Coordinate T> inline double signed_area(std::span<const Point2<T>> points) {
-  detail::validate(points);
-  if (points.size() < 3) return 0;
-  // Translate the shoelace formula to the first vertex to reduce cancellation.
-  CompensatedSum sum;
-  for (std::size_t i = 1; i + 1 < points.size(); ++i)
-    sum.add(detail::checked_real(static_cast<long double>(detail::determinant(points[0], points[i], points[i + 1])) / 2));
-  return sum.value();
+template <Coordinate T> inline double signed_area(std::span<const Point2<T>> points) {
+    detail::validate(points);
+    if (points.size() < 3)
+        return 0;
+    // Translate the shoelace formula to the first vertex to reduce cancellation.
+    CompensatedSum sum;
+    for (std::size_t i = 1; i + 1 < points.size(); ++i)
+        sum.add(detail::checked_real(
+            static_cast<long double>(detail::determinant(points[0], points[i], points[i + 1])) /
+            2));
+    return sum.value();
 }
-template<Coordinate T> inline double area(std::span<const Point2<T>> points) { return std::abs(signed_area(points)); }
-template<Coordinate T> inline double perimeter(std::span<const Point2<T>> points) {
-  detail::validate(points);
-  CompensatedSum sum;
-  for (std::size_t i = 0; i < points.size(); ++i) sum.add(distance(points[i], points[(i + 1) % points.size()]));
-  return sum.value();
+template <Coordinate T> inline double area(std::span<const Point2<T>> points) {
+    return std::abs(signed_area(points));
+}
+template <Coordinate T> inline double perimeter(std::span<const Point2<T>> points) {
+    detail::validate(points);
+    CompensatedSum sum;
+    for (std::size_t i = 0; i < points.size(); ++i)
+        sum.add(distance(points[i], points[(i + 1) % points.size()]));
+    return sum.value();
 }
 // Convexity here assumes a SIMPLE boundary; this is not a self-intersection test.
-template<Coordinate T> inline bool is_convex(std::span<const Point2<T>> points, bool allow_collinear = false) {
-  detail::validate(points);
-  points = detail::open_boundary(points);
-  if (points.size() < 3) return false;
-  int direction = 0;
-  for (std::size_t i = 0; i < points.size(); ++i) {
-    const auto next = (i + 1) % points.size();
-    if (points[i] == points[next]) return false;
-    const auto turn = detail::turn_unchecked(points[i], points[next], points[(i + 2) % points.size()]);
-    if (!turn && !allow_collinear) return false;
-    if (turn && direction && turn != direction) return false;
-    if (turn) direction = turn;
-  }
-  return direction != 0;
+template <Coordinate T>
+inline bool is_convex(std::span<const Point2<T>> points, bool allow_collinear = false) {
+    detail::validate(points);
+    points = detail::open_boundary(points);
+    if (points.size() < 3)
+        return false;
+    int direction = 0;
+    for (std::size_t i = 0; i < points.size(); ++i) {
+        const auto next = (i + 1) % points.size();
+        if (points[i] == points[next])
+            return false;
+        const auto turn =
+            detail::turn_unchecked(points[i], points[next], points[(i + 2) % points.size()]);
+        if (!turn && !allow_collinear)
+            return false;
+        if (turn && direction && turn != direction)
+            return false;
+        if (turn)
+            direction = turn;
+    }
+    return direction != 0;
 }
 // Even-odd fill rule; direction-independent, with an explicit boundary result.
-template<Coordinate T> inline Containment locate(std::span<const Point2<T>> points, Point2<T> p) {
-  detail::validate(points); detail::validate(p);
-  bool inside = false;
-  for (std::size_t i = 0; i < points.size(); ++i) {
-    auto a = points[i], b = points[(i + 1) % points.size()];
-    if (detail::on_segment_unchecked(a, b, p)) return Containment::boundary;
-    if (a.y > b.y) std::swap(a, b);
-    if (a.y <= p.y && p.y < b.y && detail::turn_unchecked(a, b, p) > 0) inside = !inside;
-  }
-  return inside ? Containment::inside : Containment::outside;
+template <Coordinate T> inline Containment locate(std::span<const Point2<T>> points, Point2<T> p) {
+    detail::validate(points);
+    detail::validate(p);
+    bool inside = false;
+    for (std::size_t i = 0; i < points.size(); ++i) {
+        auto a = points[i], b = points[(i + 1) % points.size()];
+        if (detail::on_segment_unchecked(a, b, p))
+            return Containment::boundary;
+        if (a.y > b.y)
+            std::swap(a, b);
+        if (a.y <= p.y && p.y < b.y && detail::turn_unchecked(a, b, p) > 0)
+            inside = !inside;
+    }
+    return inside ? Containment::inside : Containment::outside;
 }
 inline Containment locate(std::span<const Point> points, Point p, Tolerance tolerance) {
-  detail::validate(points); detail::validate(p);
-  bool inside = false;
-  for (std::size_t i = 0; i < points.size(); ++i) {
-    auto a = points[i], b = points[(i + 1) % points.size()];
-    if (contains(Segment{a, b}, p, tolerance)) return Containment::boundary;
-    if (a.y > b.y) std::swap(a, b);
-    // Tolerance is ONLY used for the boundary distance; avoid double-counting
-    // horizontal/ray vertices by retaining the exact half-open crossing test.
-    if (a.y <= p.y && p.y < b.y && detail::turn_unchecked(a, b, p) > 0) inside = !inside;
-  }
-  return inside ? Containment::inside : Containment::outside;
+    detail::validate(points);
+    detail::validate(p);
+    bool inside = false;
+    for (std::size_t i = 0; i < points.size(); ++i) {
+        auto a = points[i], b = points[(i + 1) % points.size()];
+        if (contains(Segment{a, b}, p, tolerance))
+            return Containment::boundary;
+        if (a.y > b.y)
+            std::swap(a, b);
+        // Tolerance is ONLY used for the boundary distance; avoid double-counting
+        // horizontal/ray vertices by retaining the exact half-open crossing test.
+        if (a.y <= p.y && p.y < b.y && detail::turn_unchecked(a, b, p) > 0)
+            inside = !inside;
+    }
+    return inside ? Containment::inside : Containment::outside;
 }
-template<Coordinate T> inline std::optional<Point2<T>> lowest_leftmost(std::span<const Point2<T>> points) {
-  detail::validate(points);
-  if (points.empty()) return std::nullopt;
-  return *std::min_element(points.begin(), points.end(), [](auto a, auto b) { return a.y < b.y || (a.y == b.y && a.x < b.x); });
+template <Coordinate T>
+inline std::optional<Point2<T>> lowest_leftmost(std::span<const Point2<T>> points) {
+    detail::validate(points);
+    if (points.empty())
+        return std::nullopt;
+    return *std::min_element(points.begin(), points.end(), [](auto a, auto b) {
+        return a.y < b.y || (a.y == b.y && a.x < b.x);
+    });
 }
 inline void sort_by_angle(std::span<Point> points, Point origin = {}) {
-  detail::validate(std::span<const Point>(points)); detail::validate(origin);
-  struct Key { Point point; long double angle; };
-  std::vector<Key> keys;
-  keys.reserve(points.size());
-  for (const auto p : points) {
-    auto angle = p == origin ? 0.L : std::atan2(static_cast<long double>(p.y) - origin.y, static_cast<long double>(p.x) - origin.x);
-    if (angle < 0) angle += 2 * std::numbers::pi_v<long double>;
-    keys.push_back({p, angle});
-  }
-  // Precomputed scalar keys are transitive even for almost parallel rays.
-  std::sort(keys.begin(), keys.end(), [origin](const auto& a, const auto& b) {
-    if (a.angle != b.angle) return a.angle < b.angle;
-    const auto da = detail::squared_unchecked(a.point, origin), db = detail::squared_unchecked(b.point, origin);
-    if (da != db) return da < db;
-    return detail::lex_less(a.point, b.point);
-  });
-  for (std::size_t i = 0; i < points.size(); ++i) points[i] = keys[i].point;
+    detail::validate(std::span<const Point>(points));
+    detail::validate(origin);
+    struct Key {
+        Point point;
+        long double angle;
+    };
+    std::vector<Key> keys;
+    keys.reserve(points.size());
+    for (const auto p : points) {
+        auto angle = p == origin ? 0.L
+                                 : std::atan2(static_cast<long double>(p.y) - origin.y,
+                                              static_cast<long double>(p.x) - origin.x);
+        if (angle < 0)
+            angle += 2 * std::numbers::pi_v<long double>;
+        keys.push_back({p, angle});
+    }
+    // Precomputed scalar keys are transitive even for almost parallel rays.
+    std::sort(keys.begin(), keys.end(), [origin](const auto& a, const auto& b) {
+        if (a.angle != b.angle)
+            return a.angle < b.angle;
+        const auto da = detail::squared_unchecked(a.point, origin),
+                   db = detail::squared_unchecked(b.point, origin);
+        if (da != db)
+            return da < db;
+        return detail::lex_less(a.point, b.point);
+    });
+    for (std::size_t i = 0; i < points.size(); ++i)
+        points[i] = keys[i].point;
 }
 
 } // namespace algorithm_assets::geometry
@@ -550,197 +713,274 @@ namespace algorithm_assets::geometry {
 
 class Circle {
 public:
-  Circle() = default; // A point circle at the origin.
-  Circle(Point center, double radius) : center_(center), radius_(radius) {
-    detail::validate(center);
-    if (!std::isfinite(radius) || radius < 0 || radius > 1e100)
-      throw std::invalid_argument("Radius must be finite and within [0,1e100]");
-  }
-  [[nodiscard]] Point center() const noexcept { return center_; }
-  [[nodiscard]] double radius() const noexcept { return radius_; }
+    Circle() = default; // A point circle at the origin.
+    Circle(Point center, double radius) : center_(center), radius_(radius) {
+        detail::validate(center);
+        if (!std::isfinite(radius) || radius < 0 || radius > 1e100)
+            throw std::invalid_argument("Radius must be finite and within [0,1e100]");
+    }
+    [[nodiscard]] Point center() const noexcept {
+        return center_;
+    }
+    [[nodiscard]] double radius() const noexcept {
+        return radius_;
+    }
+
 private:
-  Point center_{};
-  double radius_ = 0;
+    Point center_{};
+    double radius_ = 0;
 };
 
 inline Containment locate(const Circle& circle, Point p, Tolerance tolerance = Tolerance{}) {
-  const auto comparison = tolerance.compare(distance(circle.center(), p), circle.radius());
-  return comparison < 0 ? Containment::inside : comparison == 0 ? Containment::boundary : Containment::outside;
+    const auto comparison = tolerance.compare(distance(circle.center(), p), circle.radius());
+    return comparison < 0    ? Containment::inside
+           : comparison == 0 ? Containment::boundary
+                             : Containment::outside;
 }
-inline IntersectionSet<Point, 2> intersection(const Circle& circle, const Line& line, Tolerance tolerance = Tolerance{}) {
-  IntersectionSet<Point, 2> result;
-  const auto signed_distance = detail::signed_line_distance(line, circle.center());
-  const auto d = std::abs(signed_distance), r = static_cast<long double>(circle.radius());
-  const auto comparison = tolerance.compare(d, r);
-  if (comparison > 0) return result;
-  const auto u = line.direction(), normal = perpendicular_ccw(u);
-  const auto c = circle.center();
-  const auto foot = detail::make_point(c.x - normal.x * signed_distance, c.y - normal.y * signed_distance);
-  if (comparison == 0 || r == 0) { result.add(foot); return result; }
-  const auto offset = std::sqrt(std::max(0.L, (r - d) * (r + d)));
-  result.add(detail::make_point(foot.x - offset * u.x, foot.y - offset * u.y));
-  result.add(detail::make_point(foot.x + offset * u.x, foot.y + offset * u.y));
-  return result;
-}
-inline IntersectionSet<Point, 2> intersection(const Circle& circle, const Segment& segment, Tolerance tolerance = Tolerance{}) {
-  detail::validate(segment.first); detail::validate(segment.second);
-  IntersectionSet<Point, 2> result;
-  if (segment.first == segment.second) {
-    if (locate(circle, segment.first, tolerance) == Containment::boundary) result.add(segment.first);
-    return result;
-  }
-  const auto candidates = intersection(circle, Line::through(segment.first, segment.second), tolerance);
-  for (std::size_t i = 0; i < candidates.count; ++i)
-    if (contains(segment, candidates.values[i], tolerance)) result.add(candidates.values[i]);
-  return result;
-}
-inline IntersectionSet<Point, 2> intersection(const Circle& first, const Circle& second, Tolerance tolerance = Tolerance{}) {
-  IntersectionSet<Point, 2> result;
-  const auto a = first.center(), b = second.center();
-  const long double r = first.radius(), s = second.radius();
-  const long double dx = static_cast<long double>(b.x) - a.x, dy = static_cast<long double>(b.y) - a.y;
-  const auto d = std::hypot(dx, dy);
-  if (d == 0) {
-    if (r == s) {
-      if (r == 0) result.add(a);
-      else result.kind = IntersectionKind::infinite;
+inline IntersectionSet<Point, 2> intersection(const Circle& circle, const Line& line,
+                                              Tolerance tolerance = Tolerance{}) {
+    IntersectionSet<Point, 2> result;
+    const auto signed_distance = detail::signed_line_distance(line, circle.center());
+    const auto d = std::abs(signed_distance), r = static_cast<long double>(circle.radius());
+    const auto comparison = tolerance.compare(d, r);
+    if (comparison > 0)
+        return result;
+    const auto u = line.direction(), normal = perpendicular_ccw(u);
+    const auto c = circle.center();
+    const auto foot =
+        detail::make_point(c.x - normal.x * signed_distance, c.y - normal.y * signed_distance);
+    if (comparison == 0 || r == 0) {
+        result.add(foot);
+        return result;
     }
+    const auto offset = std::sqrt(std::max(0.L, (r - d) * (r + d)));
+    result.add(detail::make_point(foot.x - offset * u.x, foot.y - offset * u.y));
+    result.add(detail::make_point(foot.x + offset * u.x, foot.y + offset * u.y));
     return result;
-  }
-  const int outer = tolerance.compare(d, r + s), inner = tolerance.compare(d, std::abs(r - s));
-  if (outer > 0 || inner < 0) return result;
-  const auto along = (d + (r - s) * (r + s) / d) / 2;
-  const auto ux = dx / d, uy = dy / d;
-  const auto base = detail::make_point(a.x + along * ux, a.y + along * uy);
-  if (outer == 0 || inner == 0 || r == 0 || s == 0) { result.add(base); return result; }
-  const auto height = std::sqrt(std::max(0.L, (r - along) * (r + along)));
-  result.add(detail::make_point(base.x - uy * height, base.y + ux * height));
-  result.add(detail::make_point(base.x + uy * height, base.y - ux * height));
-  return result;
+}
+inline IntersectionSet<Point, 2> intersection(const Circle& circle, const Segment& segment,
+                                              Tolerance tolerance = Tolerance{}) {
+    detail::validate(segment.first);
+    detail::validate(segment.second);
+    IntersectionSet<Point, 2> result;
+    if (segment.first == segment.second) {
+        if (locate(circle, segment.first, tolerance) == Containment::boundary)
+            result.add(segment.first);
+        return result;
+    }
+    const auto candidates =
+        intersection(circle, Line::through(segment.first, segment.second), tolerance);
+    for (std::size_t i = 0; i < candidates.count; ++i)
+        if (contains(segment, candidates.values[i], tolerance))
+            result.add(candidates.values[i]);
+    return result;
+}
+inline IntersectionSet<Point, 2> intersection(const Circle& first, const Circle& second,
+                                              Tolerance tolerance = Tolerance{}) {
+    IntersectionSet<Point, 2> result;
+    const auto a = first.center(), b = second.center();
+    const long double r = first.radius(), s = second.radius();
+    const long double dx = static_cast<long double>(b.x) - a.x,
+                      dy = static_cast<long double>(b.y) - a.y;
+    const auto d = std::hypot(dx, dy);
+    if (d == 0) {
+        if (r == s) {
+            if (r == 0)
+                result.add(a);
+            else
+                result.kind = IntersectionKind::infinite;
+        }
+        return result;
+    }
+    const int outer = tolerance.compare(d, r + s), inner = tolerance.compare(d, std::abs(r - s));
+    if (outer > 0 || inner < 0)
+        return result;
+    const auto along = (d + (r - s) * (r + s) / d) / 2;
+    const auto ux = dx / d, uy = dy / d;
+    const auto base = detail::make_point(a.x + along * ux, a.y + along * uy);
+    if (outer == 0 || inner == 0 || r == 0 || s == 0) {
+        result.add(base);
+        return result;
+    }
+    const auto height = std::sqrt(std::max(0.L, (r - along) * (r + along)));
+    result.add(detail::make_point(base.x - uy * height, base.y + ux * height));
+    result.add(detail::make_point(base.x + uy * height, base.y - ux * height));
+    return result;
 }
 inline bool intersects(const Circle& circle, const Line& line, Tolerance tolerance = Tolerance{}) {
-  return tolerance.compare(distance(line, circle.center()), circle.radius()) <= 0;
+    return tolerance.compare(distance(line, circle.center()), circle.radius()) <= 0;
 }
 // These are CIRCUMFERENCE intersections, not disk containment tests.
-inline bool intersects(const Circle& circle, const Segment& segment, Tolerance tolerance = Tolerance{}) {
-  return intersection(circle, segment, tolerance).count != 0;
+inline bool intersects(const Circle& circle, const Segment& segment,
+                       Tolerance tolerance = Tolerance{}) {
+    return intersection(circle, segment, tolerance).count != 0;
 }
-inline IntersectionSet<Point, 2> tangent_points(const Circle& circle, Point p, Tolerance tolerance = Tolerance{}) {
-  detail::validate(p);
-  IntersectionSet<Point, 2> result;
-  const auto c = circle.center();
-  const long double dx = static_cast<long double>(p.x) - c.x, dy = static_cast<long double>(p.y) - c.y;
-  const auto d = std::hypot(dx, dy), r = static_cast<long double>(circle.radius());
-  if (r == 0) { result.add(c); return result; }
-  const auto relation = tolerance.compare(d, r);
-  if (relation < 0 || d == 0) return result;
-  const auto ux = dx / d, uy = dy / d;
-  if (relation == 0) { result.add(detail::make_point(c.x + r * ux, c.y + r * uy)); return result; }
-  const auto ratio = r / d, along = r * ratio;
-  const auto height = r * std::sqrt(std::max(0.L, (1 - ratio) * (1 + ratio)));
-  result.add(detail::make_point(c.x + along * ux - height * uy, c.y + along * uy + height * ux));
-  result.add(detail::make_point(c.x + along * ux + height * uy, c.y + along * uy - height * ux));
-  return result;
-}
-inline IntersectionSet<Line, 4> common_tangents(const Circle& first, const Circle& second, Tolerance tolerance = Tolerance{}) {
-  IntersectionSet<Line, 4> result;
-  const auto a = first.center(), b = second.center();
-  const long double r = first.radius(), s = second.radius();
-  const long double dx = static_cast<long double>(b.x) - a.x, dy = static_cast<long double>(b.y) - a.y;
-  const auto d = std::hypot(dx, dy);
-  if (d == 0) {
-    if (r == s) result.kind = IntersectionKind::infinite;
+inline IntersectionSet<Point, 2> tangent_points(const Circle& circle, Point p,
+                                                Tolerance tolerance = Tolerance{}) {
+    detail::validate(p);
+    IntersectionSet<Point, 2> result;
+    const auto c = circle.center();
+    const long double dx = static_cast<long double>(p.x) - c.x,
+                      dy = static_cast<long double>(p.y) - c.y;
+    const auto d = std::hypot(dx, dy), r = static_cast<long double>(circle.radius());
+    if (r == 0) {
+        result.add(c);
+        return result;
+    }
+    const auto relation = tolerance.compare(d, r);
+    if (relation < 0 || d == 0)
+        return result;
+    const auto ux = dx / d, uy = dy / d;
+    if (relation == 0) {
+        result.add(detail::make_point(c.x + r * ux, c.y + r * uy));
+        return result;
+    }
+    const auto ratio = r / d, along = r * ratio;
+    const auto height = r * std::sqrt(std::max(0.L, (1 - ratio) * (1 + ratio)));
+    result.add(detail::make_point(c.x + along * ux - height * uy, c.y + along * uy + height * ux));
+    result.add(detail::make_point(c.x + along * ux + height * uy, c.y + along * uy - height * ux));
     return result;
-  }
-  if (r == 0 && s == 0) { result.add(Line::through(a, b)); return result; }
-  if (r == 0 || s == 0) {
-    const auto point = r == 0 ? a : b;
-    const auto circle = r == 0 ? second : first;
-    const auto contact = tangent_points(circle, point, tolerance);
-    for (std::size_t i = 0; i < contact.count; ++i) {
-      if (contact.count == 1) result.add(Line::from_direction(contact.values[i], perpendicular_ccw(Line::through(circle.center(), point).direction())));
-      else result.add(Line::through(point, contact.values[i]));
+}
+inline IntersectionSet<Line, 4> common_tangents(const Circle& first, const Circle& second,
+                                                Tolerance tolerance = Tolerance{}) {
+    IntersectionSet<Line, 4> result;
+    const auto a = first.center(), b = second.center();
+    const long double r = first.radius(), s = second.radius();
+    const long double dx = static_cast<long double>(b.x) - a.x,
+                      dy = static_cast<long double>(b.y) - a.y;
+    const auto d = std::hypot(dx, dy);
+    if (d == 0) {
+        if (r == s)
+            result.kind = IntersectionKind::infinite;
+        return result;
+    }
+    if (r == 0 && s == 0) {
+        result.add(Line::through(a, b));
+        return result;
+    }
+    if (r == 0 || s == 0) {
+        const auto point = r == 0 ? a : b;
+        const auto circle = r == 0 ? second : first;
+        const auto contact = tangent_points(circle, point, tolerance);
+        for (std::size_t i = 0; i < contact.count; ++i) {
+            if (contact.count == 1)
+                result.add(Line::from_direction(
+                    contact.values[i],
+                    perpendicular_ccw(Line::through(circle.center(), point).direction())));
+            else
+                result.add(Line::through(point, contact.values[i]));
+        }
+        return result;
+    }
+    const auto ux = dx / d, uy = dy / d;
+    for (const int side : {1, -1}) {
+        const auto ratio = (r - side * s) / d;
+        const auto relation = tolerance.compare(std::abs(ratio), 1);
+        if (relation > 0)
+            continue;
+        const auto h = std::clamp(ratio, -1.L, 1.L);
+        const auto offset = relation == 0 ? 0.L : std::sqrt(std::max(0.L, (1 - h) * (1 + h)));
+        for (const int sign : {-1, 1}) {
+            const auto nx = ux * h - sign * uy * offset, ny = uy * h + sign * ux * offset;
+            result.add(Line::from_direction(detail::make_point(a.x + r * nx, a.y + r * ny),
+                                            {static_cast<double>(-ny), static_cast<double>(nx)}));
+            if (offset == 0)
+                break;
+        }
     }
     return result;
-  }
-  const auto ux = dx / d, uy = dy / d;
-  for (const int side : {1, -1}) {
-    const auto ratio = (r - side * s) / d;
-    const auto relation = tolerance.compare(std::abs(ratio), 1);
-    if (relation > 0) continue;
-    const auto h = std::clamp(ratio, -1.L, 1.L);
-    const auto offset = relation == 0 ? 0.L : std::sqrt(std::max(0.L, (1 - h) * (1 + h)));
-    for (const int sign : {-1, 1}) {
-      const auto nx = ux * h - sign * uy * offset, ny = uy * h + sign * ux * offset;
-      result.add(Line::from_direction(detail::make_point(a.x + r * nx, a.y + r * ny),
-                                     {static_cast<double>(-ny), static_cast<double>(nx)}));
-      if (offset == 0) break;
-    }
-  }
-  return result;
 }
 // nullopt denotes infinitely many common tangent lines.
-inline std::optional<std::size_t> common_tangent_count(const Circle& first, const Circle& second, Tolerance tolerance = Tolerance{}) {
-  const auto result = common_tangents(first, second, tolerance);
-  return result.kind == IntersectionKind::infinite ? std::nullopt : std::optional<std::size_t>(result.count);
+inline std::optional<std::size_t> common_tangent_count(const Circle& first, const Circle& second,
+                                                       Tolerance tolerance = Tolerance{}) {
+    const auto result = common_tangents(first, second, tolerance);
+    return result.kind == IntersectionKind::infinite ? std::nullopt
+                                                     : std::optional<std::size_t>(result.count);
 }
-inline std::optional<Circle> circumcircle(Point a, Point b, Point c, Tolerance tolerance = Tolerance{}) {
-  detail::validate(a); detail::validate(b); detail::validate(c);
-  long double bx = static_cast<long double>(b.x) - a.x, by = static_cast<long double>(b.y) - a.y;
-  long double cx = static_cast<long double>(c.x) - a.x, cy = static_cast<long double>(c.y) - a.y;
-  const auto scale = std::max({std::abs(bx), std::abs(by), std::abs(cx), std::abs(cy)});
-  if (scale == 0) return std::nullopt;
-  bx /= scale; by /= scale; cx /= scale; cy /= scale;
-  const auto determinant = bx * cy - by * cx;
-  if (tolerance.sign(determinant, std::abs(bx * cy) + std::abs(by * cx)) == 0) return std::nullopt;
-  const auto nb = bx * bx + by * by, nc = cx * cx + cy * cy;
-  const auto center = detail::make_point(a.x + scale * (nb * cy - nc * by) / (2 * determinant),
-                                        a.y + scale * (bx * nc - cx * nb) / (2 * determinant));
-  return Circle(center, distance(a, center));
+inline std::optional<Circle> circumcircle(Point a, Point b, Point c,
+                                          Tolerance tolerance = Tolerance{}) {
+    detail::validate(a);
+    detail::validate(b);
+    detail::validate(c);
+    long double bx = static_cast<long double>(b.x) - a.x, by = static_cast<long double>(b.y) - a.y;
+    long double cx = static_cast<long double>(c.x) - a.x, cy = static_cast<long double>(c.y) - a.y;
+    const auto scale = std::max({std::abs(bx), std::abs(by), std::abs(cx), std::abs(cy)});
+    if (scale == 0)
+        return std::nullopt;
+    bx /= scale;
+    by /= scale;
+    cx /= scale;
+    cy /= scale;
+    const auto determinant = bx * cy - by * cx;
+    if (tolerance.sign(determinant, std::abs(bx * cy) + std::abs(by * cx)) == 0)
+        return std::nullopt;
+    const auto nb = bx * bx + by * by, nc = cx * cx + cy * cy;
+    const auto center = detail::make_point(a.x + scale * (nb * cy - nc * by) / (2 * determinant),
+                                           a.y + scale * (bx * nc - cx * nb) / (2 * determinant));
+    return Circle(center, distance(a, center));
 }
-inline std::optional<Circle> incircle(Point a, Point b, Point c, Tolerance tolerance = Tolerance{}) {
-  if (orientation(a, b, c, tolerance) == Turn::collinear) return std::nullopt;
-  const long double ab = distance(a, b), bc = distance(b, c), ca = distance(c, a);
-  const auto sum = ab + bc + ca;
-  const auto center = detail::make_point(a.x + (static_cast<long double>(b.x) - a.x) * (ca / sum) + (static_cast<long double>(c.x) - a.x) * (ab / sum),
-                                        a.y + (static_cast<long double>(b.y) - a.y) * (ca / sum) + (static_cast<long double>(c.y) - a.y) * (ab / sum));
-  return Circle(center, distance(Line::through(a, b), center));
+inline std::optional<Circle> incircle(Point a, Point b, Point c,
+                                      Tolerance tolerance = Tolerance{}) {
+    if (orientation(a, b, c, tolerance) == Turn::collinear)
+        return std::nullopt;
+    const long double ab = distance(a, b), bc = distance(b, c), ca = distance(c, a);
+    const auto sum = ab + bc + ca;
+    const auto center =
+        detail::make_point(a.x + (static_cast<long double>(b.x) - a.x) * (ca / sum) +
+                               (static_cast<long double>(c.x) - a.x) * (ab / sum),
+                           a.y + (static_cast<long double>(b.y) - a.y) * (ca / sum) +
+                               (static_cast<long double>(c.y) - a.y) * (ab / sum));
+    return Circle(center, distance(Line::through(a, b), center));
 }
-inline IntersectionSet<Point, 2> centers_through(Point a, Point b, double radius, Tolerance tolerance = Tolerance{}) {
-  return intersection(Circle(a, radius), Circle(b, radius), tolerance);
+inline IntersectionSet<Point, 2> centers_through(Point a, Point b, double radius,
+                                                 Tolerance tolerance = Tolerance{}) {
+    return intersection(Circle(a, radius), Circle(b, radius), tolerance);
 }
 inline double overlap_area(const Circle& first, const Circle& second) {
-  const long double r = first.radius(), s = second.radius(), d = distance(first.center(), second.center());
-  if (r == 0 || s == 0 || d >= r + s) return 0;
-  if (d <= std::abs(r - s)) return detail::checked_real(std::numbers::pi_v<long double> * std::min(r, s) * std::min(r, s));
-  auto segment_area = [d](long double a, long double b) {
-    const auto cosine = std::clamp((d + (a - b) * (a + b) / d) / (2 * a), -1.L, 1.L);
-    const auto theta = 2 * std::acos(cosine);
-    const auto t2 = theta * theta;
-    // theta - sin(theta) loses most significant digits near external tangency.
-    const auto angle_term = theta < 1e-3L ? theta * t2 * (1.L / 6 - t2 / 120 + t2 * t2 / 5040) : theta - std::sin(theta);
-    return a * a * angle_term / 2;
-  };
-  return detail::checked_real(segment_area(r, s) + segment_area(s, r));
+    const long double r = first.radius(), s = second.radius(),
+                      d = distance(first.center(), second.center());
+    if (r == 0 || s == 0 || d >= r + s)
+        return 0;
+    if (d <= std::abs(r - s))
+        return detail::checked_real(std::numbers::pi_v<long double> * std::min(r, s) *
+                                    std::min(r, s));
+    auto segment_area = [d](long double a, long double b) {
+        const auto cosine = std::clamp((d + (a - b) * (a + b) / d) / (2 * a), -1.L, 1.L);
+        const auto theta = 2 * std::acos(cosine);
+        const auto t2 = theta * theta;
+        // theta - sin(theta) loses most significant digits near external tangency.
+        const auto angle_term = theta < 1e-3L ? theta * t2 * (1.L / 6 - t2 / 120 + t2 * t2 / 5040)
+                                              : theta - std::sin(theta);
+        return a * a * angle_term / 2;
+    };
+    return detail::checked_real(segment_area(r, s) + segment_area(s, r));
 }
 
 enum class RegionIntersection { disjoint, touching, overlapping };
 // CLOSED disk versus a SIMPLE polygon's filled region. "overlapping" means
 // positive area; a zero-radius disk or a 0/1/2-vertex region cannot have it.
-inline RegionIntersection disk_polygon_intersection(const Circle& disk, std::span<const Point> polygon,
+inline RegionIntersection disk_polygon_intersection(const Circle& disk,
+                                                    std::span<const Point> polygon,
                                                     Tolerance tolerance = Tolerance{}) {
-  detail::validate(polygon);
-  polygon = detail::open_boundary(polygon);
-  if (polygon.empty()) return RegionIntersection::disjoint;
-  const auto position = locate(polygon, disk.center(), tolerance);
-  if (disk.radius() == 0) return position == Containment::outside ? RegionIntersection::disjoint : RegionIntersection::touching;
-  double boundary_distance = std::numeric_limits<double>::infinity();
-  for (std::size_t i = 0; i < polygon.size(); ++i)
-    boundary_distance = std::min(boundary_distance, distance(Segment{polygon[i], polygon[(i + 1) % polygon.size()]}, disk.center()));
-  const auto relation = tolerance.compare(boundary_distance, disk.radius());
-  if (polygon.size() < 3) return relation <= 0 ? RegionIntersection::touching : RegionIntersection::disjoint;
-  if (position != Containment::outside || relation < 0) return RegionIntersection::overlapping;
-  return relation == 0 ? RegionIntersection::touching : RegionIntersection::disjoint;
+    detail::validate(polygon);
+    polygon = detail::open_boundary(polygon);
+    if (polygon.empty())
+        return RegionIntersection::disjoint;
+    const auto position = locate(polygon, disk.center(), tolerance);
+    if (disk.radius() == 0)
+        return position == Containment::outside ? RegionIntersection::disjoint
+                                                : RegionIntersection::touching;
+    double boundary_distance = std::numeric_limits<double>::infinity();
+    for (std::size_t i = 0; i < polygon.size(); ++i)
+        boundary_distance = std::min(
+            boundary_distance,
+            distance(Segment{polygon[i], polygon[(i + 1) % polygon.size()]}, disk.center()));
+    const auto relation = tolerance.compare(boundary_distance, disk.radius());
+    if (polygon.size() < 3)
+        return relation <= 0 ? RegionIntersection::touching : RegionIntersection::disjoint;
+    if (position != Containment::outside || relation < 0)
+        return RegionIntersection::overlapping;
+    return relation == 0 ? RegionIntersection::touching : RegionIntersection::disjoint;
 }
 
 } // namespace algorithm_assets::geometry
@@ -754,72 +994,103 @@ inline RegionIntersection disk_polygon_intersection(const Circle& disk, std::spa
 
 namespace algorithm_assets::geometry {
 namespace detail {
-struct EnclosingPoint { long double x,y; };
-struct EnclosingDisk { EnclosingPoint center; long double radius; };
-inline long double enclosing_distance(EnclosingPoint a,EnclosingPoint b) { return std::hypot(a.x-b.x,a.y-b.y); }
-inline bool enclosing_contains(EnclosingDisk d,EnclosingPoint p) {
-  return enclosing_distance(d.center,p)<=d.radius*(1+64*std::numeric_limits<long double>::epsilon());
+struct EnclosingPoint {
+    long double x, y;
+};
+struct EnclosingDisk {
+    EnclosingPoint center;
+    long double radius;
+};
+inline long double enclosing_distance(EnclosingPoint a, EnclosingPoint b) {
+    return std::hypot(a.x - b.x, a.y - b.y);
 }
-inline EnclosingDisk enclosing_pair(EnclosingPoint a,EnclosingPoint b) {
-  EnclosingPoint center{(a.x+b.x)/2,(a.y+b.y)/2};
-  return {center,std::max(enclosing_distance(center,a),enclosing_distance(center,b))};
+inline bool enclosing_contains(EnclosingDisk d, EnclosingPoint p) {
+    return enclosing_distance(d.center, p) <=
+           d.radius * (1 + 64 * std::numeric_limits<long double>::epsilon());
 }
-inline EnclosingDisk enclosing_triple(EnclosingPoint a,EnclosingPoint b,EnclosingPoint c) {
-  const auto x=b.x-a.x,y=b.y-a.y,u=c.x-a.x,v=c.y-a.y;
-  const auto determinant=2*(x*v-y*u);
-  if (determinant==0) {
-    auto ab=enclosing_pair(a,b),ac=enclosing_pair(a,c),bc=enclosing_pair(b,c);
-    auto result=ab.radius>=ac.radius?ab:ac; return result.radius>=bc.radius?result:bc;
-  }
-  const auto norm_b=x*x+y*y,norm_c=u*u+v*v;
-  EnclosingPoint center{a.x+(norm_b*v-norm_c*y)/determinant,a.y+(x*norm_c-u*norm_b)/determinant};
-  const auto radius=std::max({enclosing_distance(center,a),enclosing_distance(center,b),enclosing_distance(center,c)});
-  if (!std::isfinite(radius)) throw std::overflow_error("Ill-conditioned circumcircle computation");
-  return {center,radius};
+inline EnclosingDisk enclosing_pair(EnclosingPoint a, EnclosingPoint b) {
+    EnclosingPoint center{(a.x + b.x) / 2, (a.y + b.y) / 2};
+    return {center, std::max(enclosing_distance(center, a), enclosing_distance(center, b))};
 }
+inline EnclosingDisk enclosing_triple(EnclosingPoint a, EnclosingPoint b, EnclosingPoint c) {
+    const auto x = b.x - a.x, y = b.y - a.y, u = c.x - a.x, v = c.y - a.y;
+    const auto determinant = 2 * (x * v - y * u);
+    if (determinant == 0) {
+        auto ab = enclosing_pair(a, b), ac = enclosing_pair(a, c), bc = enclosing_pair(b, c);
+        auto result = ab.radius >= ac.radius ? ab : ac;
+        return result.radius >= bc.radius ? result : bc;
+    }
+    const auto norm_b = x * x + y * y, norm_c = u * u + v * v;
+    EnclosingPoint center{a.x + (norm_b * v - norm_c * y) / determinant,
+                          a.y + (x * norm_c - u * norm_b) / determinant};
+    const auto radius = std::max({enclosing_distance(center, a), enclosing_distance(center, b),
+                                  enclosing_distance(center, c)});
+    if (!std::isfinite(radius))
+        throw std::overflow_error("Ill-conditioned circumcircle computation");
+    return {center, radius};
 }
+} // namespace detail
 // Randomized incremental construction, worst O(n^3); exact-arithmetic expected
 // O(n) assumes a uniform random permutation. Fixed seed is reproducible, not a
 // worst-case time guarantee. Floating constructions remain approximate.
-inline std::optional<Circle> minimum_enclosing_circle(std::span<const Point> points,std::uint64_t seed=0x61adbeefU) {
-  long double scale=0;
-  for (auto p:points) {
-    detail::validate(p);
-    if (std::abs(p.x)>1e50 || std::abs(p.y)>1e50) throw std::invalid_argument("Enclosing-circle coordinates limited to +/-1e50");
-    scale=std::max({scale,std::abs(static_cast<long double>(p.x)),std::abs(static_cast<long double>(p.y))});
-  }
-  if (points.empty()) return std::nullopt;
-  if (scale==0) return Circle(points.front(),0);
-  std::vector<detail::EnclosingPoint> shuffled; shuffled.reserve(points.size());
-  for (auto p:points) shuffled.push_back({p.x/scale,p.y/scale});
-  std::mt19937_64 random(seed); std::shuffle(shuffled.begin(),shuffled.end(),random);
-  detail::EnclosingDisk disk{shuffled[0],0};
-  for (std::size_t i=0;i<shuffled.size();++i) if (!detail::enclosing_contains(disk,shuffled[i])) {
-    disk={shuffled[i],0};
-    for (std::size_t j=0;j<i;++j) if (!detail::enclosing_contains(disk,shuffled[j])) {
-      disk=detail::enclosing_pair(shuffled[i],shuffled[j]);
-      for (std::size_t k=0;k<j;++k) if (!detail::enclosing_contains(disk,shuffled[k]))
-        disk=detail::enclosing_triple(shuffled[i],shuffled[j],shuffled[k]);
+inline std::optional<Circle> minimum_enclosing_circle(std::span<const Point> points,
+                                                      std::uint64_t seed = 0x61adbeefU) {
+    long double scale = 0;
+    for (auto p : points) {
+        detail::validate(p);
+        if (std::abs(p.x) > 1e50 || std::abs(p.y) > 1e50)
+            throw std::invalid_argument("Enclosing-circle coordinates limited to +/-1e50");
+        scale = std::max({scale, std::abs(static_cast<long double>(p.x)),
+                          std::abs(static_cast<long double>(p.y))});
     }
-  }
-  const auto center=detail::make_point(disk.center.x*scale,disk.center.y*scale);
-  long double radius=0;
-  for (auto p:points) radius=std::max(radius,std::hypot(static_cast<long double>(p.x)-center.x,static_cast<long double>(p.y)-center.y));
-  // Compensate center rounding; never round the final enclosing radius inward.
-  auto rounded=static_cast<double>(radius);
-  if (static_cast<long double>(rounded)<radius) rounded=std::nextafter(rounded,std::numeric_limits<double>::infinity());
-  return Circle(center,rounded);
+    if (points.empty())
+        return std::nullopt;
+    if (scale == 0)
+        return Circle(points.front(), 0);
+    std::vector<detail::EnclosingPoint> shuffled;
+    shuffled.reserve(points.size());
+    for (auto p : points)
+        shuffled.push_back({p.x / scale, p.y / scale});
+    std::mt19937_64 random(seed);
+    std::shuffle(shuffled.begin(), shuffled.end(), random);
+    detail::EnclosingDisk disk{shuffled[0], 0};
+    for (std::size_t i = 0; i < shuffled.size(); ++i)
+        if (!detail::enclosing_contains(disk, shuffled[i])) {
+            disk = {shuffled[i], 0};
+            for (std::size_t j = 0; j < i; ++j)
+                if (!detail::enclosing_contains(disk, shuffled[j])) {
+                    disk = detail::enclosing_pair(shuffled[i], shuffled[j]);
+                    for (std::size_t k = 0; k < j; ++k)
+                        if (!detail::enclosing_contains(disk, shuffled[k]))
+                            disk = detail::enclosing_triple(shuffled[i], shuffled[j], shuffled[k]);
+                }
+        }
+    const auto center = detail::make_point(disk.center.x * scale, disk.center.y * scale);
+    long double radius = 0;
+    for (auto p : points)
+        radius = std::max(radius, std::hypot(static_cast<long double>(p.x) - center.x,
+                                             static_cast<long double>(p.y) - center.y));
+    // Compensate center rounding; never round the final enclosing radius inward.
+    auto rounded = static_cast<double>(radius);
+    if (static_cast<long double>(rounded) < radius)
+        rounded = std::nextafter(rounded, std::numeric_limits<double>::infinity());
+    return Circle(center, rounded);
 }
 } // namespace algorithm_assets::geometry
 // end include/algorithm_assets/geometry/minimum_enclosing_circle.hpp
 
 #include <iomanip>
 #include <iostream>
-int main(){
-  std::ios::sync_with_stdio(false);std::cin.tie(nullptr);
-  std::size_t n;std::cin>>n;std::vector<algorithm_assets::geometry::Point> points(n);
-  for(auto& p:points)std::cin>>p.x>>p.y;
-  const auto circle=algorithm_assets::geometry::minimum_enclosing_circle(points);
-  std::cout<<std::fixed<<std::setprecision(12)<<circle->radius()<<'\n'<<circle->center().x<<' '<<circle->center().y<<'\n';
+int main() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::size_t n;
+    std::cin >> n;
+    std::vector<algorithm_assets::geometry::Point> points(n);
+    for (auto& p : points)
+        std::cin >> p.x >> p.y;
+    const auto circle = algorithm_assets::geometry::minimum_enclosing_circle(points);
+    std::cout << std::fixed << std::setprecision(12) << circle->radius() << '\n'
+              << circle->center().x << ' ' << circle->center().y << '\n';
 }
 // end judge/adapters/luogu_p1742.cpp

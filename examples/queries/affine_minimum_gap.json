@@ -1,1 +1,1 @@
-{"problem":"dynamic_affine_minimum","n":100000,"q":100000,"max_time_ms":2000}
+{ "problem": "dynamic_affine_minimum", "n": 100000, "q": 100000, "max_time_ms": 2000 }

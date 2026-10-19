@@ -3,5 +3,5 @@
 #include <iostream>
 
 int main() {
-  std::cout << "AlgorithmAssets " << algorithm_assets::version << '\n';
+    std::cout << "AlgorithmAssets " << algorithm_assets::version << '\n';
 }

@@ -1,70 +1,66 @@
 {
-  "schema_version": 1,
-  "id": "mesh.topology",
-  "kind": "representation",
-  "name": "网格 CSR 邻接与索引半边视图",
-  "display_name": "网格 CSR 邻接与索引半边视图",
-  "header": "include/algorithm_assets/mesh/topology.hpp",
-  "documentation": "docs/representations/mesh.topology.md",
-  "problem": "surface_mesh_adjacency",
-  "parameters": [
-    "n",
-    "m",
-    "corners"
-  ],
-  "requires": {
-    "topology": "single_ring_polygon_faces",
-    "edge_identity": "unordered_vertex_pair"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "合法 SurfaceMesh；边身份按无向端点对归并，不表示同端点的多条独立拓扑边，也不表示无面的独立线边。"
-  },
-  "output": {
-    "conditions": "拥有的连续邻接数组；单个边关联恰好两个角点时填 twin，其他为 invalid_index；twin 本身不证明两侧绕向相反。"
-  },
-  "constraints": {
-    "max_n": 4294967294,
-    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
-    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
-    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
-    "scope": "合法 SurfaceMesh；边身份按无向端点对归并，不表示同端点的多条独立拓扑边，也不表示无面的独立线边。 拥有的连续邻接数组；单个边关联恰好两个角点时填 twin，其他为 invalid_index；twin 本身不证明两侧绕向相反。"
-  },
-  "complexity": {
-    "operations": "构建 O(n+C log(C+1))；edge incidence span O(1)，遍历 O(边度数)。",
-    "space": "O(n+C+E)；排序边记录、构建游标与最终数组可能同时存活，输入不计入 owned 空间。",
-    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "mesh.surface"
+    "schema_version": 1,
+    "id": "mesh.topology",
+    "kind": "representation",
+    "name": "网格 CSR 邻接与索引半边视图",
+    "display_name": "网格 CSR 邻接与索引半边视图",
+    "header": "include/algorithm_assets/mesh/topology.hpp",
+    "documentation": "docs/representations/mesh.topology.md",
+    "problem": "surface_mesh_adjacency",
+    "parameters": ["n", "m", "corners"],
+    "requires": {
+        "topology": "single_ring_polygon_faces",
+        "edge_identity": "unordered_vertex_pair"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "合法 SurfaceMesh；边身份按无向端点对归并，不表示同端点的多条独立拓扑边，也不表示无面的独立线边。"
+    },
+    "output": {
+        "conditions": "拥有的连续邻接数组；单个边关联恰好两个角点时填 twin，其他为 invalid_index；twin 本身不证明两侧绕向相反。"
+    },
+    "constraints": {
+        "max_n": 4294967294,
+        "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+        "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+        "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+        "scope": "合法 SurfaceMesh；边身份按无向端点对归并，不表示同端点的多条独立拓扑边，也不表示无面的独立线边。 拥有的连续邻接数组；单个边关联恰好两个角点时填 twin，其他为 invalid_index；twin 本身不证明两侧绕向相反。"
+    },
+    "complexity": {
+        "operations": "构建 O(n+C log(C+1))；edge incidence span O(1)，遍历 O(边度数)。",
+        "space": "O(n+C+E)；排序边记录、构建游标与最终数组可能同时存活，输入不计入 owned 空间。",
+        "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "mesh.surface"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants, not formal verification",
+        "tests": "tests/mesh3d_test.cpp",
+        "example": "examples/mesh3d.cpp",
+        "benchmark": "not_measured"
+    },
+    "provenance": {
+        "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+        "license": "Project implementation license not selected",
+        "dependencies": "No external runtime dependency"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants, not formal verification",
-    "tests": "tests/mesh3d_test.cpp",
-    "example": "examples/mesh3d.cpp",
-    "benchmark": "not_measured"
-  },
-  "provenance": {
-    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
-    "license": "Project implementation license not selected",
-    "dependencies": "No external runtime dependency"
-  }
 }

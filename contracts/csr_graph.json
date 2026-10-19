@@ -1,78 +1,73 @@
 {
-  "schema_version": 1,
-  "id": "graph.csr",
-  "kind": "representation",
-  "name": "CsrGraph",
-  "header": "include/algorithm_assets/graph/csr_graph.hpp",
-  "documentation": "docs/representations/graph.csr.md",
-  "problem": "graph_storage",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "directed": true,
-    "graph_updates": "none",
-    "weights": "nonnegative_int64"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_reads": "supported",
-    "concurrent_writes": "unsupported"
-  },
-  "input": {
-    "edges": "Borrowed span<Edge>{uint32 from,to,int64 weight}; copied at construction",
-    "weights": "[0, INT64_MAX]",
-    "structure": "Directed arcs; loops and parallel arcs accepted; encode undirected edges as two arcs"
-  },
-  "output": {
-    "neighbors": "Paired const spans for targets and weights in insertion order within a vertex"
-  },
-  "constraints": {
-    "max_n": 4294967294,
-    "errors": "Negative weights rejected; invalid endpoints/vertices throw; allocation may throw",
-    "lifetime": "Neighbor views depend on graph storage; no mutation while used; moved-from instance only destroy/reassign",
-    "threading": "Concurrent const access on the same live immutable graph"
-  },
-  "complexity": {
-    "construction": "Theta(n+m)",
-    "neighbors": "O(1) view construction",
-    "space": "sizeof(size_t)*(n+1) + 12m payload bytes; build cursor adds sizeof(size_t)*(n+1)",
-    "guarantee": "worst case"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [
-      {
-        "coefficient": 12,
-        "factors": [
-          "m"
-        ]
-      }
+    "schema_version": 1,
+    "id": "graph.csr",
+    "kind": "representation",
+    "name": "CsrGraph",
+    "header": "include/algorithm_assets/graph/csr_graph.hpp",
+    "documentation": "docs/representations/graph.csr.md",
+    "problem": "graph_storage",
+    "parameters": ["n", "m"],
+    "requires": {
+        "directed": true,
+        "graph_updates": "none",
+        "weights": "nonnegative_int64"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_reads": "supported",
+        "concurrent_writes": "unsupported"
+    },
+    "input": {
+        "edges": "Borrowed span<Edge>{uint32 from,to,int64 weight}; copied at construction",
+        "weights": "[0, INT64_MAX]",
+        "structure": "Directed arcs; loops and parallel arcs accepted; encode undirected edges as two arcs"
+    },
+    "output": {
+        "neighbors": "Paired const spans for targets and weights in insertion order within a vertex"
+    },
+    "constraints": {
+        "max_n": 4294967294,
+        "errors": "Negative weights rejected; invalid endpoints/vertices throw; allocation may throw",
+        "lifetime": "Neighbor views depend on graph storage; no mutation while used; moved-from instance only destroy/reassign",
+        "threading": "Concurrent const access on the same live immutable graph"
+    },
+    "complexity": {
+        "construction": "Theta(n+m)",
+        "neighbors": "O(1) view construction",
+        "space": "sizeof(size_t)*(n+1) + 12m payload bytes; build cursor adds sizeof(size_t)*(n+1)",
+        "guarantee": "worst case"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [
+            {
+                "coefficient": 12,
+                "factors": ["m"]
+            }
+        ],
+        "scope": "Conservative lower bound on owned payload, not a peak-allocation upper bound; excludes container headers, allocator overhead and caller input"
+    },
+    "relations": [
+        {
+            "type": "representation_for",
+            "target": "graph.dijkstra"
+        }
     ],
-    "scope": "Conservative lower bound on owned payload, not a peak-allocation upper bound; excludes container headers, allocator overhead and caller input"
-  },
-  "relations": [
-    {
-      "type": "representation_for",
-      "target": "graph.dijkstra"
+    "evidence": {
+        "correctness": "Reasoned invariants in documentation; not formally verified",
+        "tests": "tests/algorithms_test.cpp",
+        "example": "examples/first_algorithms.cpp",
+        "benchmark": "not_measured",
+        "notes": "Negative weights, endpoints, loops, parallel arcs and empty graph exercised through graph tests"
+    },
+    "provenance": {
+        "implementation": "Written for this project; no source code copied",
+        "reference": "../oi-wiki-reference/docs/ and standard algorithm definitions",
+        "license": "Project distribution license not yet selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants in documentation; not formally verified",
-    "tests": "tests/algorithms_test.cpp",
-    "example": "examples/first_algorithms.cpp",
-    "benchmark": "not_measured",
-    "notes": "Negative weights, endpoints, loops, parallel arcs and empty graph exercised through graph tests"
-  },
-  "provenance": {
-    "implementation": "Written for this project; no source code copied",
-    "reference": "../oi-wiki-reference/docs/ and standard algorithm definitions",
-    "license": "Project distribution license not yet selected"
-  }
 }

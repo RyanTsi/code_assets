@@ -6,4 +6,4 @@ namespace algorithm_assets {
 
 inline constexpr std::string_view version = "0.1.0";
 
-}  // namespace algorithm_assets
+} // namespace algorithm_assets

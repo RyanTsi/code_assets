@@ -1,88 +1,83 @@
 {
-  "schema_version": 1,
-  "id": "geometry.convex_clip",
-  "kind": "algorithm",
-  "name": "Closed left-half-plane clipping",
-  "display_name": "凸包半平面裁剪",
-  "header": "include/algorithm_assets/geometry/convex_clip.hpp",
-  "documentation": "docs/algorithms/geometry.convex_clip.md",
-  "problem": "geometry.convex_clip",
-  "parameters": [
-    "n"
-  ],
-  "requires": {
-    "coordinates": {
-      "one_of": [
-        "float64_abs_le_1e100",
-        "int64_abs_le_1e9"
-      ]
+    "schema_version": 1,
+    "id": "geometry.convex_clip",
+    "kind": "algorithm",
+    "name": "Closed left-half-plane clipping",
+    "display_name": "凸包半平面裁剪",
+    "header": "include/algorithm_assets/geometry/convex_clip.hpp",
+    "documentation": "docs/algorithms/geometry.convex_clip.md",
+    "problem": "geometry.convex_clip",
+    "parameters": ["n"],
+    "requires": {
+        "coordinates": {
+            "one_of": ["float64_abs_le_1e100", "int64_abs_le_1e9"]
+        },
+        "result_guarantee": "approximate",
+        "input_structure": "strict_convex_boundary",
+        "half_plane": "closed_left"
     },
-    "result_guarantee": "approximate",
-    "input_structure": "strict_convex_boundary",
-    "half_plane": "closed_left"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "hull": "Validated ConvexPolygon2<T>, n=h",
-    "line": "Directed nondegenerate Line and explicit tolerance"
-  },
-  "output": {
-    "boundary": "Owned vector<Point> in boundary order; empty intersection empty; boundary vertices retained; adjacent exact duplicates removed; collinear vertices may remain",
-    "numeric_conversion": "Integer input deliberately converts to floating for constructed intersections; result is not a typed strict convex hull"
-  },
-  "constraints": {
-    "max_n": 1152921504606846975,
-    "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
-    "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
-    "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
-    "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
-    "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
-    "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage."
-  },
-  "complexity": {
-    "scan": "O(n)",
-    "space": "Output <=16(n+1) bytes capacity, O(1) workspace; no input copy"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "geometry.linear"
+    "capabilities": {
+        "persistence": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
     },
-    {
-      "type": "uses",
-      "target": "geometry.convex_hull.int",
-      "condition": "coordinates=int64_abs_le_1e9"
+    "input": {
+        "hull": "Validated ConvexPolygon2<T>, n=h",
+        "line": "Directed nondegenerate Line and explicit tolerance"
     },
-    {
-      "type": "uses",
-      "target": "geometry.convex_hull.float",
-      "condition": "coordinates=float64_abs_le_1e100"
+    "output": {
+        "boundary": "Owned vector<Point> in boundary order; empty intersection empty; boundary vertices retained; adjacent exact duplicates removed; collinear vertices may remain",
+        "numeric_conversion": "Integer input deliberately converts to floating for constructed intersections; result is not a typed strict convex hull"
+    },
+    "constraints": {
+        "max_n": 1152921504606846975,
+        "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
+        "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
+        "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
+        "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
+        "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
+        "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage."
+    },
+    "complexity": {
+        "scan": "O(n)",
+        "space": "Output <=16(n+1) bytes capacity, O(1) workspace; no input copy"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "geometry.linear"
+        },
+        {
+            "type": "uses",
+            "target": "geometry.convex_hull.int",
+            "condition": "coordinates=int64_abs_le_1e9"
+        },
+        {
+            "type": "uses",
+            "target": "geometry.convex_hull.float",
+            "condition": "coordinates=float64_abs_le_1e100"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants in docs/algorithms/geometry.convex_clip.md; floating correctness conditional on numeric predicates; not formally verified",
+        "tests": "tests/geometry_test.cpp",
+        "example": "examples/geometry2d.cpp",
+        "benchmark": "not_measured",
+        "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
+    },
+    "provenance": {
+        "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
+        "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
+        "license": "User-provided template; project distribution license not yet selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants in docs/algorithms/geometry.convex_clip.md; floating correctness conditional on numeric predicates; not formally verified",
-    "tests": "tests/geometry_test.cpp",
-    "example": "examples/geometry2d.cpp",
-    "benchmark": "not_measured",
-    "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
-  },
-  "provenance": {
-    "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
-    "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
-    "license": "User-provided template; project distribution license not yet selected"
-  }
 }

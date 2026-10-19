@@ -1,75 +1,72 @@
 {
-  "schema_version": 1,
-  "id": "geometry.minkowski_difference.int",
-  "kind": "algorithm",
-  "name": "整数闵可夫斯基差",
-  "display_name": "整数闵可夫斯基差",
-  "header": "include/algorithm_assets/geometry/minkowski.hpp",
-  "documentation": "docs/algorithms/geometry.minkowski_difference.int.md",
-  "problem": "geometry.minkowski_difference",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "coordinates": "int64_abs_le_5e8",
-    "input_structure": "validated_convex_polygons",
-    "result_guarantee": "exact"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "Same canonical integer inputs; difference A+(-B), not invertible"
-  },
-  "output": {
-    "conditions": "Owned exact canonical hull of A-B"
-  },
-  "constraints": {
-    "max_n": 9223372036854775807,
-    "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/algorithms/geometry.minkowski_difference.int.md",
-    "numeric_and_state": "Same canonical integer inputs; difference A+(-B), not invertible; Owned exact canonical hull of A-B",
-    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
-  },
-  "complexity": {
-    "operations": "O(n+m)",
-    "space": "At most16*(n+m) output; no extra negated polygon allocation",
-    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "geometry.convex_hull.int",
-      "condition": "Consumes validated IntegerConvexPolygon representation; does not recompute its hull"
+    "schema_version": 1,
+    "id": "geometry.minkowski_difference.int",
+    "kind": "algorithm",
+    "name": "整数闵可夫斯基差",
+    "display_name": "整数闵可夫斯基差",
+    "header": "include/algorithm_assets/geometry/minkowski.hpp",
+    "documentation": "docs/algorithms/geometry.minkowski_difference.int.md",
+    "problem": "geometry.minkowski_difference",
+    "parameters": ["n", "m"],
+    "requires": {
+        "coordinates": "int64_abs_le_5e8",
+        "input_structure": "validated_convex_polygons",
+        "result_guarantee": "exact"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "Same canonical integer inputs; difference A+(-B), not invertible"
+    },
+    "output": {
+        "conditions": "Owned exact canonical hull of A-B"
+    },
+    "constraints": {
+        "max_n": 9223372036854775807,
+        "limits": "size_t, container max_size and allocation limits additionally apply",
+        "complete_contract": "docs/algorithms/geometry.minkowski_difference.int.md",
+        "numeric_and_state": "Same canonical integer inputs; difference A+(-B), not invertible; Owned exact canonical hull of A-B",
+        "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+    },
+    "complexity": {
+        "operations": "O(n+m)",
+        "space": "At most16*(n+m) output; no extra negated polygon allocation",
+        "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "geometry.convex_hull.int",
+            "condition": "Consumes validated IntegerConvexPolygon representation; does not recompute its hull"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+        "tests": "tests/repository_expansion_test.cpp",
+        "example": "examples/repository_expansion.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/EXPANSION_VALIDATION.md"
+    },
+    "provenance": {
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "path": "计算几何/闵可夫斯基和.md",
+        "blob_sha": "655d80c7d2356beb7aefcca3da4f42431786efe4",
+        "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+        "license": "No repository license discovered; project distribution license not selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
-    "tests": "tests/repository_expansion_test.cpp",
-    "example": "examples/repository_expansion.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/EXPANSION_VALIDATION.md"
-  },
-  "provenance": {
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "path": "计算几何/闵可夫斯基和.md",
-    "blob_sha": "655d80c7d2356beb7aefcca3da4f42431786efe4",
-    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-    "license": "No repository license discovered; project distribution license not selected"
-  }
 }

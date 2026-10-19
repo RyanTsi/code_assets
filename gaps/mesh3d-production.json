@@ -1,10 +1,33 @@
 {
-  "problem": "general_cad_cae_mesh_engine",
-  "status": "not_covered",
-  "scope": "First 3D release covers the executable five-stage minimum, not arbitrary CAD/CAE functionality",
-  "implemented": ["surface_mesh_and_corner_attributes", "vertex_link_validation", "cotangent_and_dirichlet_eigen", "validated_split_flip_collapse", "full_snapshot_undo_redo", "snapshot_bvh", "render_seams", "obj_subset", "untrimmed_parametric_patch_mapping", "linear_tetra_boundary_and_vtu_scalar"],
-  "missing": ["exact_3d_predicates_and_global_self_intersection", "explicit_wire_and_parallel_topological_edges", "runtime_generic_attribute_registry", "nonmanifold_topology_editing", "incremental_local_edit_complexity", "chunked_persistent_history", "trimmed_brep_and_step", "tetrahedral_mesh_generation", "higher_order_geometry_and_general_fem_spaces", "contact_and_boundary_condition_transfer", "gpu_viewer"],
-  "new_backends": ["vendored_eigen_3_4_0"],
-  "cgal_occt_libigl_integrated": false,
-  "documentation": "docs/project/MESH3D_INTEGRATION.md"
+    "problem": "general_cad_cae_mesh_engine",
+    "status": "not_covered",
+    "scope": "First 3D release covers the executable five-stage minimum, not arbitrary CAD/CAE functionality",
+    "implemented": [
+        "surface_mesh_and_corner_attributes",
+        "vertex_link_validation",
+        "cotangent_and_dirichlet_eigen",
+        "validated_split_flip_collapse",
+        "full_snapshot_undo_redo",
+        "snapshot_bvh",
+        "render_seams",
+        "obj_subset",
+        "untrimmed_parametric_patch_mapping",
+        "linear_tetra_boundary_and_vtu_scalar"
+    ],
+    "missing": [
+        "exact_3d_predicates_and_global_self_intersection",
+        "explicit_wire_and_parallel_topological_edges",
+        "runtime_generic_attribute_registry",
+        "nonmanifold_topology_editing",
+        "incremental_local_edit_complexity",
+        "chunked_persistent_history",
+        "trimmed_brep_and_step",
+        "tetrahedral_mesh_generation",
+        "higher_order_geometry_and_general_fem_spaces",
+        "contact_and_boundary_condition_transfer",
+        "gpu_viewer"
+    ],
+    "new_backends": ["vendored_eigen_3_4_0"],
+    "cgal_occt_libigl_integrated": false,
+    "documentation": "docs/project/MESH3D_INTEGRATION.md"
 }

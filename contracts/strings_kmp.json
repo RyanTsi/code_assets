@@ -1,78 +1,73 @@
 {
-  "schema_version": 1,
-  "id": "strings.kmp",
-  "kind": "algorithm",
-  "name": "KmpPattern",
-  "header": "include/algorithm_assets/strings/kmp.hpp",
-  "documentation": "docs/algorithms/strings.kmp.md",
-  "problem": "substring_search",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "text_unit": "byte",
-    "matching": "exact",
-    "pattern_updates": "none",
-    "execution_mode": "whole_text"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_reads": "conditional",
-    "concurrent_writes": "unsupported"
-  },
-  "input": {
-    "pattern": "Owned string; borrowed const prefix/pattern views",
-    "text": "Borrowed string_view incl embedded NUL"
-  },
-  "output": {
-    "matches": "0-based offsets; overlapping; empty pattern has n+1 boundaries",
-    "first": "optional<size_t>",
-    "all": "Owned vector or callback"
-  },
-  "constraints": {
-    "max_n": 9223372036854775807,
-    "allocation": "size_t and vector max_size / available memory limits additionally apply",
-    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/algorithms/strings.kmp.md",
-    "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
-    "lifetime": "Views tied to pattern storage; callback may throw, cannot modify pattern/text; no chunk streaming or Unicode semantics"
-  },
-  "complexity": {
-    "build": "O(m)",
-    "search": "O(n+k) plus callback; first can stop early",
-    "space": "m chars + m size_t; O(1) scan; find_all adds k size_t and capacity"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [
-      {
-        "coefficient": 1,
-        "factors": [
-          "m"
-        ]
-      }
-    ],
-    "scope": "Conservative payload lower bound, not peak memory feasibility; 64-bit platform costs in documentation"
-  },
-  "relations": [],
-  "evidence": {
-    "correctness": "Reasoned invariants in documentation; not formal verification",
-    "tests": "tests/repository_assets_test.cpp",
-    "example": "examples/repository_assets.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/VALIDATION.md"
-  },
-  "provenance": {
-    "implementation": "Rewritten modern C++20 for this project, not source-code copy",
-    "reference": "字符串/KMP.md",
-    "license": "No source LICENSE discovered; project distribution license not selected",
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/字符串/KMP.md"
-  }
+    "schema_version": 1,
+    "id": "strings.kmp",
+    "kind": "algorithm",
+    "name": "KmpPattern",
+    "header": "include/algorithm_assets/strings/kmp.hpp",
+    "documentation": "docs/algorithms/strings.kmp.md",
+    "problem": "substring_search",
+    "parameters": ["n", "m"],
+    "requires": {
+        "text_unit": "byte",
+        "matching": "exact",
+        "pattern_updates": "none",
+        "execution_mode": "whole_text"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_reads": "conditional",
+        "concurrent_writes": "unsupported"
+    },
+    "input": {
+        "pattern": "Owned string; borrowed const prefix/pattern views",
+        "text": "Borrowed string_view incl embedded NUL"
+    },
+    "output": {
+        "matches": "0-based offsets; overlapping; empty pattern has n+1 boundaries",
+        "first": "optional<size_t>",
+        "all": "Owned vector or callback"
+    },
+    "constraints": {
+        "max_n": 9223372036854775807,
+        "allocation": "size_t and vector max_size / available memory limits additionally apply",
+        "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/algorithms/strings.kmp.md",
+        "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
+        "lifetime": "Views tied to pattern storage; callback may throw, cannot modify pattern/text; no chunk streaming or Unicode semantics"
+    },
+    "complexity": {
+        "build": "O(m)",
+        "search": "O(n+k) plus callback; first can stop early",
+        "space": "m chars + m size_t; O(1) scan; find_all adds k size_t and capacity"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [
+            {
+                "coefficient": 1,
+                "factors": ["m"]
+            }
+        ],
+        "scope": "Conservative payload lower bound, not peak memory feasibility; 64-bit platform costs in documentation"
+    },
+    "relations": [],
+    "evidence": {
+        "correctness": "Reasoned invariants in documentation; not formal verification",
+        "tests": "tests/repository_assets_test.cpp",
+        "example": "examples/repository_assets.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/VALIDATION.md"
+    },
+    "provenance": {
+        "implementation": "Rewritten modern C++20 for this project, not source-code copy",
+        "reference": "字符串/KMP.md",
+        "license": "No source LICENSE discovered; project distribution license not selected",
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/字符串/KMP.md"
+    }
 }

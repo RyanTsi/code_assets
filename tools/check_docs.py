@@ -11,8 +11,16 @@ import catalog
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSET_DIRECTORIES = ("algorithms", "representations", "recipes")
-SECTIONS = ("使用与设计", "输入与输出", "前置条件与约束", "状态与生命周期",
-            "时间与空间", "正确性依据", "关联资产", "验证与来源")
+SECTIONS = (
+    "使用与设计",
+    "输入与输出",
+    "前置条件与约束",
+    "状态与生命周期",
+    "时间与空间",
+    "正确性依据",
+    "关联资产",
+    "验证与来源",
+)
 
 
 def prose(text: str) -> str:
@@ -48,12 +56,17 @@ def check_link(page: Path, destination: str) -> None:
 
 def check() -> tuple[int, int]:
     if {p.name for p in (ROOT / "docs").glob("*.md")} != {"README.md"}:
-        raise ValueError("docs/ root may only contain README.md; project material belongs in docs/project/")
+        raise ValueError(
+            "docs/ root may only contain README.md; project material belongs in docs/project/"
+        )
     assets = catalog.load_assets()
     catalog.validate(assets)
     owned = {catalog.local_file(a["documentation"]) for a in assets}
-    actual = {page.resolve() for directory in ASSET_DIRECTORIES
-              for page in (ROOT / "docs" / directory).glob("*.md")}
+    actual = {
+        page.resolve()
+        for directory in ASSET_DIRECTORIES
+        for page in (ROOT / "docs" / directory).glob("*.md")
+    }
     if owned != actual:
         raise ValueError("Asset document inventory has missing or unowned pages")
     index = (ROOT / "docs/README.md").read_text(encoding="utf-8")
@@ -71,8 +84,11 @@ def check() -> tuple[int, int]:
             raise ValueError(f"{asset['id']}: missing public include example")
     pages = sorted((ROOT / "docs").rglob("*.md"))
     pages += [ROOT / "README.md", ROOT / "AGENTS.md"]
-    pages += [page for directory in ("contracts", "recipes", "benchmarks", "gaps", "tests", "judge")
-              for page in (ROOT / directory).glob("*.md")]
+    pages += [
+        page
+        for directory in ("contracts", "recipes", "benchmarks", "gaps", "tests", "judge")
+        for page in (ROOT / directory).glob("*.md")
+    ]
     for page in pages:
         text = prose(page.read_text(encoding="utf-8"))
         # Destinations with parentheses must use angle brackets in Markdown.

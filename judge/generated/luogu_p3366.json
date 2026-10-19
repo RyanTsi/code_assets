@@ -1,10 +1,10 @@
 {
-  "adapter": "judge/adapters/luogu_p3366.cpp",
-  "sources_sha256": {
-    "judge/adapters/luogu_p3366.cpp": "64eea0a9871ab6d706d883561ba85e7f056e7208a76b4c2afa82ac0016dafdb3",
-    "include/algorithm_assets/graph/kruskal.hpp": "55052b68062d96786efff152c82dd9315c6eb8f3e08b694f35f316005e8b8a12",
-    "include/algorithm_assets/connectivity/disjoint_set.hpp": "f0ded5733742f3e6dae234e41cace45039c6713761b667f07f6c8cd827e74b9f",
-    "include/algorithm_assets/numeric/wide_int64_sum.hpp": "814bfcfc83bb081e869e2e340ea38548c2a228fb8472d25790f764455f096078"
-  },
-  "submission_sha256": "885d2b9fb5cc750e1a1aeca03707bf84a995571de84f7d92b75011f7637ddf13"
+    "adapter": "judge/adapters/luogu_p3366.cpp",
+    "sources_sha256": {
+        "judge/adapters/luogu_p3366.cpp": "f670b48919eac34403bb6b77211aad9b333dddad3504a8139fedefdd8a0fa586",
+        "include/algorithm_assets/graph/kruskal.hpp": "c9e5fd59c7d7697116c321d1548ea7f0833cbb7e49279499122623d1eb663115",
+        "include/algorithm_assets/connectivity/disjoint_set.hpp": "8b1364440159519e94a16c80e34e0f0c9661b890321c5f1585d739779daec5f2",
+        "include/algorithm_assets/numeric/wide_int64_sum.hpp": "0489db14372e4943e7556baca48c96e3ae5067cedd231978f2766f8f401f5798"
+    },
+    "submission_sha256": "ea7e5dd32755e6ba82d20e0f0acaaa40bd353e3e6a800568347d78a8e0ddaab4"
 }

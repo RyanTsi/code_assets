@@ -1,5 +1,9 @@
 {
-  "problem": "shortest_paths", "n": 10000, "m": 50000,
-  "weights": "nonnegative_int64", "graph_updates": "none",
-  "sources": "single", "result_guarantee": "exact"
+    "problem": "shortest_paths",
+    "n": 10000,
+    "m": 50000,
+    "weights": "nonnegative_int64",
+    "graph_updates": "none",
+    "sources": "single",
+    "result_guarantee": "exact"
 }

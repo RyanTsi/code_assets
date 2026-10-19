@@ -1,9 +1,9 @@
 {
-  "adapter": "judge/adapters/luogu_p3386.cpp",
-  "sources_sha256": {
-    "judge/adapters/luogu_p3386.cpp": "4022ec485e5be3c8fe602b59da23689dc2124a998b58f03e8c67dce035a69238",
-    "include/algorithm_assets/graph/bipartite_matching.hpp": "a17dd69b0530b600d86efbe7b6f23741079ac63ffe403024625167eeb5fb800e",
-    "include/algorithm_assets/graph/unweighted_csr.hpp": "96ef2f83092605263d87c102354f74cda10495f07302e1bc093db3ee13ccddaa"
-  },
-  "submission_sha256": "9cea239aee20462ee00e83ac4fd8743eb02f70c556450bc7112871c16aab52a8"
+    "adapter": "judge/adapters/luogu_p3386.cpp",
+    "sources_sha256": {
+        "judge/adapters/luogu_p3386.cpp": "68bde2dbf8e44d9bc42f7d6eded83da7b91dd1ae03266fdc2d93bfa0411caafa",
+        "include/algorithm_assets/graph/bipartite_matching.hpp": "3a268368969849faa007e86bcf2afc843a8d68b059a91f6a6661651c91f862e7",
+        "include/algorithm_assets/graph/unweighted_csr.hpp": "870a13c0c8d1aed500cbf6ad2c13b4a80545f6a843c0fc905eb0e51d2a74f87f"
+    },
+    "submission_sha256": "be336fb7bd302a9427e353ba8cff65326e57f1357b42831fb8c0e2b0d94c3243"
 }

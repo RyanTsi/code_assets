@@ -1,13 +1,13 @@
 {
-  "adapter": "judge/adapters/luogu_p1742.cpp",
-  "sources_sha256": {
-    "judge/adapters/luogu_p1742.cpp": "d0695bfe4dd3bb03c7462f5ffae096923b259874dbb210b58ab873c544256507",
-    "include/algorithm_assets/geometry/minimum_enclosing_circle.hpp": "23cd66f8f9520a5ff96b93a4ba7e6b5293caee1c8ed7fa2418a85834212266ed",
-    "include/algorithm_assets/geometry/circle.hpp": "e06cec89c9ecb570dbd990d9820271007cb361d31a7fae20bd083e8e790d381a",
-    "include/algorithm_assets/geometry/polygon.hpp": "e027d080830d894182b2bd7cb9d9fe406724b9d486a0e692a9835a7989a63e98",
-    "include/algorithm_assets/geometry/linear.hpp": "c0fb7870c002dd7485244af41852ce2c434328456f3e47c6e8d89b37a093836a",
-    "include/algorithm_assets/geometry/primitives.hpp": "ff52c99daae545f90473c7a77bb1c3e4c410c9bba31fd9c957dbf612d044e601",
-    "include/algorithm_assets/numeric/compensated_sum.hpp": "d8c5bdcd0d872ff1575e5149bc90fd4d9e46d20d4f54db73a9f5ed5f9c6eef96"
-  },
-  "submission_sha256": "376725dffe93f67d384de30780a62392614a873be6f48292c0fd3b5efce5c107"
+    "adapter": "judge/adapters/luogu_p1742.cpp",
+    "sources_sha256": {
+        "judge/adapters/luogu_p1742.cpp": "7fd6c35d3c33531e9858c6abc3de1a83c4f05bc52c26ed57c617bc5c669a426c",
+        "include/algorithm_assets/geometry/minimum_enclosing_circle.hpp": "8eea499aab5a8db162c713b15bdfb074bfbc970c43d92aa96b39641203f3e0a0",
+        "include/algorithm_assets/geometry/circle.hpp": "b3ef5405e7cc9aae930cee1b6d6f5ec974723bceff1e91d6c6ac813c85c859dd",
+        "include/algorithm_assets/geometry/polygon.hpp": "1b8c1635631a9f5fc647a1ec0bee254bad4c51a906551bb7e5caf3186fb87256",
+        "include/algorithm_assets/geometry/linear.hpp": "0cf7f111ec66ac7e2f9a70872d55d65c2b116dd44e8f173656dcc10bac5f6bd8",
+        "include/algorithm_assets/geometry/primitives.hpp": "fedbee0e4f7a4ef03b7952f3d0ce5775406b656af74cf2604020e455da422f55",
+        "include/algorithm_assets/numeric/compensated_sum.hpp": "328e55ea687f6e09415346a29cf786778469d05b2a322a8f53c251b6c62ef7a0"
+    },
+    "submission_sha256": "a940381175c87a675981a87f2138d3282228d3114dab5fd091d911ba8f573641"
 }

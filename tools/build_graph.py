@@ -65,8 +65,12 @@ def render(data: dict) -> str:
     }
     # Single pass: asset source text must never be treated as a template token.
     import re
-    return re.sub("|".join(re.escape(key) for key in replacements),
-                  lambda match: replacements[match.group()], template)
+
+    return re.sub(
+        "|".join(re.escape(key) for key in replacements),
+        lambda match: replacements[match.group()],
+        template,
+    )
 
 
 def main() -> None:
@@ -76,7 +80,9 @@ def main() -> None:
     data = build_data(catalog.load_assets())
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(render(data), encoding="utf-8")
-    print(f"Generated {args.output}: {len(data['nodes'])} assets, {len(data['edges'])} linked pairs")
+    print(
+        f"Generated {args.output}: {len(data['nodes'])} assets, {len(data['edges'])} linked pairs"
+    )
 
 
 if __name__ == "__main__":

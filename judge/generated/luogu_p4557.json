@@ -1,10 +1,10 @@
 {
-  "adapter": "judge/adapters/luogu_p4557.cpp",
-  "sources_sha256": {
-    "judge/adapters/luogu_p4557.cpp": "b1b2dee5b6945e9c4b0467a260fe1b648d0882ec8a931ebda037c18f48d35a0e",
-    "include/algorithm_assets/geometry/minkowski.hpp": "b4bbd7fd58cb223d1e37cceeb2eb82f957693d53766f23cd5f848fe100bd635f",
-    "include/algorithm_assets/geometry/convex_hull.hpp": "2521ec73c1e2bad4e7720206958db3539883770439e6648d5ccf08eae3220dec",
-    "include/algorithm_assets/geometry/primitives.hpp": "ff52c99daae545f90473c7a77bb1c3e4c410c9bba31fd9c957dbf612d044e601"
-  },
-  "submission_sha256": "59f0c4d1e452e3dfe1913dc11861d4288fce06ebd21ee60566c02a2bfd1030f9"
+    "adapter": "judge/adapters/luogu_p4557.cpp",
+    "sources_sha256": {
+        "judge/adapters/luogu_p4557.cpp": "27d99501c5c356560857f2b41afaebbef6f7a98c22d9c580735dfd6725a7846a",
+        "include/algorithm_assets/geometry/minkowski.hpp": "d7af38fe454465fd0cbdf03d73c4ff988dfac94569e2d229793e5b6e32895b83",
+        "include/algorithm_assets/geometry/convex_hull.hpp": "42f2be401ac9b7ebbab321c0c4ff4de15662140daccf34cb2aff81767185379f",
+        "include/algorithm_assets/geometry/primitives.hpp": "fedbee0e4f7a4ef03b7952f3d0ce5775406b656af74cf2604020e455da422f55"
+    },
+    "submission_sha256": "095a05b10cad6c91eb4b08ddceb00493941d461000b430b65675f9aa7117d5a5"
 }

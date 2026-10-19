@@ -1,15 +1,15 @@
 {
-  "date": "2026-10-15",
-  "catalog_version": "0.1.0-pilot-5",
-  "query": "examples/queries/affine_minimum_gap.json",
-  "status": "not_covered",
-  "scope": "All registered implementations and recipes for this problem ID; no novel composition search",
-  "source_problem": "https://codeforces.com/problemset/problem/319/C",
-  "missing_capability": "Incremental affine line envelope queries at changing original x values",
-  "reasons": [
-    "Scalar SegmentTree min has no dynamic affine envelope or function evaluation aggregate",
-    "Current recipe registry has no verified CHT or Li Chao composition; brute-force recurrence is quadratic"
-  ],
-  "next_step": "Retain as a gap; evaluate an explicit workload before adding CHT/Li Chao",
-  "means_problem_unsolvable": false
+    "date": "2026-10-15",
+    "catalog_version": "0.1.0-pilot-5",
+    "query": "examples/queries/affine_minimum_gap.json",
+    "status": "not_covered",
+    "scope": "All registered implementations and recipes for this problem ID; no novel composition search",
+    "source_problem": "https://codeforces.com/problemset/problem/319/C",
+    "missing_capability": "Incremental affine line envelope queries at changing original x values",
+    "reasons": [
+        "Scalar SegmentTree min has no dynamic affine envelope or function evaluation aggregate",
+        "Current recipe registry has no verified CHT or Li Chao composition; brute-force recurrence is quadratic"
+    ],
+    "next_step": "Retain as a gap; evaluate an explicit workload before adding CHT/Li Chao",
+    "means_problem_unsolvable": false
 }

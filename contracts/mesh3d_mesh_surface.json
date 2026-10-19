@@ -1,83 +1,76 @@
 {
-  "schema_version": 1,
-  "id": "mesh.surface",
-  "kind": "representation",
-  "name": "连续表面网格与面角属性",
-  "display_name": "连续表面网格与面角属性",
-  "header": "include/algorithm_assets/mesh/surface_mesh.hpp",
-  "documentation": "docs/representations/mesh.surface.md",
-  "problem": "surface_mesh_storage",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "coordinates": "float64_abs_le_1e50",
-    "topology": "single_ring_polygon_faces",
-    "index_domains_fit_uint32": true
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "坐标、单环面偏移与角点顶点索引；可选完整 Corner UV/normal；每 Face 一个材质编号。顶点/面逻辑 ID 可省略后自动从1编号；提供时须非零唯一。n、m、总角点数 C 均<UINT32_MAX；length_unit 非空且无控制字符。"
-  },
-  "output": {
-    "conditions": "不可变、拥有全部数组的 SurfaceMesh。只读 span/reference 在对象销毁、赋值或移动后失效；复制是完整值复制。空网格合法。重复坐标或几何退化不在结构构造阶段自动修复。"
-  },
-  "constraints": {
-    "max_n": 4294967294,
-    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
-    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
-    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
-    "scope": "坐标、单环面偏移与角点顶点索引；可选完整 Corner UV/normal；每 Face 一个材质编号。顶点/面逻辑 ID 可省略后自动从1编号；提供时须非零唯一。n、m、总角点数 C 均<UINT32_MAX；length_unit 非空且无控制字符。 不可变、拥有全部数组的 SurfaceMesh。只读 span/reference 在对象销毁、赋值或移动后失效；复制是完整值复制。空网格合法。重复坐标或几何退化不在结构构造阶段自动修复。"
-  },
-  "complexity": {
-    "operations": "结构检查 O(n+C+m)；ID 唯一性使用哈希，期望线性，碰撞最坏可二次。",
-    "space": "坐标24n、角点4C、偏移8(m+1)、ID 8(n+m)、材质4m；UV16C、normal24C可选，capacity/容器/构造临时哈希另计。",
-    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
-  },
-  "memory_lower_bound": {
-    "constant": 8,
-    "terms": [
-      {
-        "coefficient": 32,
-        "factors": [
-          "n"
-        ]
-      },
-      {
-        "coefficient": 32,
-        "factors": [
-          "m"
-        ]
-      }
+    "schema_version": 1,
+    "id": "mesh.surface",
+    "kind": "representation",
+    "name": "连续表面网格与面角属性",
+    "display_name": "连续表面网格与面角属性",
+    "header": "include/algorithm_assets/mesh/surface_mesh.hpp",
+    "documentation": "docs/representations/mesh.surface.md",
+    "problem": "surface_mesh_storage",
+    "parameters": ["n", "m"],
+    "requires": {
+        "coordinates": "float64_abs_le_1e50",
+        "topology": "single_ring_polygon_faces",
+        "index_domains_fit_uint32": true
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "坐标、单环面偏移与角点顶点索引；可选完整 Corner UV/normal；每 Face 一个材质编号。顶点/面逻辑 ID 可省略后自动从1编号；提供时须非零唯一。n、m、总角点数 C 均<UINT32_MAX；length_unit 非空且无控制字符。"
+    },
+    "output": {
+        "conditions": "不可变、拥有全部数组的 SurfaceMesh。只读 span/reference 在对象销毁、赋值或移动后失效；复制是完整值复制。空网格合法。重复坐标或几何退化不在结构构造阶段自动修复。"
+    },
+    "constraints": {
+        "max_n": 4294967294,
+        "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+        "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+        "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+        "scope": "坐标、单环面偏移与角点顶点索引；可选完整 Corner UV/normal；每 Face 一个材质编号。顶点/面逻辑 ID 可省略后自动从1编号；提供时须非零唯一。n、m、总角点数 C 均<UINT32_MAX；length_unit 非空且无控制字符。 不可变、拥有全部数组的 SurfaceMesh。只读 span/reference 在对象销毁、赋值或移动后失效；复制是完整值复制。空网格合法。重复坐标或几何退化不在结构构造阶段自动修复。"
+    },
+    "complexity": {
+        "operations": "结构检查 O(n+C+m)；ID 唯一性使用哈希，期望线性，碰撞最坏可二次。",
+        "space": "坐标24n、角点4C、偏移8(m+1)、ID 8(n+m)、材质4m；UV16C、normal24C可选，capacity/容器/构造临时哈希另计。",
+        "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+    },
+    "memory_lower_bound": {
+        "constant": 8,
+        "terms": [
+            {
+                "coefficient": 32,
+                "factors": ["n"]
+            },
+            {
+                "coefficient": 32,
+                "factors": ["m"]
+            }
+        ],
+        "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "geometry3d.primitives"
+        }
     ],
-    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "geometry3d.primitives"
+    "evidence": {
+        "correctness": "Reasoned invariants, not formal verification",
+        "tests": "tests/mesh3d_test.cpp",
+        "example": "examples/mesh3d.cpp",
+        "benchmark": "not_measured"
+    },
+    "provenance": {
+        "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+        "license": "Project implementation license not selected",
+        "dependencies": "No external runtime dependency"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants, not formal verification",
-    "tests": "tests/mesh3d_test.cpp",
-    "example": "examples/mesh3d.cpp",
-    "benchmark": "not_measured"
-  },
-  "provenance": {
-    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
-    "license": "Project implementation license not selected",
-    "dependencies": "No external runtime dependency"
-  }
 }

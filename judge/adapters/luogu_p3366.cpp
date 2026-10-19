@@ -9,9 +9,12 @@ int main() {
     std::vector<algorithm_assets::UndirectedWeightedEdge> edges(m);
     for (auto& edge : edges) {
         std::cin >> edge.first >> edge.second >> edge.weight;
-        --edge.first; --edge.second;
+        --edge.first;
+        --edge.second;
     }
     auto forest = algorithm_assets::kruskal_minimum_spanning_forest(n, edges);
-    if (forest.is_spanning_tree) std::cout << forest.total_weight << '\n';
-    else std::cout << "orz\n";
+    if (forest.is_spanning_tree)
+        std::cout << forest.total_weight << '\n';
+    else
+        std::cout << "orz\n";
 }

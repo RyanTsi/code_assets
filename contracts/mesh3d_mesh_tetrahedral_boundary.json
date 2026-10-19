@@ -1,73 +1,70 @@
 {
-  "schema_version": 1,
-  "id": "mesh.tetrahedral_boundary",
-  "kind": "recipe",
-  "name": "四面体外表皮与单元来源映射",
-  "display_name": "四面体外表皮与单元来源映射",
-  "header": "include/algorithm_assets/mesh/tetrahedral.hpp",
-  "documentation": "docs/recipes/mesh.tetrahedral_boundary.md",
-  "problem": "tetrahedral_boundary",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "cell_type": "linear_tetrahedron",
-    "output": "exterior_faces_with_cell_map"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "TetrahedralMesh；共享三角面最多两个单元且方向相反。"
-  },
-  "output": {
-    "conditions": "只出现一次的外表面，法向朝外；材质编号取源cell区域，face ID=4*cell+local_face+1。内部材料界面不输出，不生成接触或边界条件集合。"
-  },
-  "constraints": {
-    "max_n": 4294967294,
-    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
-    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
-    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
-    "scope": "TetrahedralMesh；共享三角面最多两个单元且方向相反。 只出现一次的外表面，法向朝外；材质编号取源cell区域，face ID=4*cell+local_face+1。内部材料界面不输出，不生成接触或边界条件集合。"
-  },
-  "complexity": {
-    "operations": "用有序map归并4m个面，O(n+m log(m+1))。",
-    "space": "O(n+m)面使用记录及输出；不会将全体网格变成只有表皮的无损等价表示。",
-    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "mesh.tetrahedral"
+    "schema_version": 1,
+    "id": "mesh.tetrahedral_boundary",
+    "kind": "recipe",
+    "name": "四面体外表皮与单元来源映射",
+    "display_name": "四面体外表皮与单元来源映射",
+    "header": "include/algorithm_assets/mesh/tetrahedral.hpp",
+    "documentation": "docs/recipes/mesh.tetrahedral_boundary.md",
+    "problem": "tetrahedral_boundary",
+    "parameters": ["n", "m"],
+    "requires": {
+        "cell_type": "linear_tetrahedron",
+        "output": "exterior_faces_with_cell_map"
     },
-    {
-      "type": "uses",
-      "target": "mesh.surface"
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "TetrahedralMesh；共享三角面最多两个单元且方向相反。"
+    },
+    "output": {
+        "conditions": "只出现一次的外表面，法向朝外；材质编号取源cell区域，face ID=4*cell+local_face+1。内部材料界面不输出，不生成接触或边界条件集合。"
+    },
+    "constraints": {
+        "max_n": 4294967294,
+        "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+        "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+        "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+        "scope": "TetrahedralMesh；共享三角面最多两个单元且方向相反。 只出现一次的外表面，法向朝外；材质编号取源cell区域，face ID=4*cell+local_face+1。内部材料界面不输出，不生成接触或边界条件集合。"
+    },
+    "complexity": {
+        "operations": "用有序map归并4m个面，O(n+m log(m+1))。",
+        "space": "O(n+m)面使用记录及输出；不会将全体网格变成只有表皮的无损等价表示。",
+        "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "mesh.tetrahedral"
+        },
+        {
+            "type": "uses",
+            "target": "mesh.surface"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants, not formal verification",
+        "tests": "tests/mesh3d_test.cpp",
+        "example": "examples/mesh3d.cpp",
+        "benchmark": "not_measured"
+    },
+    "provenance": {
+        "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+        "license": "Project implementation license not selected",
+        "dependencies": "No external runtime dependency"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants, not formal verification",
-    "tests": "tests/mesh3d_test.cpp",
-    "example": "examples/mesh3d.cpp",
-    "benchmark": "not_measured"
-  },
-  "provenance": {
-    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
-    "license": "Project implementation license not selected",
-    "dependencies": "No external runtime dependency"
-  }
 }

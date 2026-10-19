@@ -1,97 +1,90 @@
 {
-  "schema_version": 1,
-  "id": "sequence.inversions_fenwick",
-  "kind": "recipe",
-  "name": "InversionsFenwick",
-  "header": "include/algorithm_assets/recipes/inversions_fenwick.hpp",
-  "documentation": "docs/recipes/sequence.inversions_fenwick.md",
-  "problem": "inversion_count",
-  "parameters": [
-    "n"
-  ],
-  "requires": {
-    "input_type": "int64",
-    "comparison": "strict",
-    "execution_mode": "batch",
-    "strategy": {
-      "one_of": [
-        "any",
-        "fenwick_recipe"
-      ]
-    }
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_reads": "supported",
-    "concurrent_writes": "unsupported"
-  },
-  "input": {
-    "values": "Borrowed span<const int64>; sort unique keys preserves ordering"
-  },
-  "output": {
-    "count": "Exact uint64; input preserved"
-  },
-  "constraints": {
-    "max_n": 6074001000,
-    "allocation": "size_t and vector max_size / available memory limits additionally apply",
-    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/recipes/sequence.inversions_fenwick.md",
-    "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
-    "numeric": "n(n-1)/2 <= UINT64_MAX checked before sorting; duplicate values are not inversions"
-  },
-  "complexity": {
-    "run": "O(n log(n+1)) including compression",
-    "space": "8n initial sort copy; O(u) compacted keys +8u Fenwick; O(log n) stack"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [
-      {
-        "coefficient": 8,
-        "factors": [
-          "n"
-        ]
-      }
+    "schema_version": 1,
+    "id": "sequence.inversions_fenwick",
+    "kind": "recipe",
+    "name": "InversionsFenwick",
+    "header": "include/algorithm_assets/recipes/inversions_fenwick.hpp",
+    "documentation": "docs/recipes/sequence.inversions_fenwick.md",
+    "problem": "inversion_count",
+    "parameters": ["n"],
+    "requires": {
+        "input_type": "int64",
+        "comparison": "strict",
+        "execution_mode": "batch",
+        "strategy": {
+            "one_of": ["any", "fenwick_recipe"]
+        }
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_reads": "supported",
+        "concurrent_writes": "unsupported"
+    },
+    "input": {
+        "values": "Borrowed span<const int64>; sort unique keys preserves ordering"
+    },
+    "output": {
+        "count": "Exact uint64; input preserved"
+    },
+    "constraints": {
+        "max_n": 6074001000,
+        "allocation": "size_t and vector max_size / available memory limits additionally apply",
+        "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/recipes/sequence.inversions_fenwick.md",
+        "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
+        "numeric": "n(n-1)/2 <= UINT64_MAX checked before sorting; duplicate values are not inversions"
+    },
+    "complexity": {
+        "run": "O(n log(n+1)) including compression",
+        "space": "8n initial sort copy; O(u) compacted keys +8u Fenwick; O(log n) stack"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [
+            {
+                "coefficient": 8,
+                "factors": ["n"]
+            }
+        ],
+        "scope": "Conservative payload lower bound, not peak memory feasibility; 64-bit platform costs in documentation"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "range.fenwick_sum"
+        },
+        {
+            "type": "uses",
+            "target": "sequence.inversions",
+            "condition": "Only shared count-size validation; does not invoke merge counting"
+        },
+        {
+            "type": "alternative",
+            "target": "sequence.inversions",
+            "condition": "Same strict count; different workspace and operation composition"
+        },
+        {
+            "type": "uses",
+            "target": "sequence.coordinate_compression"
+        }
     ],
-    "scope": "Conservative payload lower bound, not peak memory feasibility; 64-bit platform costs in documentation"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "range.fenwick_sum"
+    "evidence": {
+        "correctness": "Reasoned invariants in documentation; not formal verification",
+        "tests": "tests/repository_assets_test.cpp",
+        "example": "examples/repository_assets.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/VALIDATION.md"
     },
-    {
-      "type": "uses",
-      "target": "sequence.inversions",
-      "condition": "Only shared count-size validation; does not invoke merge counting"
-    },
-    {
-      "type": "alternative",
-      "target": "sequence.inversions",
-      "condition": "Same strict count; different workspace and operation composition"
-    },
-    {
-      "type": "uses",
-      "target": "sequence.coordinate_compression"
+    "provenance": {
+        "implementation": "Rewritten modern C++20 for this project, not source-code copy",
+        "reference": "其他/逆序对.md",
+        "license": "No source LICENSE discovered; project distribution license not selected",
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/其他/逆序对.md"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants in documentation; not formal verification",
-    "tests": "tests/repository_assets_test.cpp",
-    "example": "examples/repository_assets.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/VALIDATION.md"
-  },
-  "provenance": {
-    "implementation": "Rewritten modern C++20 for this project, not source-code copy",
-    "reference": "其他/逆序对.md",
-    "license": "No source LICENSE discovered; project distribution license not selected",
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/其他/逆序对.md"
-  }
 }

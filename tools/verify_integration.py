@@ -24,10 +24,11 @@ def main():
     standalone = []
     for index, header in enumerate(sorted((ROOT / "include").rglob("*.hpp"))):
         path = source / f"header_{index}.cpp"
-        path.write_text(f"#include <{header.relative_to(ROOT / 'include').as_posix()}>\n",
-                        encoding="utf-8")
+        path.write_text(
+            f"#include <{header.relative_to(ROOT / 'include').as_posix()}>\n", encoding="utf-8"
+        )
         standalone.append(f'"{path.as_posix()}"')
-    cmake = f'''cmake_minimum_required(VERSION 3.20)
+    cmake = f"""cmake_minimum_required(VERSION 3.20)
 project(ExternalAssetConsumer LANGUAGES CXX)
 if(ASSETS_SOURCE_DIR)
   add_subdirectory("${{ASSETS_SOURCE_DIR}}" assets)
@@ -65,7 +66,7 @@ add_executable(external_mesh3d "{(ROOT / 'tests/mesh3d_test.cpp').as_posix()}"
 target_link_libraries(external_mesh3d PRIVATE algorithm_assets::eigen)
 set_target_properties(external_mesh3d PROPERTIES CXX_EXTENSIONS OFF)
 add_test(NAME external_mesh3d COMMAND external_mesh3d)
-'''
+"""
     (source / "CMakeLists.txt").write_text(cmake, encoding="utf-8")
     for mode in ("installed", "source"):
         output = build / f"integration-{mode}"

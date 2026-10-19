@@ -1,8 +1,8 @@
 {
-  "problem": "inversion_count",
-  "n": 500000,
-  "input_type": "int64",
-  "comparison": "strict",
-  "execution_mode": "batch",
-  "strategy": "fenwick_recipe"
+    "problem": "inversion_count",
+    "n": 500000,
+    "input_type": "int64",
+    "comparison": "strict",
+    "execution_mode": "batch",
+    "strategy": "fenwick_recipe"
 }

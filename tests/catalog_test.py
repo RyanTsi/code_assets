@@ -21,8 +21,14 @@ class CatalogTests(unittest.TestCase):
         return catalog.match(fields, self.assets)
 
     def connectivity(self, **extra):
-        fields = dict(problem="connectivity", n=100, directed=False, rollback=False,
-                      execution_mode="online", updates=["add", "query"])
+        fields = dict(
+            problem="connectivity",
+            n=100,
+            directed=False,
+            rollback=False,
+            execution_mode="online",
+            updates=["add", "query"],
+        )
         fields.update(extra)
         return self.query(**fields)
 
@@ -30,8 +36,9 @@ class CatalogTests(unittest.TestCase):
         result = self.connectivity()
         self.assertEqual(result["status"], "found_algorithm")
         self.assertEqual(result["candidates"][0]["id"], "connectivity.dsu")
-        self.assertEqual(self.connectivity(rollback=True)["candidates"][0]["id"],
-                         "connectivity.rollback_dsu")
+        self.assertEqual(
+            self.connectivity(rollback=True)["candidates"][0]["id"], "connectivity.rollback_dsu"
+        )
 
     def test_recipe_and_online_gap(self):
         fields = dict(updates=["add", "remove", "query"], q=200)
@@ -44,29 +51,38 @@ class CatalogTests(unittest.TestCase):
 
     def test_problem_combinations_and_affine_gap(self):
         import json
-        for name, expected in [('disjoint_interval_pair', 'sequence.disjoint_interval_pair'),
-                               ('bounded_step_subsequence', 'sequence.bounded_step_subsequence'),
-                               ('tree_eccentricities', 'graph.tree_eccentricities')]:
-            fields = json.loads((ROOT / 'examples/queries' / (name + '.json')).read_text())
+
+        for name, expected in [
+            ("disjoint_interval_pair", "sequence.disjoint_interval_pair"),
+            ("bounded_step_subsequence", "sequence.bounded_step_subsequence"),
+            ("tree_eccentricities", "graph.tree_eccentricities"),
+        ]:
+            fields = json.loads((ROOT / "examples/queries" / (name + ".json")).read_text())
             result = self.query(**fields)
-            self.assertEqual(result['status'], 'found_recipe')
-            self.assertEqual([item['id'] for item in result['candidates']], [expected])
-            if name == 'tree_eccentricities':
-                fields['edge_lengths'] = 'unequal_positive'
-            elif name == 'bounded_step_subsequence':
-                fields['adjacent_difference'] = 'rank_distance'
+            self.assertEqual(result["status"], "found_recipe")
+            self.assertEqual([item["id"] for item in result["candidates"]], [expected])
+            if name == "tree_eccentricities":
+                fields["edge_lengths"] = "unequal_positive"
+            elif name == "bounded_step_subsequence":
+                fields["adjacent_difference"] = "rank_distance"
             else:
-                fields['pair_count'] = 3
-            self.assertEqual(self.query(**fields)['status'], 'not_covered')
-        self.assertEqual(self.query(problem='dynamic_affine_minimum', n=100000, q=100000)['status'], 'not_covered')
+                fields["pair_count"] = 3
+            self.assertEqual(self.query(**fields)["status"], "not_covered")
+        self.assertEqual(
+            self.query(problem="dynamic_affine_minimum", n=100000, q=100000)["status"],
+            "not_covered",
+        )
 
     def test_missing_and_unknown_requirement(self):
         self.assertEqual(self.query(problem="connectivity", n=100)["status"], "needs_information")
         self.assertEqual(self.connectivity(must_preserve_labels=True)["status"], "not_covered")
-        self.assertEqual(self.connectivity(capabilities={"redo": "supported"})["status"],
-                         "not_covered")
-        self.assertEqual(self.connectivity(capabilities={"unregistered_property": "supported"})["status"],
-                         "needs_information")
+        self.assertEqual(
+            self.connectivity(capabilities={"redo": "supported"})["status"], "not_covered"
+        )
+        self.assertEqual(
+            self.connectivity(capabilities={"unregistered_property": "supported"})["status"],
+            "needs_information",
+        )
 
     def test_budget_is_not_a_fit_certificate(self):
         self.assertEqual(self.connectivity(max_memory_bytes=100)["status"], "budget_exceeded")
@@ -76,12 +92,28 @@ class CatalogTests(unittest.TestCase):
 
     def test_wrong_domain_and_properties(self):
         self.assertEqual(self.query(problem="ml.classification")["status"], "not_covered")
-        self.assertEqual(self.query(problem="shortest_paths", n=10, m=20,
-                                   weights="negative_int64", graph_updates="none",
-                                   sources="single", result_guarantee="exact")["status"], "not_covered")
-        self.assertEqual(self.query(problem="range_fold", n=10, operation_associative=False,
-                                   identity_available=True, updates=["set", "query"])["status"],
-                         "not_covered")
+        self.assertEqual(
+            self.query(
+                problem="shortest_paths",
+                n=10,
+                m=20,
+                weights="negative_int64",
+                graph_updates="none",
+                sources="single",
+                result_guarantee="exact",
+            )["status"],
+            "not_covered",
+        )
+        self.assertEqual(
+            self.query(
+                problem="range_fold",
+                n=10,
+                operation_associative=False,
+                identity_available=True,
+                updates=["set", "query"],
+            )["status"],
+            "not_covered",
+        )
         self.assertEqual(self.connectivity(directed=0)["status"], "not_covered")
 
     def test_invalid_metadata(self):
@@ -95,6 +127,7 @@ class CatalogTests(unittest.TestCase):
 
     def test_saved_queries(self):
         import json
+
         expected = {
             "incremental_connectivity": ("found_algorithm", "connectivity.dsu"),
             "rollback_connectivity": ("found_algorithm", "connectivity.rollback_dsu"),
@@ -129,47 +162,85 @@ class CatalogTests(unittest.TestCase):
                     self.assertEqual(result["candidates"][0]["id"], asset_id)
 
     def test_repository_assets_fail_closed(self):
-        bounded=dict(problem="knapsack",n=10,capacity=0,multiplicity="bounded",
-                     objective="maximum_value_at_most_capacity",input_type="int64",output="value")
-        self.assertEqual(self.query(**bounded)["status"],"found_algorithm")
-        self.assertEqual(self.query(**bounded,max_memory_bytes=0)["status"],"budget_exceeded")
-        bounded["capacity"]=-1
-        with self.assertRaises(ValueError): self.query(**bounded)
-        fields = dict(problem="range_sum", n=100, input_type="int64",
-                      updates=["add", "query"], stored_blocks_fit_int64=True, result_guarantee="exact")
+        bounded = dict(
+            problem="knapsack",
+            n=10,
+            capacity=0,
+            multiplicity="bounded",
+            objective="maximum_value_at_most_capacity",
+            input_type="int64",
+            output="value",
+        )
+        self.assertEqual(self.query(**bounded)["status"], "found_algorithm")
+        self.assertEqual(self.query(**bounded, max_memory_bytes=0)["status"], "budget_exceeded")
+        bounded["capacity"] = -1
+        with self.assertRaises(ValueError):
+            self.query(**bounded)
+        fields = dict(
+            problem="range_sum",
+            n=100,
+            input_type="int64",
+            updates=["add", "query"],
+            stored_blocks_fit_int64=True,
+            result_guarantee="exact",
+        )
         self.assertEqual(self.query(**fields)["status"], "found_algorithm")
         fields["updates"] = ["range_add", "query"]
         self.assertEqual(self.query(**fields)["status"], "not_covered")
         fields["updates"] = ["add", "query"]
         fields["capabilities"] = {"undo": "supported"}
         self.assertEqual(self.query(**fields)["status"], "not_covered")
-        inversions = dict(problem="inversion_count",n=100,input_type="int64",
-                          comparison="strict",execution_mode="batch",strategy="any")
+        inversions = dict(
+            problem="inversion_count",
+            n=100,
+            input_type="int64",
+            comparison="strict",
+            execution_mode="batch",
+            strategy="any",
+        )
         result = self.query(**inversions)
         self.assertEqual([x["id"] for x in result["candidates"]], ["sequence.inversions"])
         inversions["n"] = 6074001001
         self.assertEqual(self.query(**inversions)["status"], "not_covered")
-        self.assertEqual(self.query(problem="topological_order", n=10, m=10, directed=True,
-                                   graph_updates="none",representation="csr_nonnegative_weights",
-                                   cycle_output="witness")["status"],"not_covered")
+        self.assertEqual(
+            self.query(
+                problem="topological_order",
+                n=10,
+                m=10,
+                directed=True,
+                graph_updates="none",
+                representation="csr_nonnegative_weights",
+                cycle_output="witness",
+            )["status"],
+            "not_covered",
+        )
 
     def test_mesh_assets_and_numerical_gaps(self):
         import json
-        for name, wanted in [('mesh_dirichlet', 'mesh.dirichlet'), ('mesh_bvh', 'mesh.triangle_bvh')]:
-            fields=json.loads((ROOT/'examples/queries'/f'{name}.json').read_text())
-            self.assertEqual([x['id'] for x in self.query(**fields)['candidates']],[wanted])
-            fields['faces']='general_polygons'
-            self.assertEqual(self.query(**fields)['status'],'not_covered')
-        fields=json.loads((ROOT/'examples/queries/mesh_exact_gap.json').read_text())
-        self.assertEqual(self.query(**fields)['status'],'not_covered')
-        fields=json.loads((ROOT/'examples/queries/mesh_dirichlet.json').read_text())
-        fields['n']=2147483648
-        self.assertEqual(self.query(**fields)['status'],'not_covered')
+
+        for name, wanted in [
+            ("mesh_dirichlet", "mesh.dirichlet"),
+            ("mesh_bvh", "mesh.triangle_bvh"),
+        ]:
+            fields = json.loads((ROOT / "examples/queries" / f"{name}.json").read_text())
+            self.assertEqual([x["id"] for x in self.query(**fields)["candidates"]], [wanted])
+            fields["faces"] = "general_polygons"
+            self.assertEqual(self.query(**fields)["status"], "not_covered")
+        fields = json.loads((ROOT / "examples/queries/mesh_exact_gap.json").read_text())
+        self.assertEqual(self.query(**fields)["status"], "not_covered")
+        fields = json.loads((ROOT / "examples/queries/mesh_dirichlet.json").read_text())
+        fields["n"] = 2147483648
+        self.assertEqual(self.query(**fields)["status"], "not_covered")
 
     def test_geometry_bounds_state_and_input_shape(self):
-        fields = dict(problem="geometry.closest_pair", n=100,
-                      coordinates="int64_abs_le_1e9", result_guarantee="exact_squared_distance",
-                      input_structure="unordered_points", updates="none")
+        fields = dict(
+            problem="geometry.closest_pair",
+            n=100,
+            coordinates="int64_abs_le_1e9",
+            result_guarantee="exact_squared_distance",
+            input_structure="unordered_points",
+            updates="none",
+        )
         self.assertEqual(self.query(**fields)["status"], "found_algorithm")
         fields["coordinates"] = "full_range_int64"
         self.assertEqual(self.query(**fields)["status"], "not_covered")
@@ -179,9 +250,17 @@ class CatalogTests(unittest.TestCase):
         fields["updates"] = "none"
         fields["capabilities"] = {"rollback": "supported"}
         self.assertEqual(self.query(**fields)["status"], "not_covered")
-        self.assertEqual(self.query(problem="geometry.minimum_rectangle", n=100,
-                                   coordinates="float64_abs_le_1e100", result_guarantee="approximate",
-                                   input_structure="unordered_points", updates="none")["status"], "found_recipe")
+        self.assertEqual(
+            self.query(
+                problem="geometry.minimum_rectangle",
+                n=100,
+                coordinates="float64_abs_le_1e100",
+                result_guarantee="approximate",
+                input_structure="unordered_points",
+                updates="none",
+            )["status"],
+            "found_recipe",
+        )
 
 
 if __name__ == "__main__":

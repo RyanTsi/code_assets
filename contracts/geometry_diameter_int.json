@@ -1,73 +1,71 @@
 {
-  "schema_version": 1,
-  "id": "geometry.diameter.int",
-  "kind": "algorithm",
-  "name": "Antipodal rotating-calipers diameter (int)",
-  "display_name": "凸包直径 · 整数",
-  "header": "include/algorithm_assets/geometry/rotating_calipers.hpp",
-  "documentation": "docs/algorithms/geometry.diameter.int.md",
-  "problem": "geometry.farthest_pair",
-  "parameters": [
-    "n"
-  ],
-  "requires": {
-    "coordinates": "int64_abs_le_1e9",
-    "result_guarantee": "exact_squared_distance",
-    "input_structure": "strict_convex_boundary",
-    "updates": "none"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "hull": "Validated ConvexPolygon2<T>, n=h; strict CCW boundary enforced by type"
-  },
-  "output": {
-    "pair": "optional owning PointPair<T>; ties arbitrary; sqrt output approximate",
-    "degenerate": "empty -> nullopt; singleton -> same point twice with squared distance 0; segment -> endpoints"
-  },
-  "constraints": {
-    "max_n": 1152921504606846975,
-    "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
-    "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
-    "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
-    "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
-    "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
-    "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage.",
-    "numeric_failure": "More than 2n support advances throws domain_error rather than looping or silently using quadratic fallback."
-  },
-  "complexity": {
-    "scan": "O(n) time, including tied antipodal vertices",
-    "space": "O(1) excluding input, no allocations"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "geometry.convex_hull.int"
+    "schema_version": 1,
+    "id": "geometry.diameter.int",
+    "kind": "algorithm",
+    "name": "Antipodal rotating-calipers diameter (int)",
+    "display_name": "凸包直径 · 整数",
+    "header": "include/algorithm_assets/geometry/rotating_calipers.hpp",
+    "documentation": "docs/algorithms/geometry.diameter.int.md",
+    "problem": "geometry.farthest_pair",
+    "parameters": ["n"],
+    "requires": {
+        "coordinates": "int64_abs_le_1e9",
+        "result_guarantee": "exact_squared_distance",
+        "input_structure": "strict_convex_boundary",
+        "updates": "none"
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "hull": "Validated ConvexPolygon2<T>, n=h; strict CCW boundary enforced by type"
+    },
+    "output": {
+        "pair": "optional owning PointPair<T>; ties arbitrary; sqrt output approximate",
+        "degenerate": "empty -> nullopt; singleton -> same point twice with squared distance 0; segment -> endpoints"
+    },
+    "constraints": {
+        "max_n": 1152921504606846975,
+        "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
+        "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
+        "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
+        "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
+        "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
+        "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage.",
+        "numeric_failure": "More than 2n support advances throws domain_error rather than looping or silently using quadratic fallback."
+    },
+    "complexity": {
+        "scan": "O(n) time, including tied antipodal vertices",
+        "space": "O(1) excluding input, no allocations"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "geometry.convex_hull.int"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants in docs/algorithms/geometry.diameter.int.md; floating correctness conditional on numeric predicates; not formally verified",
+        "tests": "tests/geometry_test.cpp",
+        "example": "examples/geometry2d.cpp",
+        "benchmark": "not_measured",
+        "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
+    },
+    "provenance": {
+        "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
+        "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
+        "license": "User-provided template; project distribution license not yet selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants in docs/algorithms/geometry.diameter.int.md; floating correctness conditional on numeric predicates; not formally verified",
-    "tests": "tests/geometry_test.cpp",
-    "example": "examples/geometry2d.cpp",
-    "benchmark": "not_measured",
-    "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
-  },
-  "provenance": {
-    "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
-    "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
-    "license": "User-provided template; project distribution license not yet selected"
-  }
 }

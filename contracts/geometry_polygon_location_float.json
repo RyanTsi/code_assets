@@ -1,82 +1,80 @@
 {
-  "schema_version": 1,
-  "id": "geometry.polygon_location.float",
-  "kind": "algorithm",
-  "name": "Even-odd point-in-polygon (float)",
-  "display_name": "多边形定位 · 浮点",
-  "header": "include/algorithm_assets/geometry/polygon.hpp",
-  "documentation": "docs/algorithms/geometry.polygon_location.float.md",
-  "problem": "geometry.point_in_polygon",
-  "parameters": [
-    "n"
-  ],
-  "requires": {
-    "coordinates": "float64_abs_le_1e100",
-    "result_guarantee": "approximate_predicates",
-    "input_structure": "ordered_boundary",
-    "updates": "none"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "polygon": "span<const Point2<T>>, implicit closing edge; any winding; even-odd fill for self-intersections",
-    "point": "Single query point; float optional tolerance for boundary distance only"
-  },
-  "output": {
-    "location": "inside/boundary/outside; empty outside; 1/2 vertices only boundary/outside"
-  },
-  "constraints": {
-    "max_n": 1152921504606846975,
-    "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
-    "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
-    "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
-    "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
-    "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
-    "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage."
-  },
-  "complexity": {
-    "query": "O(n)",
-    "space": "O(1), no allocation"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "geometry.primitives"
+    "schema_version": 1,
+    "id": "geometry.polygon_location.float",
+    "kind": "algorithm",
+    "name": "Even-odd point-in-polygon (float)",
+    "display_name": "多边形定位 · 浮点",
+    "header": "include/algorithm_assets/geometry/polygon.hpp",
+    "documentation": "docs/algorithms/geometry.polygon_location.float.md",
+    "problem": "geometry.point_in_polygon",
+    "parameters": ["n"],
+    "requires": {
+        "coordinates": "float64_abs_le_1e100",
+        "result_guarantee": "approximate_predicates",
+        "input_structure": "ordered_boundary",
+        "updates": "none"
     },
-    {
-      "type": "alternative",
-      "target": "geometry.convex_location.float",
-      "condition": "Strict convex input already available; otherwise include hull construction cost"
+    "capabilities": {
+        "persistence": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
     },
-    {
-      "type": "alternative",
-      "target": "geometry.polygon_location.int",
-      "condition": "Coordinate regime and result guarantee differ; check both contracts; no automatic conversion"
+    "input": {
+        "polygon": "span<const Point2<T>>, implicit closing edge; any winding; even-odd fill for self-intersections",
+        "point": "Single query point; float optional tolerance for boundary distance only"
+    },
+    "output": {
+        "location": "inside/boundary/outside; empty outside; 1/2 vertices only boundary/outside"
+    },
+    "constraints": {
+        "max_n": 1152921504606846975,
+        "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
+        "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
+        "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
+        "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
+        "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
+        "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage."
+    },
+    "complexity": {
+        "query": "O(n)",
+        "space": "O(1), no allocation"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "geometry.primitives"
+        },
+        {
+            "type": "alternative",
+            "target": "geometry.convex_location.float",
+            "condition": "Strict convex input already available; otherwise include hull construction cost"
+        },
+        {
+            "type": "alternative",
+            "target": "geometry.polygon_location.int",
+            "condition": "Coordinate regime and result guarantee differ; check both contracts; no automatic conversion"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants in docs/algorithms/geometry.polygon_location.float.md; floating correctness conditional on numeric predicates; not formally verified",
+        "tests": "tests/geometry_test.cpp",
+        "example": "examples/geometry2d.cpp",
+        "benchmark": "not_measured",
+        "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
+    },
+    "provenance": {
+        "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
+        "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
+        "license": "User-provided template; project distribution license not yet selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants in docs/algorithms/geometry.polygon_location.float.md; floating correctness conditional on numeric predicates; not formally verified",
-    "tests": "tests/geometry_test.cpp",
-    "example": "examples/geometry2d.cpp",
-    "benchmark": "not_measured",
-    "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
-  },
-  "provenance": {
-    "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
-    "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
-    "license": "User-provided template; project distribution license not yet selected"
-  }
 }

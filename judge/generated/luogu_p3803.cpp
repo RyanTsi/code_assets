@@ -16,70 +16,111 @@ namespace algorithm_assets {
 // Forward exp(-i*2*pi*k/n), inverse includes 1/n normalization.
 class Radix2Fft {
 public:
-  explicit Radix2Fft(std::size_t size) : size_(size) {
-    if (!std::has_single_bit(size)) throw std::invalid_argument("FFT size must be a nonzero power of two");
-    roots_.resize(size/2);
-    for (std::size_t k=0;k<roots_.size();++k)
-      roots_[k]=std::polar(1.0,-2*std::numbers::pi*static_cast<double>(k)/static_cast<double>(size));
-  }
-  void transform(std::span<std::complex<double>> values,bool inverse=false) const {
-    if (values.size()!=size_) throw std::invalid_argument("FFT span size mismatch");
-    for (auto x:values) if (!finite(x)) throw std::invalid_argument("FFT input must be finite");
-    for (std::size_t i=1,j=0;i<size_;++i) {
-      auto bit=size_/2;
-      for (;j&bit;bit>>=1) j^=bit;
-      j^=bit; if (i<j) std::swap(values[i],values[j]);
+    explicit Radix2Fft(std::size_t size) : size_(size) {
+        if (!std::has_single_bit(size))
+            throw std::invalid_argument("FFT size must be a nonzero power of two");
+        roots_.resize(size / 2);
+        for (std::size_t k = 0; k < roots_.size(); ++k)
+            roots_[k] = std::polar(1.0, -2 * std::numbers::pi * static_cast<double>(k) /
+                                            static_cast<double>(size));
     }
-    for (std::size_t width=2;width<=size_;) {
-      const auto half=width/2,stride=size_/width;
-      for (std::size_t first=0;first<size_;first+=width)
-        for (std::size_t k=0;k<half;++k) {
-          auto root=roots_[k*stride]; if (inverse) root=std::conj(root);
-          const auto a=values[first+k],b=values[first+k+half]*root;
-          values[first+k]=a+b; values[first+k+half]=a-b;
+    void transform(std::span<std::complex<double>> values, bool inverse = false) const {
+        if (values.size() != size_)
+            throw std::invalid_argument("FFT span size mismatch");
+        for (auto x : values)
+            if (!finite(x))
+                throw std::invalid_argument("FFT input must be finite");
+        for (std::size_t i = 1, j = 0; i < size_; ++i) {
+            auto bit = size_ / 2;
+            for (; j & bit; bit >>= 1)
+                j ^= bit;
+            j ^= bit;
+            if (i < j)
+                std::swap(values[i], values[j]);
         }
-      if (width==size_) break;
-      width*=2;
+        for (std::size_t width = 2; width <= size_;) {
+            const auto half = width / 2, stride = size_ / width;
+            for (std::size_t first = 0; first < size_; first += width)
+                for (std::size_t k = 0; k < half; ++k) {
+                    auto root = roots_[k * stride];
+                    if (inverse)
+                        root = std::conj(root);
+                    const auto a = values[first + k], b = values[first + k + half] * root;
+                    values[first + k] = a + b;
+                    values[first + k + half] = a - b;
+                }
+            if (width == size_)
+                break;
+            width *= 2;
+        }
+        if (inverse)
+            for (auto& x : values)
+                x /= static_cast<double>(size_);
+        for (auto x : values)
+            if (!finite(x))
+                throw std::overflow_error("FFT produced a nonfinite value; output is modified");
     }
-    if (inverse) for (auto& x:values) x/=static_cast<double>(size_);
-    for (auto x:values) if (!finite(x)) throw std::overflow_error("FFT produced a nonfinite value; output is modified");
-  }
-  [[nodiscard]] std::size_t size() const noexcept { return size_; }
+    [[nodiscard]] std::size_t size() const noexcept {
+        return size_;
+    }
+
 private:
-  static bool finite(std::complex<double> x) noexcept { return std::isfinite(x.real()) && std::isfinite(x.imag()); }
-  std::size_t size_; std::vector<std::complex<double>> roots_;
+    static bool finite(std::complex<double> x) noexcept {
+        return std::isfinite(x.real()) && std::isfinite(x.imag());
+    }
+    std::size_t size_;
+    std::vector<std::complex<double>> roots_;
 };
-inline std::vector<double> convolve_real(std::span<const double> a,std::span<const double> b) {
-  for (auto x:a) if (!std::isfinite(x)) throw std::invalid_argument("Convolution input must be finite");
-  for (auto x:b) if (!std::isfinite(x)) throw std::invalid_argument("Convolution input must be finite");
-  if (a.empty() || b.empty()) return {};
-  if (a.size()>std::numeric_limits<std::size_t>::max()-b.size()+1) throw std::length_error("Convolution length overflow");
-  const auto length=a.size()+b.size()-1;
-  const auto maximum_power=std::size_t{1}<<(std::numeric_limits<std::size_t>::digits-1);
-  if (length>maximum_power) throw std::length_error("FFT padding overflow");
-  const auto n=std::bit_ceil(length);
-  Radix2Fft plan(n); std::vector<std::complex<double>> left(n),right(n);
-  for (std::size_t i=0;i<a.size();++i) left[i]=a[i];
-  for (std::size_t i=0;i<b.size();++i) right[i]=b[i];
-  plan.transform(left); plan.transform(right);
-  for (std::size_t i=0;i<n;++i) left[i]*=right[i];
-  plan.transform(left,true);
-  std::vector<double> result(length);
-  for (std::size_t i=0;i<length;++i) result[i]=left[i].real();
-  return result;
+inline std::vector<double> convolve_real(std::span<const double> a, std::span<const double> b) {
+    for (auto x : a)
+        if (!std::isfinite(x))
+            throw std::invalid_argument("Convolution input must be finite");
+    for (auto x : b)
+        if (!std::isfinite(x))
+            throw std::invalid_argument("Convolution input must be finite");
+    if (a.empty() || b.empty())
+        return {};
+    if (a.size() > std::numeric_limits<std::size_t>::max() - b.size() + 1)
+        throw std::length_error("Convolution length overflow");
+    const auto length = a.size() + b.size() - 1;
+    const auto maximum_power = std::size_t{1} << (std::numeric_limits<std::size_t>::digits - 1);
+    if (length > maximum_power)
+        throw std::length_error("FFT padding overflow");
+    const auto n = std::bit_ceil(length);
+    Radix2Fft plan(n);
+    std::vector<std::complex<double>> left(n), right(n);
+    for (std::size_t i = 0; i < a.size(); ++i)
+        left[i] = a[i];
+    for (std::size_t i = 0; i < b.size(); ++i)
+        right[i] = b[i];
+    plan.transform(left);
+    plan.transform(right);
+    for (std::size_t i = 0; i < n; ++i)
+        left[i] *= right[i];
+    plan.transform(left, true);
+    std::vector<double> result(length);
+    for (std::size_t i = 0; i < length; ++i)
+        result[i] = left[i].real();
+    return result;
 }
 } // namespace algorithm_assets
 // end include/algorithm_assets/numeric/fft.hpp
 
 #include <iostream>
-int main(){
-  std::ios::sync_with_stdio(false);std::cin.tie(nullptr);
-  std::size_t n,m;std::cin>>n>>m;std::vector<double> a(n+1),b(m+1);
-  for(auto& x:a)std::cin>>x;
-  for(auto& x:b)std::cin>>x;
-  // Judge-specific rounding for its bounded nonnegative integer coefficients.
-  // The public convolution API itself remains approximate real arithmetic.
-  for(auto x:algorithm_assets::convolve_real(a,b))std::cout<<std::llround(x)<<' ';
-  std::cout<<'\n';
+int main() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::size_t n, m;
+    std::cin >> n >> m;
+    std::vector<double> a(n + 1), b(m + 1);
+    for (auto& x : a)
+        std::cin >> x;
+    for (auto& x : b)
+        std::cin >> x;
+    // Judge-specific rounding for its bounded nonnegative integer coefficients.
+    // The public convolution API itself remains approximate real arithmetic.
+    for (auto x : algorithm_assets::convolve_real(a, b))
+        std::cout << std::llround(x) << ' ';
+    std::cout << '\n';
 }
 // end judge/adapters/luogu_p3803.cpp

@@ -1,9 +1,9 @@
 {
-  "adapter": "judge/adapters/luogu_p3374.cpp",
-  "sources_sha256": {
-    "judge/adapters/luogu_p3374.cpp": "4b03c42e3440daff953017ac0dd650daa1b73624727fe4d16dad47bff2a1f267",
-    "include/algorithm_assets/range/fenwick_sum.hpp": "b4bbf1bbb0a582224dc8f21213b5833a5deef66a907928df2a2611d4e2cd7da2",
-    "include/algorithm_assets/numeric/wide_int64_sum.hpp": "814bfcfc83bb081e869e2e340ea38548c2a228fb8472d25790f764455f096078"
-  },
-  "submission_sha256": "9c71ca14ff27129764607c0306f8c420326b386ec526e430f77cac5eda7c821f"
+    "adapter": "judge/adapters/luogu_p3374.cpp",
+    "sources_sha256": {
+        "judge/adapters/luogu_p3374.cpp": "68237e70f32f462f56e47d35abd39674a81c3d6f06dea61742d2553206c61283",
+        "include/algorithm_assets/range/fenwick_sum.hpp": "0b256f047fb85d2b2fd6640ebfe2198ee9c0754e83b1d1ff1bd1b30e94ed3d7e",
+        "include/algorithm_assets/numeric/wide_int64_sum.hpp": "0489db14372e4943e7556baca48c96e3ae5067cedd231978f2766f8f401f5798"
+    },
+    "submission_sha256": "53c79bea6b9cbc087655a418e5c3adf41bb334dd566b92b5d23942e48e0582c5"
 }

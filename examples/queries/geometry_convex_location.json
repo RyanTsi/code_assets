@@ -1,8 +1,8 @@
 {
-  "problem": "geometry.point_in_polygon",
-  "n": 1000,
-  "coordinates": "int64_abs_le_1e9",
-  "result_guarantee": "exact",
-  "input_structure": "strict_convex_boundary",
-  "updates": "none"
+    "problem": "geometry.point_in_polygon",
+    "n": 1000,
+    "coordinates": "int64_abs_le_1e9",
+    "result_guarantee": "exact",
+    "input_structure": "strict_convex_boundary",
+    "updates": "none"
 }

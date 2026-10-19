@@ -1,86 +1,82 @@
 {
-  "schema_version": 1,
-  "id": "geometry.convex_hull.float",
-  "kind": "algorithm",
-  "name": "Andrew monotone chain (float)",
-  "display_name": "凸包 · 浮点",
-  "header": "include/algorithm_assets/geometry/convex_hull.hpp",
-  "documentation": "docs/algorithms/geometry.convex_hull.float.md",
-  "problem": "geometry.convex_hull",
-  "parameters": [
-    "n"
-  ],
-  "requires": {
-    "coordinates": "float64_abs_le_1e100",
-    "result_guarantee": "approximate_predicates",
-    "input_structure": "unordered_points",
-    "updates": "none"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "points": "span<const Point2<T>>; duplicates and arbitrary order accepted",
-    "ownership_option": "ConvexPolygon2<T>::from_points(vector by value) permits std::move instead of input copy"
-  },
-  "output": {
-    "hull": "Owned strict CCW ConvexPolygon2<T>; lexicographic minimum first; no repeated closing point or intermediate collinear points",
-    "degenerate": "empty/identical/collinear input -> 0/1/2 vertices; integer topology exact"
-  },
-  "constraints": {
-    "max_n": 1152921504606846975,
-    "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
-    "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
-    "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
-    "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
-    "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
-    "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage."
-  },
-  "complexity": {
-    "build": "O(n log(n+1)) time, O(n) scan",
-    "space": "16n copied input payload + <=16(n+1) hull capacity; O(log n) sort stack; move consumes input and avoids its copy",
-    "resident": "16*capacity() bytes; sparse output compacted after freeing input copy, capacity <=2h on tested STL; no retained n-point buffer for tiny hull"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [
-      {
-        "coefficient": 16,
-        "factors": [
-          "n"
-        ]
-      }
-    ],
-    "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "geometry.predicates.float"
+    "schema_version": 1,
+    "id": "geometry.convex_hull.float",
+    "kind": "algorithm",
+    "name": "Andrew monotone chain (float)",
+    "display_name": "凸包 · 浮点",
+    "header": "include/algorithm_assets/geometry/convex_hull.hpp",
+    "documentation": "docs/algorithms/geometry.convex_hull.float.md",
+    "problem": "geometry.convex_hull",
+    "parameters": ["n"],
+    "requires": {
+        "coordinates": "float64_abs_le_1e100",
+        "result_guarantee": "approximate_predicates",
+        "input_structure": "unordered_points",
+        "updates": "none"
     },
-    {
-      "type": "alternative",
-      "target": "geometry.convex_hull.int",
-      "condition": "Coordinate regime and result guarantee differ; check both contracts; no automatic conversion"
+    "capabilities": {
+        "persistence": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "points": "span<const Point2<T>>; duplicates and arbitrary order accepted",
+        "ownership_option": "ConvexPolygon2<T>::from_points(vector by value) permits std::move instead of input copy"
+    },
+    "output": {
+        "hull": "Owned strict CCW ConvexPolygon2<T>; lexicographic minimum first; no repeated closing point or intermediate collinear points",
+        "degenerate": "empty/identical/collinear input -> 0/1/2 vertices; integer topology exact"
+    },
+    "constraints": {
+        "max_n": 1152921504606846975,
+        "coordinates": "Float: finite |x|,|y|<=1e100; integer: |x|,|y|<=1e9. Out-of-domain inputs throw invalid_argument.",
+        "numeric": "Integer predicate/squared-distance operations exact within bound; floating operations approximate, with long double intermediates; no exact floating kernel. Underflow and near-degenerate topology are not certified. No fast-math.",
+        "ownership": "Inputs borrowed for call and not mutated unless explicitly stated; returned coordinates owned; no implicit I/O or global mutable state.",
+        "threading": "Concurrent calls may share read-only input; caller must not write input during a call.",
+        "errors": "Invalid domain throws invalid_argument; constructed coordinates outside +/-1e100 or nonfinite scalar result throw overflow_error; detectable distinct-point squared-distance underflow throws underflow_error; allocation/size may throw.",
+        "history": "No persistence, branching, snapshots, rollback, undo or redo. Ordinary value copying is not persistent storage."
+    },
+    "complexity": {
+        "build": "O(n log(n+1)) time, O(n) scan",
+        "space": "16n copied input payload + <=16(n+1) hull capacity; O(log n) sort stack; move consumes input and avoids its copy",
+        "resident": "16*capacity() bytes; sparse output compacted after freeing input copy, capacity <=2h on tested STL; no retained n-point buffer for tiny hull"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [
+            {
+                "coefficient": 16,
+                "factors": ["n"]
+            }
+        ],
+        "scope": "Conservative owned payload/working peak lower bound only; excludes input, allocator overhead, headers and stack; zero for data-dependent branches, not zero actual memory."
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "geometry.predicates.float"
+        },
+        {
+            "type": "alternative",
+            "target": "geometry.convex_hull.int",
+            "condition": "Coordinate regime and result guarantee differ; check both contracts; no automatic conversion"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants in docs/algorithms/geometry.convex_hull.float.md; floating correctness conditional on numeric predicates; not formally verified",
+        "tests": "tests/geometry_test.cpp",
+        "example": "examples/geometry2d.cpp",
+        "benchmark": "not_measured",
+        "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
+    },
+    "provenance": {
+        "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
+        "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
+        "license": "User-provided template; project distribution license not yet selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants in docs/algorithms/geometry.convex_hull.float.md; floating correctness conditional on numeric predicates; not formally verified",
-    "tests": "tests/geometry_test.cpp",
-    "example": "examples/geometry2d.cpp",
-    "benchmark": "not_measured",
-    "notes": "Regression and degeneracy cases; random integer/float comparisons; closest/diameter quadratic oracles; rectangle all-edge oracle; circle membership/tangency properties"
-  },
-  "provenance": {
-    "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
-    "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
-    "license": "User-provided template; project distribution license not yet selected"
-  }
 }

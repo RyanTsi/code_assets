@@ -1,8 +1,8 @@
 {
-  "problem": "geometry.farthest_pair",
-  "n": 10000,
-  "coordinates": "int64_abs_le_1e9",
-  "result_guarantee": "exact_squared_distance",
-  "input_structure": "unordered_points",
-  "updates": "none"
+    "problem": "geometry.farthest_pair",
+    "n": 10000,
+    "coordinates": "int64_abs_le_1e9",
+    "result_guarantee": "exact_squared_distance",
+    "input_structure": "unordered_points",
+    "updates": "none"
 }

@@ -5,5 +5,5 @@
 #include <cstdint>
 #include <vector>
 std::size_t combination_odr_check() {
-  return algorithm_assets::bounded_step_subsequence_length(std::vector<std::int64_t>{7, 7}, 0);
+    return algorithm_assets::bounded_step_subsequence_length(std::vector<std::int64_t>{7, 7}, 0);
 }

@@ -1,87 +1,79 @@
 {
-  "schema_version": 1,
-  "id": "range.sparse_table",
-  "kind": "algorithm",
-  "name": "幂等稀疏表",
-  "display_name": "幂等稀疏表",
-  "header": "include/algorithm_assets/range/sparse_table.hpp",
-  "documentation": "docs/algorithms/range.sparse_table.md",
-  "problem": "range_fold",
-  "parameters": [
-    "n",
-    "value_bytes"
-  ],
-  "requires": {
-    "operation_associative": true,
-    "operation_idempotent": true,
-    "updates": {
-      "subset_of": [
-        "query"
-      ]
-    }
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "supported"
-  },
-  "input": {
-    "conditions": "Copied T elements, pure Combine; no identity needed"
-  },
-  "output": {
-    "conditions": "Ordered fold for nonempty half-open range; invalid/empty query throws"
-  },
-  "constraints": {
-    "max_n": 9223372036854775807,
-    "limits": "size_t, container max_size and allocation limits additionally apply",
-    "complete_contract": "docs/algorithms/range.sparse_table.md",
-    "numeric_and_state": "Copied T elements, pure Combine; no identity needed; Ordered fold for nonempty half-open range; invalid/empty query throws",
-    "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
-  },
-  "complexity": {
-    "operations": "Build O(n log(n+1)) combine/copy; query O(1) combine/copy",
-    "space": "sum_k(n-2^k+1) T objects + O(log n) offsets; T dynamic storage extra",
-    "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [
-      {
-        "coefficient": 1,
-        "factors": [
-          "n",
-          "value_bytes"
-        ]
-      }
+    "schema_version": 1,
+    "id": "range.sparse_table",
+    "kind": "algorithm",
+    "name": "幂等稀疏表",
+    "display_name": "幂等稀疏表",
+    "header": "include/algorithm_assets/range/sparse_table.hpp",
+    "documentation": "docs/algorithms/range.sparse_table.md",
+    "problem": "range_fold",
+    "parameters": ["n", "value_bytes"],
+    "requires": {
+        "operation_associative": true,
+        "operation_idempotent": true,
+        "updates": {
+            "subset_of": ["query"]
+        }
+    },
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "supported"
+    },
+    "input": {
+        "conditions": "Copied T elements, pure Combine; no identity needed"
+    },
+    "output": {
+        "conditions": "Ordered fold for nonempty half-open range; invalid/empty query throws"
+    },
+    "constraints": {
+        "max_n": 9223372036854775807,
+        "limits": "size_t, container max_size and allocation limits additionally apply",
+        "complete_contract": "docs/algorithms/range.sparse_table.md",
+        "numeric_and_state": "Copied T elements, pure Combine; no identity needed; Ordered fold for nonempty half-open range; invalid/empty query throws",
+        "errors": "Invalid shape/index/domain rejected; allocations may throw; algorithm-specific overflow/tolerance behavior in documentation"
+    },
+    "complexity": {
+        "operations": "Build O(n log(n+1)) combine/copy; query O(1) combine/copy",
+        "space": "sum_k(n-2^k+1) T objects + O(log n) offsets; T dynamic storage extra",
+        "guarantee": "Worst-case unless explicitly stated; no calibrated performance claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [
+            {
+                "coefficient": 1,
+                "factors": ["n", "value_bytes"]
+            }
+        ],
+        "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
+    },
+    "relations": [
+        {
+            "type": "alternative",
+            "target": "range.segment_tree",
+            "condition": "Static idempotent folds and nonempty queries; ordinary sums and point updates are excluded"
+        }
     ],
-    "scope": "Conservative owned payload lower bound on current 64-bit platform, not peak/latency feasibility"
-  },
-  "relations": [
-    {
-      "type": "alternative",
-      "target": "range.segment_tree",
-      "condition": "Static idempotent folds and nonempty queries; ordinary sums and point updates are excluded"
+    "evidence": {
+        "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
+        "tests": "tests/repository_expansion_test.cpp",
+        "example": "examples/repository_expansion.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/EXPANSION_VALIDATION.md"
+    },
+    "provenance": {
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "path": "数据结构/ST表.md",
+        "blob_sha": "7783a7889dfc40bf71a3398db005a34def1ec083",
+        "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
+        "license": "No repository license discovered; project distribution license not selected"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants and reductions in documentation, not formal verification",
-    "tests": "tests/repository_expansion_test.cpp",
-    "example": "examples/repository_expansion.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/EXPANSION_VALIDATION.md"
-  },
-  "provenance": {
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "path": "数据结构/ST表.md",
-    "blob_sha": "7783a7889dfc40bf71a3398db005a34def1ec083",
-    "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-    "license": "No repository license discovered; project distribution license not selected"
-  }
 }

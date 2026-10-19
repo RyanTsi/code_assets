@@ -1,84 +1,78 @@
 {
-  "schema_version": 1,
-  "id": "graph.topological_sort",
-  "kind": "algorithm",
-  "name": "TopologicalOrder",
-  "header": "include/algorithm_assets/graph/topological_sort.hpp",
-  "documentation": "docs/algorithms/graph.topological_sort.md",
-  "problem": "topological_order",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "directed": true,
-    "graph_updates": "none",
-    "representation": {
-      "one_of": [
-        "csr_nonnegative_weights",
-        "unweighted_csr"
-      ]
+    "schema_version": 1,
+    "id": "graph.topological_sort",
+    "kind": "algorithm",
+    "name": "TopologicalOrder",
+    "header": "include/algorithm_assets/graph/topological_sort.hpp",
+    "documentation": "docs/algorithms/graph.topological_sort.md",
+    "problem": "topological_order",
+    "parameters": ["n", "m"],
+    "requires": {
+        "directed": true,
+        "graph_updates": "none",
+        "representation": {
+            "one_of": ["csr_nonnegative_weights", "unweighted_csr"]
+        },
+        "cycle_output": "processed_prefix"
     },
-    "cycle_output": "processed_prefix"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_reads": "conditional",
-    "concurrent_writes": "unsupported"
-  },
-  "input": {
-    "graph": "Immutable weighted or unweighted CSR; weights ignored"
-  },
-  "output": {
-    "order": "Owned vertex order; empty graph acyclic",
-    "acyclic": "False returns processed prefix, not exact cycle vertices/witness"
-  },
-  "constraints": {
-    "max_n": 4294967294,
-    "allocation": "size_t and vector max_size / available memory limits additionally apply",
-    "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/algorithms/graph.topological_sort.md",
-    "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
-    "cycle": "Processed prefix only, no cycle witness; unweighted path omits weight storage"
-  },
-  "complexity": {
-    "run": "O(n+m)",
-    "space": "sizeof(size_t)*n indegrees + up to 4n output/queue, no separate queue; CSR extra"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative payload lower bound, not peak memory feasibility; 64-bit platform costs in documentation"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "graph.csr",
-      "condition": "Weighted CsrGraph instantiation only"
+    "capabilities": {
+        "persistence": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_reads": "conditional",
+        "concurrent_writes": "unsupported"
     },
-    {
-      "type": "uses",
-      "target": "graph.unweighted_csr",
-      "condition": "UnweightedCsrGraph instantiation only"
+    "input": {
+        "graph": "Immutable weighted or unweighted CSR; weights ignored"
+    },
+    "output": {
+        "order": "Owned vertex order; empty graph acyclic",
+        "acyclic": "False returns processed prefix, not exact cycle vertices/witness"
+    },
+    "constraints": {
+        "max_n": 4294967294,
+        "allocation": "size_t and vector max_size / available memory limits additionally apply",
+        "semantics": "Complete API, numeric, lifetime, threading and state conditions in docs/algorithms/graph.topological_sort.md",
+        "errors": "Bad index/range or endpoint throws; overflow explicitly checked; allocations may throw",
+        "cycle": "Processed prefix only, no cycle witness; unweighted path omits weight storage"
+    },
+    "complexity": {
+        "run": "O(n+m)",
+        "space": "sizeof(size_t)*n indegrees + up to 4n output/queue, no separate queue; CSR extra"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative payload lower bound, not peak memory feasibility; 64-bit platform costs in documentation"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "graph.csr",
+            "condition": "Weighted CsrGraph instantiation only"
+        },
+        {
+            "type": "uses",
+            "target": "graph.unweighted_csr",
+            "condition": "UnweightedCsrGraph instantiation only"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants in documentation; not formal verification",
+        "tests": "tests/repository_assets_test.cpp",
+        "example": "examples/repository_assets.cpp",
+        "benchmark": "not_measured",
+        "judge": "judge/VALIDATION.md"
+    },
+    "provenance": {
+        "implementation": "Rewritten modern C++20 for this project, not source-code copy",
+        "reference": "图论/其他/拓扑排序.md",
+        "license": "No source LICENSE discovered; project distribution license not selected",
+        "repository": "RyanTsi/Algorithm-notes",
+        "commit": "91c14556641c991c716b71906815abdd6a476188",
+        "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/图论/其他/拓扑排序.md"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants in documentation; not formal verification",
-    "tests": "tests/repository_assets_test.cpp",
-    "example": "examples/repository_assets.cpp",
-    "benchmark": "not_measured",
-    "judge": "judge/VALIDATION.md"
-  },
-  "provenance": {
-    "implementation": "Rewritten modern C++20 for this project, not source-code copy",
-    "reference": "图论/其他/拓扑排序.md",
-    "license": "No source LICENSE discovered; project distribution license not selected",
-    "repository": "RyanTsi/Algorithm-notes",
-    "commit": "91c14556641c991c716b71906815abdd6a476188",
-    "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/图论/其他/拓扑排序.md"
-  }
 }

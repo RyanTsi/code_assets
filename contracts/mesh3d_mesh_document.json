@@ -1,71 +1,67 @@
 {
-  "schema_version": 1,
-  "id": "mesh.document",
-  "kind": "representation",
-  "name": "网格快照、版本句柄与有界撤销",
-  "display_name": "网格快照、版本句柄与有界撤销",
-  "header": "include/algorithm_assets/mesh/document.hpp",
-  "documentation": "docs/representations/mesh.document.md",
-  "problem": "mesh_snapshot_history",
-  "parameters": [
-    "n",
-    "m",
-    "history"
-  ],
-  "requires": {
-    "history_storage": "full_immutable_snapshots",
-    "single_writer": true,
-    "handle_validation": "document_and_revision"
-  },
-  "capabilities": {
-    "persistence": "conditional",
-    "snapshot": "supported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "supported",
-    "redo": "supported",
-    "arbitrary_deletion": "conditional",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "conditional"
-  },
-  "input": {
-    "conditions": "结构有效网格；导入的最大逻辑ID须小于UINT64_MAX以保留下一ID。commit要求base完全匹配当前指针和revision；新ID不能复用已退休编号。"
-  },
-  "output": {
-    "conditions": "快照O(1)共享不可变网格；每次发布、undo、redo均产生新revision，所以所有旧运行期句柄失效，即使实体仍存在。逻辑ID在保留实体/撤销恢复时保留；未公开每实体generation语义。"
-  },
-  "constraints": {
-    "max_n": 4294967294,
-    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
-    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
-    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
-    "scope": "结构有效网格；导入的最大逻辑ID须小于UINT64_MAX以保留下一ID。commit要求base完全匹配当前指针和revision；新ID不能复用已退休编号。 快照O(1)共享不可变网格；每次发布、undo、redo均产生新revision，所以所有旧运行期句柄失效，即使实体仍存在。逻辑ID在保留实体/撤销恢复时保留；未公开每实体generation语义。"
-  },
-  "complexity": {
-    "operations": "snapshot/句柄/resolve O(1)；提交按值复制或转移完整网格并做期望线性ID检查，清理历史可能释放多个快照；undo/redo引用切换O(1)加容器/释放成本。",
-    "space": "历史最多H个undo状态，但外部保留快照不受H限制。最坏O((H+外部活跃版本)*S)；本版不是分块持久化结构。",
-    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "mesh.surface"
+    "schema_version": 1,
+    "id": "mesh.document",
+    "kind": "representation",
+    "name": "网格快照、版本句柄与有界撤销",
+    "display_name": "网格快照、版本句柄与有界撤销",
+    "header": "include/algorithm_assets/mesh/document.hpp",
+    "documentation": "docs/representations/mesh.document.md",
+    "problem": "mesh_snapshot_history",
+    "parameters": ["n", "m", "history"],
+    "requires": {
+        "history_storage": "full_immutable_snapshots",
+        "single_writer": true,
+        "handle_validation": "document_and_revision"
+    },
+    "capabilities": {
+        "persistence": "conditional",
+        "snapshot": "supported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "supported",
+        "redo": "supported",
+        "arbitrary_deletion": "conditional",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "conditional"
+    },
+    "input": {
+        "conditions": "结构有效网格；导入的最大逻辑ID须小于UINT64_MAX以保留下一ID。commit要求base完全匹配当前指针和revision；新ID不能复用已退休编号。"
+    },
+    "output": {
+        "conditions": "快照O(1)共享不可变网格；每次发布、undo、redo均产生新revision，所以所有旧运行期句柄失效，即使实体仍存在。逻辑ID在保留实体/撤销恢复时保留；未公开每实体generation语义。"
+    },
+    "constraints": {
+        "max_n": 4294967294,
+        "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+        "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+        "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+        "scope": "结构有效网格；导入的最大逻辑ID须小于UINT64_MAX以保留下一ID。commit要求base完全匹配当前指针和revision；新ID不能复用已退休编号。 快照O(1)共享不可变网格；每次发布、undo、redo均产生新revision，所以所有旧运行期句柄失效，即使实体仍存在。逻辑ID在保留实体/撤销恢复时保留；未公开每实体generation语义。"
+    },
+    "complexity": {
+        "operations": "snapshot/句柄/resolve O(1)；提交按值复制或转移完整网格并做期望线性ID检查，清理历史可能释放多个快照；undo/redo引用切换O(1)加容器/释放成本。",
+        "space": "历史最多H个undo状态，但外部保留快照不受H限制。最坏O((H+外部活跃版本)*S)；本版不是分块持久化结构。",
+        "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "mesh.surface"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants, not formal verification",
+        "tests": "tests/mesh3d_test.cpp",
+        "example": "examples/mesh3d.cpp",
+        "benchmark": "not_measured"
+    },
+    "provenance": {
+        "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+        "license": "Project implementation license not selected",
+        "dependencies": "No external runtime dependency"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants, not formal verification",
-    "tests": "tests/mesh3d_test.cpp",
-    "example": "examples/mesh3d.cpp",
-    "benchmark": "not_measured"
-  },
-  "provenance": {
-    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
-    "license": "Project implementation license not selected",
-    "dependencies": "No external runtime dependency"
-  }
 }

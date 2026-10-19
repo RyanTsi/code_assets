@@ -1,79 +1,76 @@
 {
-  "schema_version": 1,
-  "id": "mesh.triangle_edit",
-  "kind": "algorithm",
-  "name": "事务式三角网格 split、flip、collapse",
-  "display_name": "事务式三角网格 split、flip、collapse",
-  "header": "include/algorithm_assets/mesh/edit.hpp",
-  "documentation": "docs/algorithms/mesh.triangle_edit.md",
-  "problem": "triangle_mesh_edit",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "faces": "triangles",
-    "oriented_vertex_manifold": true,
-    "duplicate_or_degenerate_faces": false,
-    "editing": "validated_repack"
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "conditional"
-  },
-  "input": {
-    "conditions": "初始网格须 editable_triangles。split 0<t<1可处理边界；flip仅内部边，拒绝已有新对角线、材质边界、UV接缝与翻面。collapse仅内部边且端点不在边界，检查link条件并保守拒绝材质/UV特征。"
-  },
-  "output": {
-    "conditions": "候选经全网格组合校验后替换会话草稿；失败不改变草稿。commit才发布并写入文档历史，冲突/已提交会话拒绝。法向清空以避免旧数据；UV按每侧插值、材质继承、保留面的ID不变。"
-  },
-  "constraints": {
-    "max_n": 4294967294,
-    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
-    "ownership": "MeshEditSession borrows MeshDocument for the entire session; document must outlive it. Draft and input mesh snapshot are owned; preview references expire after successful mutation/destruction.",
-    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
-    "scope": "初始网格须 editable_triangles。split 0<t<1可处理边界；flip仅内部边，拒绝已有新对角线、材质边界、UV接缝与翻面。collapse仅内部边且端点不在边界，检查link条件并保守拒绝材质/UV特征。 候选经全网格组合校验后替换会话草稿；失败不改变草稿。commit才发布并写入文档历史，冲突/已提交会话拒绝。法向清空以避免旧数据；UV按每侧插值、材质继承、保留面的ID不变。"
-  },
-  "complexity": {
-    "operations": "当前每操作复制/压缩并重建邻接与校验，三角网格 O(n+m log(m+1)) 典型路径；不是O(1)局部操作。commit也可能复制草稿。",
-    "space": "O(n+m)候选、邻接与临时数据；外加原文档与历史。没有全局无自交或质量界认证。",
-    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "mesh.document"
+    "schema_version": 1,
+    "id": "mesh.triangle_edit",
+    "kind": "algorithm",
+    "name": "事务式三角网格 split、flip、collapse",
+    "display_name": "事务式三角网格 split、flip、collapse",
+    "header": "include/algorithm_assets/mesh/edit.hpp",
+    "documentation": "docs/algorithms/mesh.triangle_edit.md",
+    "problem": "triangle_mesh_edit",
+    "parameters": ["n", "m"],
+    "requires": {
+        "faces": "triangles",
+        "oriented_vertex_manifold": true,
+        "duplicate_or_degenerate_faces": false,
+        "editing": "validated_repack"
     },
-    {
-      "type": "uses",
-      "target": "mesh.validation"
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "conditional"
     },
-    {
-      "type": "uses",
-      "target": "mesh.topology"
+    "input": {
+        "conditions": "初始网格须 editable_triangles。split 0<t<1可处理边界；flip仅内部边，拒绝已有新对角线、材质边界、UV接缝与翻面。collapse仅内部边且端点不在边界，检查link条件并保守拒绝材质/UV特征。"
+    },
+    "output": {
+        "conditions": "候选经全网格组合校验后替换会话草稿；失败不改变草稿。commit才发布并写入文档历史，冲突/已提交会话拒绝。法向清空以避免旧数据；UV按每侧插值、材质继承、保留面的ID不变。"
+    },
+    "constraints": {
+        "max_n": 4294967294,
+        "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+        "ownership": "MeshEditSession borrows MeshDocument for the entire session; document must outlive it. Draft and input mesh snapshot are owned; preview references expire after successful mutation/destruction.",
+        "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+        "scope": "初始网格须 editable_triangles。split 0<t<1可处理边界；flip仅内部边，拒绝已有新对角线、材质边界、UV接缝与翻面。collapse仅内部边且端点不在边界，检查link条件并保守拒绝材质/UV特征。 候选经全网格组合校验后替换会话草稿；失败不改变草稿。commit才发布并写入文档历史，冲突/已提交会话拒绝。法向清空以避免旧数据；UV按每侧插值、材质继承、保留面的ID不变。"
+    },
+    "complexity": {
+        "operations": "当前每操作复制/压缩并重建邻接与校验，三角网格 O(n+m log(m+1)) 典型路径；不是O(1)局部操作。commit也可能复制草稿。",
+        "space": "O(n+m)候选、邻接与临时数据；外加原文档与历史。没有全局无自交或质量界认证。",
+        "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "mesh.document"
+        },
+        {
+            "type": "uses",
+            "target": "mesh.validation"
+        },
+        {
+            "type": "uses",
+            "target": "mesh.topology"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants, not formal verification",
+        "tests": "tests/mesh3d_test.cpp",
+        "example": "examples/mesh3d.cpp",
+        "benchmark": "benchmarks/mesh3d_results.csv"
+    },
+    "provenance": {
+        "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+        "license": "Project implementation license not selected",
+        "dependencies": "No external runtime dependency"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants, not formal verification",
-    "tests": "tests/mesh3d_test.cpp",
-    "example": "examples/mesh3d.cpp",
-    "benchmark": "benchmarks/mesh3d_results.csv"
-  },
-  "provenance": {
-    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
-    "license": "Project implementation license not selected",
-    "dependencies": "No external runtime dependency"
-  }
 }

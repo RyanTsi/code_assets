@@ -12,38 +12,44 @@
 namespace algorithm_assets {
 
 inline std::int64_t checked_int64_add(std::int64_t a, std::int64_t b) {
-  if ((b > 0 && a > std::numeric_limits<std::int64_t>::max() - b) ||
-      (b < 0 && a < std::numeric_limits<std::int64_t>::min() - b))
-    throw std::overflow_error("int64 addition overflow");
-  return a + b;
+    if ((b > 0 && a > std::numeric_limits<std::int64_t>::max() - b) ||
+        (b < 0 && a < std::numeric_limits<std::int64_t>::min() - b))
+        throw std::overflow_error("int64 addition overflow");
+    return a + b;
 }
 
 // Two-word signed accumulation, implemented without nonstandard __int128.
 // Intermediate totals may exceed int64; value() narrows only the FINAL sum.
 class WideInt64Sum {
 public:
-  void add(std::int64_t value) {
-    const auto next = low_ + static_cast<std::uint64_t>(value);
-    const auto carry = next < low_ ? 1 : 0;
-    const auto high = checked_int64_add(high_, (value < 0 ? -1 : 0) + carry);
-    low_ = next; high_ = high;
-  }
-  void subtract(std::int64_t value) {
-    const auto word = static_cast<std::uint64_t>(value);
-    const auto borrow = low_ < word ? 1 : 0;
-    const auto high = checked_int64_add(high_, (value < 0 ? 1 : 0) - borrow);
-    low_ -= word; high_ = high;
-  }
-  [[nodiscard]] std::int64_t value() const {
-    const auto sign_bit = std::uint64_t{1} << 63;
-    if ((high_ == 0 && low_ < sign_bit) || (high_ == -1 && low_ >= sign_bit))
-      return std::bit_cast<std::int64_t>(low_);
-    throw std::overflow_error("Final sum does not fit int64");
-  }
-  void clear() noexcept { low_ = 0; high_ = 0; }
+    void add(std::int64_t value) {
+        const auto next = low_ + static_cast<std::uint64_t>(value);
+        const auto carry = next < low_ ? 1 : 0;
+        const auto high = checked_int64_add(high_, (value < 0 ? -1 : 0) + carry);
+        low_ = next;
+        high_ = high;
+    }
+    void subtract(std::int64_t value) {
+        const auto word = static_cast<std::uint64_t>(value);
+        const auto borrow = low_ < word ? 1 : 0;
+        const auto high = checked_int64_add(high_, (value < 0 ? 1 : 0) - borrow);
+        low_ -= word;
+        high_ = high;
+    }
+    [[nodiscard]] std::int64_t value() const {
+        const auto sign_bit = std::uint64_t{1} << 63;
+        if ((high_ == 0 && low_ < sign_bit) || (high_ == -1 && low_ >= sign_bit))
+            return std::bit_cast<std::int64_t>(low_);
+        throw std::overflow_error("Final sum does not fit int64");
+    }
+    void clear() noexcept {
+        low_ = 0;
+        high_ = 0;
+    }
+
 private:
-  std::uint64_t low_ = 0;
-  std::int64_t high_ = 0;
+    std::uint64_t low_ = 0;
+    std::int64_t high_ = 0;
 };
 static_assert(sizeof(WideInt64Sum) == 16);
 
@@ -62,50 +68,63 @@ namespace algorithm_assets {
 // n int64 nodes, 0-based positions and half-open query ranges.
 class FenwickSum {
 public:
-  explicit FenwickSum(std::size_t size) : tree_(size, 0) {}
-  explicit FenwickSum(std::span<const std::int64_t> values) : tree_(values.size()) {
-    // Each node aggregates its completed children, using a wide local total.
-    // Sum of child counts is sum(v2(i+1)) < n: O(n), no n-sized wide buffer.
-    for (std::size_t i = 0; i < values.size(); ++i) {
-      WideInt64Sum total;
-      total.add(values[i]);
-      const auto first = i & (i + 1);
-      for (auto previous = i; previous > first; previous &= previous - 1)
-        total.add(tree_[previous - 1]);
-      tree_[i] = total.value();
+    explicit FenwickSum(std::size_t size) : tree_(size, 0) {
     }
-  }
-  [[nodiscard]] std::size_t size() const noexcept { return tree_.size(); }
-  [[nodiscard]] std::size_t storage_bytes() const noexcept { return tree_.capacity() * sizeof(std::int64_t); }
+    explicit FenwickSum(std::span<const std::int64_t> values) : tree_(values.size()) {
+        // Each node aggregates its completed children, using a wide local total.
+        // Sum of child counts is sum(v2(i+1)) < n: O(n), no n-sized wide buffer.
+        for (std::size_t i = 0; i < values.size(); ++i) {
+            WideInt64Sum total;
+            total.add(values[i]);
+            const auto first = i & (i + 1);
+            for (auto previous = i; previous > first; previous &= previous - 1)
+                total.add(tree_[previous - 1]);
+            tree_[i] = total.value();
+        }
+    }
+    [[nodiscard]] std::size_t size() const noexcept {
+        return tree_.size();
+    }
+    [[nodiscard]] std::size_t storage_bytes() const noexcept {
+        return tree_.capacity() * sizeof(std::int64_t);
+    }
 
-  void add(std::size_t position, std::int64_t delta) {
-    if (position >= size()) throw std::out_of_range("Fenwick position out of range");
-    // Validate every affected block before any mutation: strong guarantee.
-    for (auto i = position; i < size(); i |= i + 1) (void)checked_int64_add(tree_[i], delta);
-    for (auto i = position; i < size(); i |= i + 1) tree_[i] += delta;
-  }
-  [[nodiscard]] std::int64_t prefix_sum(std::size_t last) const {
-    if (last > size()) throw std::out_of_range("Fenwick prefix out of range");
-    WideInt64Sum total;
-    accumulate_prefix(last, total, false);
-    return total.value();
-  }
-  [[nodiscard]] std::int64_t range_sum(std::size_t first, std::size_t last) const {
-    if (first > last || last > size()) throw std::out_of_range("Invalid Fenwick range");
-    WideInt64Sum total;
-    // Neither individual prefix need fit int64 if their difference does.
-    accumulate_prefix(last, total, false);
-    accumulate_prefix(first, total, true);
-    return total.value();
-  }
-private:
-  void accumulate_prefix(std::size_t last, WideInt64Sum& total, bool subtract) const {
-    for (; last; last &= last - 1) {
-      if (subtract) total.subtract(tree_[last - 1]);
-      else total.add(tree_[last - 1]);
+    void add(std::size_t position, std::int64_t delta) {
+        if (position >= size())
+            throw std::out_of_range("Fenwick position out of range");
+        // Validate every affected block before any mutation: strong guarantee.
+        for (auto i = position; i < size(); i |= i + 1)
+            (void)checked_int64_add(tree_[i], delta);
+        for (auto i = position; i < size(); i |= i + 1)
+            tree_[i] += delta;
     }
-  }
-  std::vector<std::int64_t> tree_;
+    [[nodiscard]] std::int64_t prefix_sum(std::size_t last) const {
+        if (last > size())
+            throw std::out_of_range("Fenwick prefix out of range");
+        WideInt64Sum total;
+        accumulate_prefix(last, total, false);
+        return total.value();
+    }
+    [[nodiscard]] std::int64_t range_sum(std::size_t first, std::size_t last) const {
+        if (first > last || last > size())
+            throw std::out_of_range("Invalid Fenwick range");
+        WideInt64Sum total;
+        // Neither individual prefix need fit int64 if their difference does.
+        accumulate_prefix(last, total, false);
+        accumulate_prefix(first, total, true);
+        return total.value();
+    }
+
+private:
+    void accumulate_prefix(std::size_t last, WideInt64Sum& total, bool subtract) const {
+        for (; last; last &= last - 1) {
+            if (subtract)
+                total.subtract(tree_[last - 1]);
+            else
+                total.add(tree_[last - 1]);
+        }
+    }
+    std::vector<std::int64_t> tree_;
 };
 
 } // namespace algorithm_assets
@@ -120,15 +139,18 @@ int main() {
     std::size_t n, q;
     std::cin >> n >> q;
     std::vector<std::int64_t> values(n);
-    for (auto& value : values) std::cin >> value;
+    for (auto& value : values)
+        std::cin >> value;
     algorithm_assets::FenwickSum sums(values);
     while (q--) {
         int operation;
         std::size_t first;
         std::int64_t last_or_delta;
         std::cin >> operation >> first >> last_or_delta;
-        if (operation == 1) sums.add(first - 1, last_or_delta);
-        else std::cout << sums.range_sum(first - 1, static_cast<std::size_t>(last_or_delta)) << '\n';
+        if (operation == 1)
+            sums.add(first - 1, last_or_delta);
+        else
+            std::cout << sums.range_sum(first - 1, static_cast<std::size_t>(last_or_delta)) << '\n';
     }
 }
 // end judge/adapters/luogu_p3374.cpp

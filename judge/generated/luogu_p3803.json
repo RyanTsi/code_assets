@@ -1,8 +1,8 @@
 {
-  "adapter": "judge/adapters/luogu_p3803.cpp",
-  "sources_sha256": {
-    "judge/adapters/luogu_p3803.cpp": "51043385c492e54238f627b9c76db4bebb542ed01344edb71ae6307b176b3161",
-    "include/algorithm_assets/numeric/fft.hpp": "d8420d3c9266160105eb8e7310ec62cfd2070a8cf48a56fd55d2cd8de29e26aa"
-  },
-  "submission_sha256": "2be897e2fb8c51febb385d3970193cfc8c82b1372433b14d58efc8586d6a411c"
+    "adapter": "judge/adapters/luogu_p3803.cpp",
+    "sources_sha256": {
+        "judge/adapters/luogu_p3803.cpp": "206ef5b11e9bfdb45d57f1a052c817c9e93a71f85cd8a04a043be8af1bbb95d5",
+        "include/algorithm_assets/numeric/fft.hpp": "ffa55e97e4a18817f09468ec352504e82081d8c352a8690ec091eb8bf27e34dd"
+    },
+    "submission_sha256": "fb60949d990bae0689354e4e4f7c0d025349cbd56c5ed79f2169f5800737aa4c"
 }

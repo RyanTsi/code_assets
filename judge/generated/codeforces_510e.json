@@ -1,9 +1,9 @@
 {
-  "adapter": "judge/adapters/codeforces_510e.cpp",
-  "sources_sha256": {
-    "judge/adapters/codeforces_510e.cpp": "3392b3abcc18bc5066af9fb06260bed91d8432749182fc6513d8a602e3612363",
-    "include/algorithm_assets/algebra/prime_sieve.hpp": "8edd5f2de3fac582612c805b47d2ed44872877922fcaca5578c08002b1b53098",
-    "include/algorithm_assets/graph/dinic.hpp": "7c8f90d940c3a130f3b0f5a3290de2c2285c0c55cac9417a842ec25539400142"
-  },
-  "submission_sha256": "d0396b3681da4ec843d22d279b07d0066e272a4d2297209835ae4d0e113b4780"
+    "adapter": "judge/adapters/codeforces_510e.cpp",
+    "sources_sha256": {
+        "judge/adapters/codeforces_510e.cpp": "60248af0945b5ced557d9aa709ee7328f85a2cd845bef523c3429c0c48719335",
+        "include/algorithm_assets/algebra/prime_sieve.hpp": "99852410b5282738026081b29169dfc4b0531360a27ec70474b17af00a139fbe",
+        "include/algorithm_assets/graph/dinic.hpp": "f3216cb63185404cf33a0748a659412d45c86bdb4335b3e60619feb0e0c091df"
+    },
+    "submission_sha256": "df9022d8461156dbe4b48b660a241090edbd07eeace09cfec5002bf90223c103"
 }

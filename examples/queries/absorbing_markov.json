@@ -1,1 +1,9 @@
-{"problem":"absorbing_markov","n":20,"transient_count":15,"matrix":"dense_float64","ordering":"transient_then_absorbing","result_guarantee":"approximate","transients_reach_absorption":true}
+{
+    "problem": "absorbing_markov",
+    "n": 20,
+    "transient_count": 15,
+    "matrix": "dense_float64",
+    "ordering": "transient_then_absorbing",
+    "result_guarantee": "approximate",
+    "transients_reach_absorption": true
+}

@@ -1,76 +1,73 @@
 {
-  "schema_version": 1,
-  "id": "mesh.dirichlet",
-  "kind": "recipe",
-  "name": "固定约束的可复用 Eigen Dirichlet 求解",
-  "display_name": "固定约束的可复用 Eigen Dirichlet 求解",
-  "header": "include/algorithm_assets/backends/eigen/mesh_operators.hpp",
-  "documentation": "docs/recipes/mesh.dirichlet.md",
-  "problem": "mesh_dirichlet_solve",
-  "parameters": [
-    "n",
-    "m"
-  ],
-  "requires": {
-    "faces": "triangles",
-    "constraint": "fixed_vertex_dirichlet",
-    "anchored_components": true,
-    "backend": "eigen_3_4_0",
-    "triplet_count_fits_int32": true
-  },
-  "capabilities": {
-    "persistence": "unsupported",
-    "snapshot": "unsupported",
-    "checkpoint": "unsupported",
-    "rollback": "unsupported",
-    "undo": "unsupported",
-    "redo": "unsupported",
-    "arbitrary_deletion": "unsupported",
-    "concurrent_writes": "unsupported",
-    "concurrent_reads": "conditional"
-  },
-  "input": {
-    "conditions": "每个连通分量至少一个固定顶点，包括孤立顶点。重复/越界固定点拒绝。load为空表示零装配载荷，非空须长n且有限；固定值长度与固定索引一致。tolerance有限且0<t≤1e-2。"
-  },
-  "output": {
-    "conditions": "解 K_ff x_f=b_f-K_fp x_p；固定点上的load不参与自由方程。不是自动将连续右端函数积分成载荷，也不保证近奇异系统的前向误差。空网格返回空，全部固定时不分解。"
-  },
-  "constraints": {
-    "max_n": 2147483647,
-    "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
-    "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
-    "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
-    "scope": "每个连通分量至少一个固定顶点，包括孤立顶点。重复/越界固定点拒绝。load为空表示零装配载荷，非空须长n且有限；固定值长度与固定索引一致。tolerance有限且0<t≤1e-2。 解 K_ff x_f=b_f-K_fp x_p；固定点上的load不参与自由方程。不是自动将连续右端函数积分成载荷，也不保证近奇异系统的前向误差。空网格返回空，全部固定时不分解。"
-  },
-  "complexity": {
-    "operations": "装配同余切模块；复用分解。稀疏LDLT取决于填充，最坏时间 O(n^3)、空间 O(n^2)；每次solve另有约化右端/回代成本。",
-    "space": "拥有完整K、质量、约化矩阵、约束映射和Eigen因子；solve另分配 O(n) 输出与自由向量。",
-    "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
-  },
-  "memory_lower_bound": {
-    "constant": 0,
-    "terms": [],
-    "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
-  },
-  "relations": [
-    {
-      "type": "uses",
-      "target": "mesh.cotangent"
+    "schema_version": 1,
+    "id": "mesh.dirichlet",
+    "kind": "recipe",
+    "name": "固定约束的可复用 Eigen Dirichlet 求解",
+    "display_name": "固定约束的可复用 Eigen Dirichlet 求解",
+    "header": "include/algorithm_assets/backends/eigen/mesh_operators.hpp",
+    "documentation": "docs/recipes/mesh.dirichlet.md",
+    "problem": "mesh_dirichlet_solve",
+    "parameters": ["n", "m"],
+    "requires": {
+        "faces": "triangles",
+        "constraint": "fixed_vertex_dirichlet",
+        "anchored_components": true,
+        "backend": "eigen_3_4_0",
+        "triplet_count_fits_int32": true
     },
-    {
-      "type": "uses",
-      "target": "connectivity.dsu"
+    "capabilities": {
+        "persistence": "unsupported",
+        "snapshot": "unsupported",
+        "checkpoint": "unsupported",
+        "rollback": "unsupported",
+        "undo": "unsupported",
+        "redo": "unsupported",
+        "arbitrary_deletion": "unsupported",
+        "concurrent_writes": "unsupported",
+        "concurrent_reads": "conditional"
+    },
+    "input": {
+        "conditions": "每个连通分量至少一个固定顶点，包括孤立顶点。重复/越界固定点拒绝。load为空表示零装配载荷，非空须长n且有限；固定值长度与固定索引一致。tolerance有限且0<t≤1e-2。"
+    },
+    "output": {
+        "conditions": "解 K_ff x_f=b_f-K_fp x_p；固定点上的load不参与自由方程。不是自动将连续右端函数积分成载荷，也不保证近奇异系统的前向误差。空网格返回空，全部固定时不分解。"
+    },
+    "constraints": {
+        "max_n": 2147483647,
+        "numerics": "Approximate binary64. No exact predicates, no certified near-degenerate topology, no global self-intersection certificate. No fast-math.",
+        "ownership": "Inputs borrowed during calls; output owns storage unless explicitly documented as span/reference or shared immutable snapshot. No implicit global I/O.",
+        "errors": "Bad shape/domain/index/ID rejected via standard exceptions; allocations may throw. Numeric and I/O failure guarantees are stated in the independent document.",
+        "scope": "每个连通分量至少一个固定顶点，包括孤立顶点。重复/越界固定点拒绝。load为空表示零装配载荷，非空须长n且有限；固定值长度与固定索引一致。tolerance有限且0<t≤1e-2。 解 K_ff x_f=b_f-K_fp x_p；固定点上的load不参与自由方程。不是自动将连续右端函数积分成载荷，也不保证近奇异系统的前向误差。空网格返回空，全部固定时不分解。"
+    },
+    "complexity": {
+        "operations": "装配同余切模块；复用分解。稀疏LDLT取决于填充，最坏时间 O(n^3)、空间 O(n^2)；每次solve另有约化右端/回代成本。",
+        "space": "拥有完整K、质量、约化矩阵、约束映射和Eigen因子；solve另分配 O(n) 输出与自由向量。",
+        "guarantee": "Conditions and backend dependence in the independent document; no unqualified optimality/latency claim"
+    },
+    "memory_lower_bound": {
+        "constant": 0,
+        "terms": [],
+        "scope": "Conservative owned payload lower bound for the declared path; zero does not mean zero actual memory; excludes live inputs, capacities, output overlap and allocator effects"
+    },
+    "relations": [
+        {
+            "type": "uses",
+            "target": "mesh.cotangent"
+        },
+        {
+            "type": "uses",
+            "target": "connectivity.dsu"
+        }
+    ],
+    "evidence": {
+        "correctness": "Reasoned invariants, not formal verification",
+        "tests": "tests/mesh3d_test.cpp",
+        "example": "examples/mesh3d.cpp",
+        "benchmark": "not_measured"
+    },
+    "provenance": {
+        "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
+        "license": "Project implementation license not selected; vendored Eigen retains upstream notices and licenses",
+        "dependencies": "provenance/dependencies/eigen-3.4.0.json"
     }
-  ],
-  "evidence": {
-    "correctness": "Reasoned invariants, not formal verification",
-    "tests": "tests/mesh3d_test.cpp",
-    "example": "examples/mesh3d.cpp",
-    "benchmark": "not_measured"
-  },
-  "provenance": {
-    "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
-    "license": "Project implementation license not selected; vendored Eigen retains upstream notices and licenses",
-    "dependencies": "provenance/dependencies/eigen-3.4.0.json"
-  }
 }
