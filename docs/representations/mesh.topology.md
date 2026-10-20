@@ -67,4 +67,4 @@ O(n+C+E)；排序边记录、构建游标与最终数组可能同时存活，输
 - [C++ 对照与状态测试](../../tests/mesh3d_test.cpp)，多翻译单元接入。
 - [独立 FEM/SciPy/VTU 对照](../../tests/mesh3d_reference_test.py)（需NumPy/SciPy）。
 - [本批实现与验证边界](../project/MESH3D_INTEGRATION.md)。
-- 本工程独立实现；总体分发许可证尚未选择。
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

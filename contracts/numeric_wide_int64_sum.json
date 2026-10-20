@@ -57,6 +57,6 @@
     "provenance": {
         "implementation": "Rewritten modern C++20 for this project, not source-code copy",
         "reference": "standard two-word arithmetic",
-        "license": "No source LICENSE discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

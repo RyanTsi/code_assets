@@ -83,4 +83,4 @@
 
 - **实现来源**：Reorganized and rewritten from user-provided template; original preserved byte-for-byte
 - **参考**：provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references
-- **许可状态**：User-provided template; project distribution license not yet selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

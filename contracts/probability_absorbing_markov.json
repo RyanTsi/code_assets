@@ -71,6 +71,6 @@
         "path": "content/posts/吸收马尔科夫链.md",
         "blob_sha": "a6bb425768bdfaf92b3a2778f3017c4bdf4bb771",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

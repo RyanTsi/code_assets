@@ -83,7 +83,8 @@ def check() -> tuple[int, int]:
         if f"#include <{asset['header'].removeprefix('include/')}>" not in text:
             raise ValueError(f"{asset['id']}: missing public include example")
     pages = sorted((ROOT / "docs").rglob("*.md"))
-    pages += [ROOT / "README.md", ROOT / "AGENTS.md"]
+    pages += sorted(ROOT.glob("*.md"))
+    pages += [ROOT / "third_party/README.md"]
     pages += [
         page
         for directory in ("contracts", "recipes", "benchmarks", "gaps", "tests", "judge")

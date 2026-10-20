@@ -60,7 +60,7 @@
     },
     "provenance": {
         "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
-        "license": "Project implementation license not selected",
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md",
         "dependencies": "No external runtime dependency"
     }
 }

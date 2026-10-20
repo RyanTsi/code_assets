@@ -73,6 +73,6 @@
         "path": "动态规划/背包问题/01背包.md",
         "blob_sha": "bf2d3661087a28d68985bbf0d58d6e6e6b674f06",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

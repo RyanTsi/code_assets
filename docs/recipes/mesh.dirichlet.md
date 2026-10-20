@@ -71,4 +71,4 @@ CMake 使用 `target_link_libraries(app PRIVATE algorithm_assets::eigen)`。此�
 - [独立 FEM/SciPy/VTU 对照](../../tests/mesh3d_reference_test.py)（需NumPy/SciPy）。
 - [本批实现与验证边界](../project/MESH3D_INTEGRATION.md)。
 - [Eigen固定来源及逐文件哈希](../../provenance/dependencies/eigen-3.4.0.json)；原始许可证位于third_party/eigen3/COPYING.*，不得抹去或另行授权第三方代码。
-- 本工程独立实现；总体分发许可证尚未选择。
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

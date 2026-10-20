@@ -66,6 +66,6 @@
         "path": "content/posts/最小圆覆盖.md",
         "blob_sha": "63b68bfada37e9abf33518739d494b21eda17e31",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

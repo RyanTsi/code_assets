@@ -87,4 +87,4 @@ CF1822F 将树售价写成 `k*eccentricity[v]`，移动根的最少费用为 `c*
 - **来源路径**：content/posts/图论做题记录.md
 - **来源 blob**：adfcbb9da0bced9f62d6f311f5e6fcaf34083197
 - **实现来源**：Independent engineering implementation; source supplies problem entry and motivation
-- **许可状态**：No repository license discovered; distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

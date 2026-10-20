@@ -62,6 +62,6 @@
         "path": "数学/多项式/FFT.md",
         "blob_sha": "8940ee1dbc560809e3d30681a916ddb62363b557",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

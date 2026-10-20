@@ -85,4 +85,4 @@
 - **来源路径**：动态规划/背包问题/多重背包.md
 - **来源 blob**：8d35f73d5fa32bcebe385daa26024c6c5b945196
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

@@ -86,4 +86,4 @@ O(n log n) 构建，O(log u) 查询；排序初始 8n，常驻 O(u)，过大容�
 - **来源路径**：其他/离散化.md
 - **来源 blob**：a78e58e1a07bb587e099a300cd877fa849cb34b0
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

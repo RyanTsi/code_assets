@@ -32,6 +32,6 @@
 | circumcircle/incircle/center_given_radius/commonarea | 同名现代入口/centers_through/overlap_area；共线、相切、重合不依赖 assert、acos 不越界 |
 | intersect(Circle,Polygon) | disk_polygon_intersection；旧实现只比较边界距离，不能说明圆盘与区域是否相交，现明确填充区域语义 |
 
-输入原文按字节保存在 `provenance/geometry2d-template.cpp.txt`；SHA256 为 `f346ef1f9337127d605b213212e6b356cfc616ed5476a6046fe94cfbd9ef57de`。参考材料只阅读：`../oi-wiki-reference/docs/geometry/{2d,convex-hull,nearest-points,rotating-calipers}.md`。实现未复制参考 Wiki 代码，模板来源为用户提供，项目分发许可证仍沿用现有未选定状态。
+输入原文按字节保存在 `provenance/geometry2d-template.cpp.txt`；SHA256 为 `f346ef1f9337127d605b213212e6b356cfc616ed5476a6046fe94cfbd9ef57de`。参考材料只阅读：`../oi-wiki-reference/docs/geometry/{2d,convex-hull,nearest-points,rotating-calipers}.md`。实现未复制参考 Wiki 代码，模板来源为用户提供。本项目自有实现采用 [MIT](../../LICENSE)，保留原文不意味着将原模板或参考资料重新授权，范围见 [许可说明](LICENSING.md)。
 
 关于浮点谓词为何不能只增加 EPS，参考 [Shewchuk 的原始说明](https://www.cs.cmu.edu/~quake/robust.html)。线性旋转卡壳的凸输入与复杂度可对照 [CGAL Bounding Volumes](https://doc.cgal.org/latest/Bounding_volumes/group__PkgBoundingVolumesRef.html)；这只是原理参考，不引入 CGAL。`merge` 与 `inplace_merge` 的成本区别见 [C++ 标准草案](https://eel.is/c++draft/alg.merge)。

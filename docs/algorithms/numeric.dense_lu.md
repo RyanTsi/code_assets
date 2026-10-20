@@ -89,4 +89,4 @@ relative_tolerance 在 `[0,1)` 且有限，默认64ε；阈值为 tolerance·输
 - **来源路径**：content/posts/数值计算-矩阵论.md
 - **来源 blob**：d06aaf392720038ed7e34f0c87441c1c2968a08c
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

@@ -60,6 +60,6 @@
     "provenance": {
         "implementation": "Reorganized and rewritten from user-provided template; original preserved byte-for-byte",
         "reference": "provenance/geometry2d-template.cpp.txt; docs/project/GEOMETRY2D.md lists read-only Wiki and primary-source references",
-        "license": "User-provided template; project distribution license not yet selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; archived user-provided template and external references retain their original rights"
     }
 }

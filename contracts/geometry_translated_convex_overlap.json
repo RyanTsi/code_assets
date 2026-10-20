@@ -72,6 +72,6 @@
         "path": "content/posts/闵可夫斯基和.md",
         "blob_sha": "9ff69cf7e4a67652a2671bb00d6fa29dfd14d299",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

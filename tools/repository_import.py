@@ -59,7 +59,7 @@ def report(ledger):
         "",
         f"台账覆盖固定提交的 {count} 个 Markdown 文件。`full` 为完整候选正文审核，`sections` 为章节/代码结构审核，`inventory_only` 仅按目录判断范围；不声称所有正文都已逐字阅读。partial 和 deferred 都不是完整覆盖。",
         "",
-        "每项资产的接口、数值/状态约束、空间成本和正确性说明见 [独立文档目录](../README.md)。每个映射 ID 都验证存在真实头文件、契约、测试与示例。源仓库无 LICENSE，本库整体许可证尚待选择。",
+        "每项资产的接口、数值/状态约束、空间成本和正确性说明见 [独立文档目录](../README.md)。每个映射 ID 都验证存在真实头文件、契约、测试与示例。固定来源快照未发现LICENSE；本工程自有内容采用 [MIT](../../LICENSE)，不替原始来源或其他权利人重新授权，范围见 [许可说明](LICENSING.md)。",
         "",
         "```sh",
         "python tools/repository_import.py",

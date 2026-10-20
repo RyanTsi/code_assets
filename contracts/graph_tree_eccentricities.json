@@ -68,6 +68,6 @@
         "path": "content/posts/图论做题记录.md",
         "blob_sha": "adfcbb9da0bced9f62d6f311f5e6fcaf34083197",
         "implementation": "Independent engineering implementation; source supplies problem entry and motivation",
-        "license": "No repository license discovered; distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

@@ -82,4 +82,4 @@
 - **来源路径**：数学/数论/中国剩余定理.md
 - **来源 blob**：297eb31d84ac61cf6a73b1138492bd602da46819
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

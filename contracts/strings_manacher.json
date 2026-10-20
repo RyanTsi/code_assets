@@ -66,6 +66,6 @@
         "path": "字符串/Manacher.md",
         "blob_sha": "4677bda36b90121b5b54594b96a11c5ffb305f56",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

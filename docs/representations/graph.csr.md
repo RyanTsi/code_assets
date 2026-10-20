@@ -87,4 +87,4 @@
 
 - **实现来源**：Written for this project; no source code copied
 - **参考**：../oi-wiki-reference/docs/ and standard algorithm definitions
-- **许可状态**：Project distribution license not yet selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

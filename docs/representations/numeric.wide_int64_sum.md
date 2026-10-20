@@ -81,4 +81,4 @@
 
 - **实现来源**：Rewritten modern C++20 for this project, not source-code copy
 - **参考**：standard two-word arithmetic
-- **许可状态**：No source LICENSE discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

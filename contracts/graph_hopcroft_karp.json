@@ -71,6 +71,6 @@
         "path": "图论/网络流/匈牙利算法.md",
         "blob_sha": "923e5934ee55a675aded602c9f745b2124df904b",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

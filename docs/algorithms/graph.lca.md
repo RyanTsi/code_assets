@@ -82,4 +82,4 @@
 - **来源路径**：图论/其他/最近公共祖先.md
 - **来源 blob**：5d4c16d352b14287ade89789ce4c11e3d14f0331
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

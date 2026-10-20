@@ -87,4 +87,4 @@ A 与 B+t 相交当且仅当存在 a=b+t，即 t∈A-B。预计算差凸包后�
 - **来源路径**：content/posts/闵可夫斯基和.md
 - **来源 blob**：9ff69cf7e4a67652a2671bb00d6fa29dfd14d299
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

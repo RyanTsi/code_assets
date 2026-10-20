@@ -12,4 +12,4 @@ target_link_libraries(your_target PRIVATE algorithm_assets::eigen)
 
 该目标同时传递本库和 Eigen 的 include 路径；原 `algorithm_assets::algorithm_assets` 不增加 Eigen 依赖。安装包包含所需 Eigen 头文件及上游许可文本。若应用同时使用其他 Eigen 版本，调用者必须统一头文件搜索顺序与配置，不能在同一程序内混用不兼容版本。
 
-这份集成不改变 Eigen 的许可证，也不把第三方头文件重新授权为本工程自有代码。分发时应保留并履行相应源码与声明义务；本库整体许可仍待用户决定。
+本工程自有内容采用 [MIT](../LICENSE)。这份集成不改变 Eigen 的许可证，也不把第三方头文件重新授权为MIT。分发时应保留并履行相应源码与声明义务，范围见 [第三方声明](../THIRD_PARTY_NOTICES.md)。

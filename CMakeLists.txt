@@ -229,6 +229,7 @@ if(ALGORITHM_ASSETS_BUILD_TESTS)
 endif()
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES LICENSE THIRD_PARTY_NOTICES.md DESTINATION ${CMAKE_INSTALL_DATADIR}/AlgorithmAssets)
 install(DIRECTORY third_party/eigen3/Eigen
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/algorithm_assets/third_party/eigen3)
 file(GLOB eigen_notices "${CMAKE_CURRENT_SOURCE_DIR}/third_party/eigen3/COPYING*")

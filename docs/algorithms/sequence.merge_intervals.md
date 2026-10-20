@@ -87,4 +87,4 @@ O(n log n)，排序载荷16n，原数组上压缩，稀疏输出压缩容量；�
 - **来源路径**：其他/区间合并.md
 - **来源 blob**：c18b1354fec0f95855da2f5743897dd28d597b15
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

@@ -86,4 +86,4 @@ O(n log n) build，O(1) 两次载荷读取+一次合并；只存有效块，总�
 - **来源路径**：数据结构/ST表.md
 - **来源 blob**：7783a7889dfc40bf71a3398db005a34def1ec083
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

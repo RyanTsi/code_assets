@@ -90,4 +90,4 @@ CF 的输入是闭区间整数天 `[l,r]`，适配器将其转成 `[l,r+1)`；�
 - **来源路径**：content/posts/高质量题解（持续更新中）.md
 - **来源 blob**：9191f5b79147f82be1d3985aec2c6351ef8ff6a0
 - **实现来源**：Independent engineering implementation; source supplies problem entry and motivation
-- **许可状态**：No repository license discovered; distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

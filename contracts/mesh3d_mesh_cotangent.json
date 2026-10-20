@@ -68,7 +68,7 @@
     },
     "provenance": {
         "implementation": "Independently implemented in this project; geometry libraries are design/math references, not copied engine code",
-        "license": "Project implementation license not selected; vendored Eigen retains upstream notices and licenses",
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; vendored Eigen retains its upstream notices and licenses",
         "dependencies": "provenance/dependencies/eigen-3.4.0.json"
     }
 }

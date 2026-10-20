@@ -71,6 +71,6 @@
         "path": "图论/网络流/Dinic.md",
         "blob_sha": "4b404e064af74fc2ad4d454f34c31d683594c222",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

@@ -86,4 +86,4 @@ O(n)，两组 size_t 半径共16n，本机；镜像复制只在已知窗口内�
 - **来源路径**：字符串/Manacher.md
 - **来源 blob**：4677bda36b90121b5b54594b96a11c5ffb305f56
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

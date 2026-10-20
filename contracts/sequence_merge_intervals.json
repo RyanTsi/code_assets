@@ -64,6 +64,6 @@
         "path": "其他/区间合并.md",
         "blob_sha": "c18b1354fec0f95855da2f5743897dd28d597b15",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

@@ -87,4 +87,4 @@
 - **来源路径**：content/posts/dp题单.md
 - **来源 blob**：33f521bad812951b788f56eec8f4466f2f9f370d
 - **实现来源**：Independent engineering implementation; source supplies problem entry and motivation
-- **许可状态**：No repository license discovered; distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

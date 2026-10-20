@@ -70,7 +70,7 @@
     "provenance": {
         "implementation": "Rewritten modern C++20 for this project, not source-code copy",
         "reference": "图论/其他/拓扑排序.md",
-        "license": "No source LICENSE discovered; project distribution license not selected",
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here",
         "repository": "RyanTsi/Algorithm-notes",
         "commit": "91c14556641c991c716b71906815abdd6a476188",
         "url": "https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/图论/其他/拓扑排序.md"

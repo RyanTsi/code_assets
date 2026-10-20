@@ -72,6 +72,6 @@
         "path": "content/posts/数值计算-矩阵论.md",
         "blob_sha": "d06aaf392720038ed7e34f0c87441c1c2968a08c",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

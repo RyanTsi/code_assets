@@ -86,4 +86,4 @@
 - **来源路径**：图论/最短路/Bellman-Ford.md
 - **来源 blob**：02086c31ad78f0efec3825da0dd5d55c5aaa6ad2
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

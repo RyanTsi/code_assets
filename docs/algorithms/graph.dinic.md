@@ -87,4 +87,4 @@ BFS 给出残量最短路层次，阻塞流耗尽当前层次上的全部可增�
 - **来源路径**：图论/网络流/Dinic.md
 - **来源 blob**：4b404e064af74fc2ad4d454f34c31d683594c222
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

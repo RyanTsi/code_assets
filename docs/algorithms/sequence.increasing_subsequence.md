@@ -86,4 +86,4 @@ O(n log(L+1))；length 只保存 O(L) 个值，见证保存 n 个父指针、O(L
 - **来源路径**：动态规划/子序列问题/最长上升子序列.md
 - **来源 blob**：73ae0e8a50574e86e855a89566cbbe5fed45595d
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。

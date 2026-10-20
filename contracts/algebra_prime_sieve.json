@@ -61,6 +61,6 @@
         "path": "数学/数论/质数筛.md",
         "blob_sha": "79841144659dc38879cd0a8fda740f6834d5e3f8",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

@@ -83,7 +83,7 @@ O(n log(n+1))；初始化排序副本为 8n；复用 CoordinateCompression 后�
 
 - **实现来源**：Rewritten modern C++20 for this project, not source-code copy
 - **参考**：其他/逆序对.md
-- **许可状态**：No source LICENSE discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。
 - **来源仓库**：RyanTsi/Algorithm-notes
 - **固定提交**：91c14556641c991c716b71906815abdd6a476188
 - **来源链接**：[来源](https://github.com/RyanTsi/Algorithm-notes/blob/91c14556641c991c716b71906815abdd6a476188/其他/逆序对.md)

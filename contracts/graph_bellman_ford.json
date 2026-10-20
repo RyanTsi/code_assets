@@ -74,6 +74,6 @@
         "path": "图论/最短路/Bellman-Ford.md",
         "blob_sha": "02086c31ad78f0efec3825da0dd5d55c5aaa6ad2",
         "implementation": "Independently rewritten for this project; source motivates algorithm and constraints",
-        "license": "No repository license discovered; project distribution license not selected"
+        "license": "MIT for the project implementation; see LICENSE and THIRD_PARTY_NOTICES.md; no LICENSE was found in the pinned reference snapshot, which is not relicensed here"
     }
 }

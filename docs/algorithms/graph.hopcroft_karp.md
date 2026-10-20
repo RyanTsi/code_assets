@@ -85,4 +85,4 @@ BFS 找最短增广长度，显式栈 DFS 同时增广一批不相交路径；�
 - **来源路径**：图论/网络流/匈牙利算法.md
 - **来源 blob**：923e5934ee55a675aded602c9f745b2124df904b
 - **实现来源**：Independently rewritten for this project; source motivates algorithm and constraints
-- **许可状态**：No repository license discovered; project distribution license not selected
+- **许可状态**：项目自有实现采用 [MIT](../../LICENSE)；第三方与来源材料保留原条款，范围见 [许可说明](../project/LICENSING.md)。
